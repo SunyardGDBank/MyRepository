@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<services xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns=""
+          xsi:noNamespaceSchemaLocation="http://moqui.org/xsd/service-definition-2.1.xsd">
+    <!--REST接入商户代付服务实现-->
+    <service verb="access" noun="Pay0004" type="inline" authenticate="anonymous-all">
+        <in-parameters>
+
+        </in-parameters>
+        <out-parameters>
+        </out-parameters>
+       <actions>
+           <script><![CDATA[
+               import org.apache.logging.log4j.ThreadContext;
+
+               Map map = ec.web.getRequestParameters()
+               ec.context.putAll(map)
+               ThreadContext.put("tranId", "0004")
+               ec.context.put("tranId", "0004")
+               ]]></script>
+           <log level="info" message="=============商户代付access#Pay0004处理开始=================="/>
+           <log level="info" message="=============商户代付报文解包信息：${ec.web.getRequestParameters()}=================="/>
+           <log level="info" message="=============商户代付调用main[nacs.main.Nacs0004.nacs#P0004]服务开始=================="/>
+           <service-call name="nacs.main.Nacs0004.nacs#P0004" in-map="context" out-map="context"/>
+           <log level="info" message="=============商户代付调用main[nacs.main.Nacs0004.nacs#P0004]服务结束=================="/>
+
+           <log level="info" message="=============商户代付报文组包信息：${ec.context.get('outList')}=================="/>
+
+           <script><![CDATA[
+               import org.apache.logging.log4j.ThreadContext
+               Map outList = new HashMap();
+               outList.put("errorCode","000000")
+               outList.put("errors","处理成功")
+               ec.web.sendJsonResponse(outList)
+               ThreadContext.remove("tranId")
+
+            ]]></script>
+       </actions>
+    </service>
+</services>

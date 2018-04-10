@@ -1,0 +1,180 @@
+<screen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="http://moqui.org/xsd/xml-screen-2.1.xsd"
+        default-menu-title="通道清算" default-menu-index="1" >
+    <!--通道清算-->
+
+    <parameter name="settleDate"/>
+    <transition name="before">
+        <service-call name="nacs.clear.admin.NacsClearService.get#Before1" in-map="[settleDate:settleDate]"
+                      out-map="context"/>
+        <default-response url="."/>
+    </transition>
+
+    <transition name="after">
+        <service-call name="nacs.clear.admin.NacsClearService.get#After1" in-map="[settleDate:settleDate]"
+                      out-map="context"/>
+        <default-response url="."/>
+    </transition>
+
+    <transition name="clear">
+        <default-response url="."/>
+    </transition>
+
+
+    <actions>
+        <if condition="!settleDate">
+            <set field="settleDate" value="${new Date().format('yyyy-MM-dd')}"/>
+        </if>
+        <set field="pageSize" value="10"/>
+        <if condition="channelNm">
+            <set field="channelSeqId" from="channelNm"/>
+        </if>
+        <entity-find entity-name="nacs.clear.ClearChannel" list="clrList">
+            <search-form-inputs/>
+            <econdition field-name="settleDate" from="settleDate"/>
+        </entity-find>
+        <entity-find entity-name="moqui.basic.StatusItem" list="settleStList">
+            <econdition field-name="statusTypeId" value="SettleSt1"/>
+        </entity-find>
+        <entity-find entity-name="moqui.basic.StatusItem" list="checkStList">
+            <econdition field-name="statusTypeId" value="CheckSt"/>
+        </entity-find>
+    </actions>
+    <widgets>
+        <form-list name="ClearChannelList" list="clrList" header-dialog="true" saved-finds="true" select-columns="true">
+            <field name="settleDate">
+                <header-field title="清算日期">
+                    <date-time type="date"/>
+                </header-field>
+                <default-field title="清算日期">
+                   <display/>
+                </default-field>
+            </field>
+            <field name="channelSeqId">
+                <header-field>
+                    <drop-down allow-empty="true">
+                        <entity-options key="${seqId}" text="${channelNo}-${channelNm}">
+                            <entity-find entity-name="nacs.channel.Channel"/>
+                        </entity-options>
+                    </drop-down>
+                </header-field>
+                <default-field title="通道名称">
+                    <display-entity entity-name="nacs.channel.Channel" key-field-name="seqId"
+                                    text="${channelNm}"/>
+                </default-field>
+            </field>
+            <field name="trxCtgy">
+                <header-field>
+                    <drop-down allow-empty="true">
+                        <entity-options key="${enumId}" text="${description}">
+                            <entity-find entity-name="moqui.basic.Enumeration">
+                                <econdition field-name="enumTypeId" value="TrxCtgy"/>
+                            </entity-find>
+                        </entity-options>
+                    </drop-down>
+                </header-field>
+                <default-field title="业务类型">
+                    <display-entity entity-name="moqui.basic.Enumeration" key-field-name="enumId"
+                                    text="${description}"/>
+                </default-field>
+            </field>
+            <field name="settleAmt" align="right">
+               <!-- <header-field>
+                    <text-line size="25"/>
+                </header-field>-->
+                <default-field title="清算金额">
+                    <display/>
+                </default-field>
+            </field>
+            <field name="refundAmt" align="right">
+                <!--<header-field>
+                    <text-line size="25"/>
+                </header-field>-->
+                <default-field title="退回金额">
+                    <display/>
+                </default-field>
+            </field>
+            <field name="netAmt" align="right">
+               <!-- <header-field>
+                    <text-line size="25"/>
+                </header-field>-->
+                <default-field title="净清算金额">
+                    <display/>
+                </default-field>
+            </field>
+            <field name="settleSt">
+                <header-field>
+                    <drop-down allow-empty="true">
+                        <list-options list="settleStList" text="${description}"/>
+                    </drop-down>
+                </header-field>
+                <default-field title="清算状态">
+                    <display-entity entity-name="moqui.basic.StatusItem" key-field-name="statusId"
+                                    text="${description}"/>
+                </default-field>
+            </field>
+            <field name="checkDate">
+                <header-field>
+                    <date-time type="date-time" format="yyyy-MM-dd" size="8"/>
+                </header-field>
+                <default-field title="对账日期">
+                  <display/>
+                </default-field>
+            </field>
+
+            <field name="checkSt">
+                <header-field>
+                    <drop-down allow-empty="true">
+                        <list-options list="checkStList" text="${description}"/>
+                    </drop-down>
+                </header-field>
+                <default-field title="对账状态">
+                    <display-entity entity-name="moqui.basic.StatusItem" key-field-name="statusId"
+                                    text="${description}"/>
+                </default-field>
+            </field>
+            <!--查找按钮-->
+            <field name="find">
+                <header-field title="Find">
+                    <submit icon="glyphicon glyphicon-search"/>
+                </header-field>
+                <default-field>
+                    <display text=" "/>
+                </default-field>
+            </field>
+
+            <field name="mm">
+                <default-field title="">
+                    <link url="clear" text="手工清算"/>
+                </default-field>
+            </field>
+
+        </form-list>
+        <field name="mm1">
+            <default-field>
+                <!-- <text-line ac-transition="mm"/>-->
+                <link url="before" text="前一天" />
+            </default-field>
+        </field>
+        <container-dialog id="findChannelClear" button-text="${settleDate}">
+            <form-single name="SettleDate">
+                <field name="settleDate">
+                    <default-field title="清算日期">
+                        <date-time type="date"/>
+                    </default-field>
+                </field>
+                <field name="find">
+                    <default-field>
+                        <submit/>
+                    </default-field>
+                </field>
+            </form-single>
+        </container-dialog>
+        <field name="mm3">
+            <default-field>
+                <link url="after" text="后一天"/>
+            </default-field>
+        </field>
+
+    </widgets>
+</screen>

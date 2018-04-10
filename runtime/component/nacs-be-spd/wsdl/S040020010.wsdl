@@ -1,0 +1,65 @@
+<wsdl:definitions xmlns:s="http://esb.spdbbiz.com/services/S040020010" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:soapnc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:tns="http://esb.spdbbiz.com/services/S040020010/wsdl" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" targetNamespace="http://esb.spdbbiz.com/services/S040020010/wsdl">
+<wsdl:types>
+<xsd:schema targetNamespace="http://esb.spdbbiz.com/services/S040020010/wsdl" elementFormDefault="qualified" attributeFormDefault="qualified">
+<xsd:import namespace="http://esb.spdbbiz.com/services/S040020010" schemaLocation="http://10.112.20.145:8080/Publish/WSDLfilePath/S040020010.xsd"/>
+</xsd:schema>
+</wsdl:types>
+<wsdl:message name="ReqHeader">
+<wsdl:part name="ReqHeader" element="s:ReqHeader"></wsdl:part>
+</wsdl:message>
+<wsdl:message name="RspICCardDomainVerf">
+<wsdl:part name="RspICCardDomainVerf" element="s:RspICCardDomainVerf"></wsdl:part>
+</wsdl:message>
+<wsdl:message name="RspVerfChipCard55Dmn">
+<wsdl:part name="RspVerfChipCard55Dmn" element="s:RspVerfChipCard55Dmn"></wsdl:part>
+</wsdl:message>
+<wsdl:message name="ReqVerfChipCard55Dmn">
+<wsdl:part name="ReqVerfChipCard55Dmn" element="s:ReqVerfChipCard55Dmn"></wsdl:part>
+</wsdl:message>
+<wsdl:message name="ReqICCardDomainVerf">
+<wsdl:part name="ReqICCardDomainVerf" element="s:ReqICCardDomainVerf"></wsdl:part>
+</wsdl:message>
+<wsdl:message name="RspHeader">
+<wsdl:part name="RspHeader" element="s:RspHeader"></wsdl:part>
+</wsdl:message>
+<wsdl:portType name="ESBServerPortType">
+<wsdl:operation name="ICCardDomainVerf">
+<wsdl:input message="tns:ReqICCardDomainVerf"></wsdl:input>
+<wsdl:output message="tns:RspICCardDomainVerf"></wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="VerfChipCard55Dmn">
+<wsdl:input message="tns:ReqVerfChipCard55Dmn"></wsdl:input>
+<wsdl:output message="tns:RspVerfChipCard55Dmn"></wsdl:output>
+</wsdl:operation>
+</wsdl:portType>
+<wsdl:binding name="ESBServerSoapBinding" type="tns:ESBServerPortType">
+<soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+<wsdl:operation name="ICCardDomainVerf">
+<soap:operation soapAction="urn:/ICCardDomainVerf"/>
+<wsdl:input>
+<soap:header message="tns:ReqHeader" part="ReqHeader" use="literal"></soap:header>
+<soap:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap:header message="tns:RspHeader" part="RspHeader" use="literal"></soap:header>
+<soap:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="VerfChipCard55Dmn">
+<soap:operation soapAction="urn:/VerfChipCard55Dmn"/>
+<wsdl:input>
+<soap:header message="tns:ReqHeader" part="ReqHeader" use="literal"></soap:header>
+<soap:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap:header message="tns:RspHeader" part="RspHeader" use="literal"></soap:header>
+<soap:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+</wsdl:binding>
+<wsdl:service name="S040020010">
+<wsdl:port name="ESBServerSoapEndpoint" binding="tns:ESBServerSoapBinding">
+<soap:address location="http://esb.spdbbiz.com:7701/services/S040020010"/>
+</wsdl:port>
+</wsdl:service>
+</wsdl:definitions>

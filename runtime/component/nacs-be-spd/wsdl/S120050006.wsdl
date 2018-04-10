@@ -1,0 +1,86 @@
+<wsdl:definitions xmlns:s="http://esb.spdbbiz.com/services/S120050006" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:soapnc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:tns="http://esb.spdbbiz.com/services/S120050006/wsdl" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" targetNamespace="http://esb.spdbbiz.com/services/S120050006/wsdl">
+<wsdl:types>
+<xsd:schema targetNamespace="http://esb.spdbbiz.com/services/S120050006/wsdl" elementFormDefault="qualified" attributeFormDefault="qualified">
+<xsd:import namespace="http://esb.spdbbiz.com/services/S120050006" schemaLocation="http://10.112.20.145:8080/Publish/CBSP/S120050006.xsd"/>
+</xsd:schema>
+</wsdl:types>
+<wsdl:message name="ReqStmtQryAndPrt">
+<wsdl:part name="ReqStmtQryAndPrt" element="s:ReqStmtQryAndPrt"></wsdl:part>
+</wsdl:message>
+<wsdl:message name="ReqHeader">
+<wsdl:part name="ReqHeader" element="s:ReqHeader"></wsdl:part>
+</wsdl:message>
+<wsdl:message name="RspStmtQryAndPrt">
+<wsdl:part name="RspStmtQryAndPrt" element="s:RspStmtQryAndPrt"></wsdl:part>
+</wsdl:message>
+<wsdl:message name="ReqUnvslDtlRcnclDwld">
+<wsdl:part name="ReqUnvslDtlRcnclDwld" element="s:ReqUnvslDtlRcnclDwld"></wsdl:part>
+</wsdl:message>
+<wsdl:message name="RspUnvslDtlRcnclDwld">
+<wsdl:part name="RspUnvslDtlRcnclDwld" element="s:RspUnvslDtlRcnclDwld"></wsdl:part>
+</wsdl:message>
+<wsdl:message name="RspRcnclFlDwld">
+<wsdl:part name="RspRcnclFlDwld" element="s:RspRcnclFlDwld"></wsdl:part>
+</wsdl:message>
+<wsdl:message name="RspHeader">
+<wsdl:part name="RspHeader" element="s:RspHeader"></wsdl:part>
+</wsdl:message>
+<wsdl:message name="ReqRcnclFlDwld">
+<wsdl:part name="ReqRcnclFlDwld" element="s:ReqRcnclFlDwld"></wsdl:part>
+</wsdl:message>
+<wsdl:portType name="ESBServerPortType">
+<wsdl:operation name="RcnclFlDwld">
+<wsdl:input message="tns:ReqRcnclFlDwld"></wsdl:input>
+<wsdl:output message="tns:RspRcnclFlDwld"></wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="StmtQryAndPrt">
+<wsdl:input message="tns:ReqStmtQryAndPrt"></wsdl:input>
+<wsdl:output message="tns:RspStmtQryAndPrt"></wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="UnvslDtlRcnclDwld">
+<wsdl:input message="tns:ReqUnvslDtlRcnclDwld"></wsdl:input>
+<wsdl:output message="tns:RspUnvslDtlRcnclDwld"></wsdl:output>
+</wsdl:operation>
+</wsdl:portType>
+<wsdl:binding name="ESBServerSoapBinding" type="tns:ESBServerPortType">
+<soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+<wsdl:operation name="RcnclFlDwld">
+<soap:operation soapAction="urn:/RcnclFlDwld"/>
+<wsdl:input>
+<soap:header message="tns:ReqHeader" part="ReqHeader" use="literal"></soap:header>
+<soap:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap:header message="tns:RspHeader" part="RspHeader" use="literal"></soap:header>
+<soap:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="StmtQryAndPrt">
+<soap:operation soapAction="urn:/StmtQryAndPrt"/>
+<wsdl:input>
+<soap:header message="tns:ReqHeader" part="ReqHeader" use="literal"></soap:header>
+<soap:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap:header message="tns:RspHeader" part="RspHeader" use="literal"></soap:header>
+<soap:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="UnvslDtlRcnclDwld">
+<soap:operation soapAction="urn:/UnvslDtlRcnclDwld"/>
+<wsdl:input>
+<soap:header message="tns:ReqHeader" part="ReqHeader" use="literal"></soap:header>
+<soap:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap:header message="tns:RspHeader" part="RspHeader" use="literal"></soap:header>
+<soap:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+</wsdl:binding>
+<wsdl:service name="S120050006">
+<wsdl:port name="ESBServerSoapEndpoint" binding="tns:ESBServerSoapBinding">
+<soap:address location="http://esb.spdbbiz.com:7701/services/S120050006"/>
+</wsdl:port>
+</wsdl:service>
+</wsdl:definitions>

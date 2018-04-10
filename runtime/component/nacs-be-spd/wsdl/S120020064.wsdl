@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<wsdl:definitions targetNamespace="http://esb.spdbbiz.com/services/S120020064/wsdl" xmlns:s="http://esb.spdbbiz.com/services/S120020064" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:soapnc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:tns="http://esb.spdbbiz.com/services/S120020064/wsdl" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/">
+<wsdl:types>
+<xsd:schema targetNamespace="http://esb.spdbbiz.com/services/S120020064/wsdl" elementFormDefault="qualified" attributeFormDefault="qualified">
+  <xsd:import namespace="http://esb.spdbbiz.com/services/S120020064" schemaLocation="S120020064.xsd" /> 
+  </xsd:schema>
+  </wsdl:types>
+<wsdl:message name="RspUnifyUsrAuthn">
+  <wsdl:part name="RspUnifyUsrAuthn" element="s:RspUnifyUsrAuthn" /> 
+  </wsdl:message>
+<wsdl:message name="ReqUnifyUsrAuthn">
+  <wsdl:part name="ReqUnifyUsrAuthn" element="s:ReqUnifyUsrAuthn" /> 
+  </wsdl:message>
+<wsdl:message name="ReqHeader">
+  <wsdl:part name="ReqHeader" element="s:ReqHeader" /> 
+  </wsdl:message>
+<wsdl:message name="RspHeader">
+  <wsdl:part name="RspHeader" element="s:RspHeader" /> 
+  </wsdl:message>
+<wsdl:portType name="ESBServerPortType">
+<wsdl:operation name="UnifyUsrAuthn">
+  <wsdl:input message="tns:ReqUnifyUsrAuthn" /> 
+  <wsdl:output message="tns:RspUnifyUsrAuthn" /> 
+  </wsdl:operation>
+  </wsdl:portType>
+<wsdl:binding name="ESBServerSoapBinding" type="tns:ESBServerPortType">
+  <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http" /> 
+<wsdl:operation name="UnifyUsrAuthn">
+  <soap:operation soapAction="urn:/UnifyUsrAuthn" /> 
+<wsdl:input>
+  <soap:header message="tns:ReqHeader" part="ReqHeader" use="literal" /> 
+  <soap:body use="literal" /> 
+  </wsdl:input>
+<wsdl:output>
+  <soap:header message="tns:RspHeader" part="RspHeader" use="literal" /> 
+  <soap:body use="literal" /> 
+  </wsdl:output>
+  </wsdl:operation>
+  </wsdl:binding>
+<wsdl:service name="S120020064">
+<wsdl:port name="ESBServerSoapEndpoint" binding="tns:ESBServerSoapBinding">
+  <soap:address location="http://esb.spdbbiz.com:7701/services/S120020064" /> 
+  </wsdl:port>
+  </wsdl:service>
+  </wsdl:definitions>

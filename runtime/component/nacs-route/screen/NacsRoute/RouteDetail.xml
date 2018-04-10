@@ -1,0 +1,754 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<screen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="http://moqui.org/xsd/xml-screen-2.1.xsd"
+        default-menu-title="路由明细" default-menu-include="false">
+    <parameter name="mrchntNo"/>
+    <parameter name="mrchntNm"/>
+    <parameter name="mrchntSeqId"/>
+    <parameter name="version"/>
+    <transition name="createBlacklistTab">
+        <service-call name="nacs.route.admin.NacsRouteService.create#BlacklistTab"/>
+        <default-response url="."/>
+    </transition>
+    <transition name="updateBlacklistTab">
+        <service-call name="update#nacs.para.BlacklistTab"/>
+        <default-response url="."/>
+    </transition>
+    <transition name="createWhitelistTab">
+        <service-call name="nacs.route.admin.NacsRouteService.create#WhitelistTab"/>
+        <default-response url="."/>
+    </transition>
+    <transition name="createMrchntRoute">
+        <service-call name="nacs.route.admin.NacsRouteService.create#MrchntRoute"/>
+        <default-response url="."/>
+    </transition>
+    <transition name="createMrchntRouteCo">
+        <service-call name="nacs.route.admin.NacsRouteService.create#MrchntRouteCo"/>
+        <default-response url="."/>
+    </transition>
+    <transition name="updateWhitelistTab">
+        <service-call name="update#nacs.para.WhitelistTab"/>
+        <default-response url="."/>
+    </transition>
+    <transition name="updateKnowledgeBaseSet">
+        <service-call name="update#nacs.para.KnowledgeBaseSet"/>
+        <default-response url="."/>
+    </transition>
+    <transition name="updateMrchntRoute">
+        <service-call name="nacs.route.admin.NacsRouteService.update#MrchntRoute" in-map="context"/>
+        <default-response url="."/>
+    </transition>
+    <transition name="updateMrchntRouteCo">
+        <service-call name="nacs.route.admin.NacsRouteService.update#MrchntRouteCo" in-map="context"/>
+        <default-response url="."/>
+    </transition>
+    <actions>
+        <entity-find entity-name="nacs.mrchnt.Mrchnt" list="routeList">
+            <econdition field-name="mrchntNo" from="mrchntNo"/>
+        </entity-find>
+        <entity-find entity-name="nacs.para.BlacklistTab" list="blacklistTabList">
+            <econdition field-name="mrchntSeqId" from="mrchntSeqId"/>
+            <order-by field-name="seqId"/>
+        </entity-find>
+        <entity-find entity-name="nacs.para.WhitelistTab" list="whitelistTabList">
+            <econdition field-name="mrchntSeqId" from="mrchntSeqId"/>
+            <order-by field-name="seqId"/>
+        </entity-find>
+        <entity-find entity-name="nacs.para.KnowledgeBaseSet" list="knowledgeBaseSetList">
+            <econdition field-name="mrchntSeqId" from="mrchntSeqId"/>
+            <order-by field-name="nacsTxId"/>
+        </entity-find>
+        <entity-find entity-name="moqui.basic.Enumeration" list="trxCtgyList">
+            <econdition field-name="enumTypeId" value="TrxCtgy"/>
+        </entity-find>
+        <entity-find entity-name="moqui.basic.Enumeration" list="takeEffectFlgList">
+            <econdition field-name="enumTypeId" value="TakeEffectFlg"/>
+        </entity-find>
+        <entity-find entity-name="moqui.basic.Enumeration" list="matchTypeList">
+            <econdition field-name="enumTypeId" value="MatchType"/>
+        </entity-find>
+        <entity-find entity-name="moqui.basic.Enumeration" list="opnFlgList">
+            <econdition field-name="enumTypeId" value="OpnFlg"/>
+        </entity-find>
+        <entity-find entity-name="nacs.channel.ChannelView" list="channelSeqViewList"/>
+        <set field="mmm" from="trxCtgy" default-value="000401"/>
+        <set field="nnn" from="trxCtgy" default-value="000501"/>
+        <entity-find entity-name="nacs.mrchnt.MrchntRoute" list="mrchntRouteList">
+            <econdition field-name="mrchntSeqId" from="mrchntSeqId"/>
+            <econdition field-name="trxCtgy" value="000401"/>
+            <order-by field-name="seqId"/>
+        </entity-find>
+        <entity-find entity-name="nacs.mrchnt.MrchntRoute" list="mrchntRouteCoList">
+            <econdition field-name="mrchntSeqId" from="mrchntSeqId"/>
+            <econdition field-name="trxCtgy" value="000501"/>
+            <order-by field-name="seqId"/>
+        </entity-find>
+
+        <log level="info" message="mrchntRouteList##########${mrchntRouteList}"/>
+    </actions>
+    <widgets>
+        <!--页面顶部显示的信息-->
+        <form-single name="UserGroupForm" map="napPayOrgList">
+            <field name="mrchntNo"><default-field title="商户编号"><display/></default-field></field>
+            <field name="mrchntNm"><default-field title="商户名称"><display/></default-field></field>
+            <field name="version"><default-field title="协议版本"><display/></default-field></field>
+            <field-layout>
+                <field-row-sm col-sm="4">
+                    <field-ref name="mrchntNo"/>
+                    <field-ref name="mrchntNm"/>
+                    <field-ref name="version"/>
+                </field-row-sm>
+            </field-layout>
+        </form-single>
+        <form-list name="ListNacsRoute" list="routeList">
+            <field name="seqId">
+                <default-field title="序号">
+                    <hidden/>
+                </default-field>
+            </field>
+            <field name="mrchntSeqId" from="seqId">
+                <default-field>
+                    <hidden/>
+                </default-field>
+            </field>
+            <field name="mrchntFlag" align="center">
+                <default-field title="商户启用标志">
+                    <display-entity entity-name="moqui.basic.Enumeration" key-field-name="enumId"
+                                    text="${description}"/>
+                </default-field>
+            </field>
+            <field name="mrchntBeginTime" align="center">
+                <default-field title="运行开启时间">
+                    <display/>
+                </default-field>
+            </field>
+            <field name="mrchntEndTime" align="center">
+                <default-field title="运行关闭时间">
+                    <display/>
+                </default-field>
+            </field>
+            <!--<field-layout>-->
+                <!--<field-row-sm col-sm="4">-->
+                    <!--<field-ref name="mrchntFlag"/>-->
+                    <!--<field-ref name="mrchntBeginTime"/>-->
+                    <!--<field-ref name="mrchntEndTime"/>-->
+                <!--</field-row-sm>-->
+            <!--</field-layout>-->
+        </form-list>
+        <container-row>
+            <row-col lg="6">
+                <container-box>
+                    <box-header>
+                        <label text="代付业务路由开关" type="h5"/>
+                    </box-header>
+                    <box-toolbar>
+                        <!--添加按钮的弹窗页面-->
+                        <container-dialog id="CreateMrchntRouteDialog" button-text="添加">
+                            <form-single name="CreateMrchntRoute" transition="createMrchntRoute">
+                                <field name="seqId">
+                                    <default-field title="序号">
+                                        <hidden/>
+                                    </default-field>
+                                </field>
+                                <field name="mrchntSeqId" from="mrchntSeqId">
+                                    <default-field title="关联商户">
+                                        <hidden/>
+                                    </default-field>
+                                </field>
+                                <field name="mrchntNo">
+                                    <default-field >
+                                        <hidden/>
+                                    </default-field>
+                                </field>
+                                <field name="mrchntNm">
+                                    <default-field>
+                                        <hidden/>
+                                    </default-field>
+                                </field>
+                                <field name="version" from="version">
+                                    <default-field title="协议版本">
+                                        <hidden/>
+                                    </default-field>
+                                </field>
+                                <field name="trxCtgy" from="mmm">
+                                    <default-field title="交易类型">
+                                        <display-entity entity-name="moqui.basic.Enumeration" text="${description}"/>
+                                    </default-field>
+                                </field>
+                                <field name="matchType">
+                                    <default-field title="匹配规则">
+                                        <drop-down allow-empty="true">
+                                            <list-options list="matchTypeList" text="${description}"/>
+                                        </drop-down>
+                                    </default-field>
+                                </field>
+                                <field name="matchStatus">
+                                    <default-field title="开启标志">
+                                        <drop-down allow-empty="true">
+                                            <list-options list="opnFlgList" text="${description}"/>
+                                        </drop-down>
+                                    </default-field>
+                                </field>
+                                <!--添加按钮-->
+                                <field name="submitButton">
+                                    <default-field title="Add"><submit icon="glyphicon glyphicon-plus"/></default-field>
+                                </field>
+                                <field-layout>
+                                    <field-row><field-ref name="mrchntSeqId"/></field-row>
+                                    <field-row><field-ref name="version"/></field-row>
+                                    <field-row><field-ref name="trxCtgy"/></field-row>
+                                    <field-row><field-ref name="matchType"/></field-row>
+                                    <field-row><field-ref name="matchStatus"/></field-row>
+                                    <field-row><field-ref name="submitButton"/></field-row>
+                                </field-layout>
+                            </form-single>
+                        </container-dialog>
+                    </box-toolbar>
+                    <box-body>
+                        <form-list name="MrchntRoute" list="mrchntRouteList" transition="updateMrchntRoute">
+                            <field name="seqId">
+                                <default-field title="序号">
+                                    <hidden/>
+                                </default-field>
+                            </field>
+                            <field name="mrchntNo">
+                                <default-field >
+                                    <hidden/>
+                                </default-field>
+                            </field>
+                            <field name="mrchntNm">
+                                <default-field>
+                                    <hidden/>
+                                </default-field>
+                            </field>
+                            <field name="mrchntSeqId" from="mrchntSeqId">
+                                <default-field title="关联商户">
+                                    <hidden/>
+                                </default-field>
+                            </field>
+                            <field name="version">
+                                <default-field title="协议版本">
+                                    <hidden/>
+                                </default-field>
+                            </field>
+                            <field name="trxCtgy">
+                                <default-field title="交易类型">
+                                    <display-entity entity-name="moqui.basic.Enumeration" text="${description}"/>
+                                </default-field>
+                            </field>
+                            <field name="matchType">
+                                <default-field title="匹配规则">
+                                    <display-entity entity-name="moqui.basic.Enumeration" text="${description}"/>
+                                </default-field>
+                            </field>
+                            <field name="matchStatus">
+                                <default-field title="开启标志">
+                                    <drop-down>
+                                        <list-options list="opnFlgList" text="${description}"/>
+                                    </drop-down>
+                                </default-field>
+                            </field>
+                            <!--更新按钮-->
+                            <field name="submitButton">
+                                <default-field title="Update">
+                                    <submit icon="glyphicon glyphicon-edit"/>
+                                </default-field>
+                            </field>
+                        </form-list>
+                    </box-body>
+                </container-box>
+            </row-col>
+            <row-col lg="6">
+                    <container-box>
+                        <box-header>
+                            <label text="代收业务路由开关" type="h5"/>
+                        </box-header>
+                        <box-toolbar>
+                            <!--添加按钮的弹窗页面-->
+                            <container-dialog id="CreateMrchntRouteCoDialog" button-text="添加">
+                                <form-single name="CreateMrchntRouteCo" transition="createMrchntRouteCo">
+                                    <field name="seqId">
+                                        <default-field title="序号">
+                                            <hidden/>
+                                        </default-field>
+                                    </field>
+                                    <field name="mrchntNo">
+                                        <default-field >
+                                            <hidden/>
+                                        </default-field>
+                                    </field>
+                                    <field name="mrchntNm">
+                                        <default-field>
+                                            <hidden/>
+                                        </default-field>
+                                    </field>
+                                    <field name="mrchntSeqId" from="mrchntSeqId">
+                                        <default-field title="关联商户">
+                                            <hidden/>
+                                        </default-field>
+                                    </field>
+                                    <field name="version" from="version">
+                                        <default-field title="协议版本">
+                                            <hidden/>
+                                        </default-field>
+                                    </field>
+                                    <field name="trxCtgy" from="nnn">
+                                        <default-field title="交易类型">
+                                            <display-entity entity-name="moqui.basic.Enumeration" text="${description}"/>
+                                        </default-field>
+                                    </field>
+                                    <field name="matchType">
+                                        <default-field title="匹配规则">
+                                            <drop-down allow-empty="true">
+                                                <list-options list="matchTypeList" text="${description}"/>
+                                            </drop-down>
+                                        </default-field>
+                                    </field>
+                                    <field name="matchStatus">
+                                        <default-field title="开启标志">
+                                            <drop-down allow-empty="true">
+                                                <list-options list="opnFlgList" text="${description}"/>
+                                            </drop-down>
+                                        </default-field>
+                                    </field>
+                                    <!--添加按钮-->
+                                    <field name="submitButton">
+                                        <default-field title="Add"><submit icon="glyphicon glyphicon-plus"/></default-field>
+                                    </field>
+                                    <field-layout>
+                                        <field-row><field-ref name="mrchntSeqId"/></field-row>
+                                        <field-row><field-ref name="version"/></field-row>
+                                        <field-row><field-ref name="trxCtgy"/></field-row>
+                                        <field-row><field-ref name="matchType"/></field-row>
+                                        <field-row><field-ref name="matchStatus"/></field-row>
+                                        <field-row><field-ref name="submitButton"/></field-row>
+                                    </field-layout>
+                                </form-single>
+                            </container-dialog>
+                        </box-toolbar>
+                        <box-body>
+                            <form-list name="MrchntRouteCo" list="mrchntRouteCoList" transition="updateMrchntRouteCo">
+                                <!--<auto-fields-entity entity-name="nacs.mrchnt.MrchntRoute">
+                                    <exclude field-name="remarks1"/>
+                                    <exclude field-name="remarks2"/>
+                                    <exclude field-name="remarks3"/>
+                                </auto-fields-entity>-->
+                                <field name="seqId">
+                                    <default-field title="序号">
+                                        <hidden/>
+                                    </default-field>
+                                </field>
+                                <field name="mrchntNo">
+                                    <default-field >
+                                        <hidden/>
+                                    </default-field>
+                                </field>
+                                <field name="mrchntNm">
+                                    <default-field>
+                                        <hidden/>
+                                    </default-field>
+                                </field>
+                                <field name="mrchntSeqId">
+                                    <default-field title="关联商户">
+                                        <hidden/>
+                                    </default-field>
+                                </field>
+                                <field name="version">
+                                    <default-field title="协议版本">
+                                        <hidden/>
+                                    </default-field>
+                                </field>
+                                <field name="trxCtgy">
+                                    <default-field title="交易类型">
+                                        <display-entity entity-name="moqui.basic.Enumeration" text="${description}"/>
+                                    </default-field>
+                                </field>
+                                <field name="matchType">
+                                    <default-field title="匹配规则">
+                                        <display-entity entity-name="moqui.basic.Enumeration" text="${description}"/>
+                                    </default-field>
+                                </field>
+                                <field name="matchStatus">
+                                    <default-field title="开启标志">
+                                        <drop-down>
+                                            <list-options list="opnFlgList" text="${description}"/>
+                                        </drop-down>
+                                    </default-field>
+                                </field>
+                                <!--更新按钮-->
+                                <field name="submitButton">
+                                    <default-field title="Update">
+                                        <submit icon="glyphicon glyphicon-edit"/>
+                                    </default-field>
+                                </field>
+                            </form-list>
+                        </box-body>
+                    </container-box>
+                </row-col>
+        </container-row>
+        <container-row>
+            <row-col lg="6">
+                <container-box>
+                    <box-header>
+                        <label text="黑名单" type="h5"/>
+                    </box-header>
+                    <box-toolbar>
+                        <!--添加按钮的弹窗页面-->
+                        <container-dialog id="CreateBlacklistTabDialog" button-text="添加">
+                            <form-single name="CreateBlacklistTab" transition="createBlacklistTab">
+                                <field name="seqId">
+                                    <default-field title="序号">
+                                        <hidden/>
+                                    </default-field>
+                                </field>
+                                <field name="mrchntSeqId" from="mrchntSeqId">
+                                    <default-field title="关联商户">
+                                        <hidden/>
+                                    </default-field>
+                                </field>
+                                <field name="channelSeqId">
+                                    <default-field title="关联支付通道">
+                                        <hidden/>
+                                    </default-field>
+                                </field>
+                                <field name="mrchntNo" from="mrchntNo">
+                                    <default-field title="商户编号">
+                                        <hidden/>
+                                    </default-field>
+                                </field>
+                                <field name="mrchntNm" from="mrchntNm">
+                                    <default-field title="商户名称">
+                                        <hidden/>
+                                    </default-field>
+                                </field>
+                                <field name="version" from="version">
+                                    <default-field title="协议版本">
+                                        <hidden/>
+                                    </default-field>
+                                </field>
+                                <field name="bankAcctId">
+                                    <default-field title="账号">
+                                        <text-line size="20"/>
+                                    </default-field>
+                                </field>
+                                <field name="trxCtgy">
+                                    <default-field title="交易类型">
+                                        <drop-down allow-empty="true">
+                                            <list-options list="trxCtgyList" text="${description}"/>
+                                        </drop-down>
+                                    </default-field>
+                                </field>
+                                <field name="channelSeqId">
+                                    <default-field title="支付通道">
+                                        <drop-down allow-empty="true">
+                                            <list-options list="channelSeqViewList" key="${channelNo}" text="${channelNm}"/>
+                                        </drop-down>
+                                    </default-field>
+                                </field>
+                                <field name="takeEffectFlg">
+                                    <default-field title="生效标志">
+                                        <drop-down allow-empty="true">
+                                            <list-options list="takeEffectFlgList" text="${description}"/>
+                                        </drop-down>
+                                    </default-field>
+                                </field>
+                                <!--添加按钮-->
+                                <field name="submitButton">
+                                    <default-field title="Add"><submit icon="glyphicon glyphicon-plus"/></default-field>
+                                </field>
+                                <field-layout>
+                                    <field-row><field-ref name="bankAcctId"/></field-row>
+                                    <field-row><field-ref name="trxCtgy"/></field-row>
+                                    <field-row><field-ref name="channelSeqId"/></field-row>
+                                    <field-row><field-ref name="takeEffectFlg"/></field-row>
+                                    <field-row><field-ref name="submitButton"/></field-row>
+                                </field-layout>
+                            </form-single>
+                        </container-dialog>
+                    </box-toolbar>
+                    <box-body>
+                        <form-list name="ListBlacklistTab" list="blacklistTabList" transition="updateBlacklistTab">
+                            <field name="seqId">
+                                <default-field title="序号">
+                                    <hidden/>
+                                </default-field>
+                            </field>
+                            <field name="mrchntSeqId" from="mrchntSeqId">
+                                <default-field title="关联商户">
+                                    <hidden/>
+                                </default-field>
+                            </field>
+                            <field name="mrchntNo" from="mrchntNo">
+                                <default-field title="商户编号">
+                                    <hidden/>
+                                </default-field>
+                            </field>
+                            <field name="mrchntNm" from="mrchntNm">
+                                <default-field title="商户名称">
+                                    <hidden/>
+                                </default-field>
+                            </field>
+                            <field name="version" from="version">
+                                <default-field title="协议版本">
+                                    <hidden/>
+                                </default-field>
+                            </field>
+                            <field name="bankAcctId">
+                                <default-field title="账号">
+                                    <display/>
+                                </default-field>
+                            </field>
+                            <field name="trxCtgy">
+                                <default-field title="交易类型">
+                                    <display-entity entity-name="moqui.basic.Enumeration" text="${description}"/>
+                                </default-field>
+                            </field>
+                            <field name="channelSeqId">
+                                <default-field title="支付通道">
+                                    <display-entity entity-name="nacs.channel.ChannelView" key-field-name="channelNo" text="${channelNm}"/>
+                                </default-field>
+                            </field>
+                            <field name="takeEffectFlg">
+                                <default-field title="生效标志">
+                                    <drop-down>
+                                        <list-options list="takeEffectFlgList" text="${description}"/>
+                                    </drop-down>
+                                </default-field>
+                            </field>
+                            <!--更新按钮-->
+                            <field name="submitButton">
+                                <default-field title="Update">
+                                    <submit icon="glyphicon glyphicon-edit"/>
+                                </default-field>
+                            </field>
+                        </form-list>
+                    </box-body>
+                </container-box>
+            </row-col>
+            <row-col lg="6">
+                <container-box>
+                    <box-header>
+                        <label text="白名单" type="h5"/>
+                    </box-header>
+                    <box-toolbar>
+                        <!--添加按钮的弹窗页面-->
+                        <container-dialog id="CreateWhitelistTabDialog" button-text="添加">
+                            <form-single name="CreateWhitelistTab" transition="createWhitelistTab">
+                                <field name="seqId">
+                                    <default-field title="序号">
+                                        <hidden/>
+                                    </default-field>
+                                </field>
+                                <field name="mrchntSeqId" from="mrchntSeqId">
+                                    <default-field title="关联商户">
+                                        <hidden/>
+                                    </default-field>
+                                </field>
+                                <field name="channelSeqId">
+                                    <default-field title="关联支付通道">
+                                        <hidden/>
+                                    </default-field>
+                                </field>
+                                <field name="mrchntNo" from="mrchntNo">
+                                    <default-field title="商户编号">
+                                        <hidden/>
+                                    </default-field>
+                                </field>
+                                <field name="mrchntNm" from="mrchntNm">
+                                    <default-field title="商户名称">
+                                        <hidden/>
+                                    </default-field>
+                                </field>
+                                <field name="version" from="version">
+                                    <default-field title="协议版本">
+                                        <hidden/>
+                                    </default-field>
+                                </field>
+                                <field name="bankAcctId">
+                                    <default-field title="账号">
+                                        <text-line size="20"/>
+                                    </default-field>
+                                </field>
+                                <field name="trxCtgy">
+                                    <default-field title="交易类型">
+                                        <drop-down allow-empty="true">
+                                            <list-options list="trxCtgyList" text="${description}"/>
+                                        </drop-down>
+                                    </default-field>
+                                </field>
+                                <field name="channelSeqId">
+                                    <default-field title="支付通道">
+                                        <drop-down allow-empty="true">
+                                            <list-options list="channelSeqViewList" key="${channelNo}" text="${channelNm}"/>
+                                        </drop-down>
+                                    </default-field>
+                                </field>
+                                <field name="takeEffectFlg">
+                                    <default-field title="生效标志">
+                                        <drop-down allow-empty="true">
+                                            <list-options list="takeEffectFlgList" text="${description}"/>
+                                        </drop-down>
+                                    </default-field>
+                                </field>
+                                <!--添加按钮-->
+                                <field name="submitButton">
+                                    <default-field title="Add"><submit icon="glyphicon glyphicon-plus"/></default-field>
+                                </field>
+                                <field-layout>
+                                    <field-row><field-ref name="bankAcctId"/></field-row>
+                                    <field-row><field-ref name="trxCtgy"/></field-row>
+                                    <field-row><field-ref name="channelSeqId"/></field-row>
+                                    <field-row><field-ref name="takeEffectFlg"/></field-row>
+                                    <field-row><field-ref name="submitButton"/></field-row>
+                                </field-layout>
+                            </form-single>
+                        </container-dialog>
+                    </box-toolbar>
+                    <box-body>
+                        <form-list name="ListWhitelistTab" list="whitelistTabList" transition="updateWhitelistTab">
+                            <field name="seqId">
+                                <default-field title="序号">
+                                    <hidden/>
+                                </default-field>
+                            </field>
+                            <field name="mrchntSeqId" from="mrchntSeqId">
+                                <default-field title="关联商户">
+                                    <hidden/>
+                                </default-field>
+                            </field>
+                            <field name="mrchntNo" from="mrchntNo">
+                                <default-field title="商户编号">
+                                    <hidden/>
+                                </default-field>
+                            </field>
+                            <field name="mrchntNm" from="mrchntNm">
+                                <default-field title="商户名称">
+                                    <hidden/>
+                                </default-field>
+                            </field>
+                            <field name="version" from="version">
+                                <default-field title="协议版本">
+                                    <hidden/>
+                                </default-field>
+                            </field>
+                            <field name="bankAcctId">
+                                <default-field title="账号">
+                                    <display/>
+                                </default-field>
+                            </field>
+                            <field name="trxCtgy">
+                                <default-field title="交易类型">
+                                    <display-entity entity-name="moqui.basic.Enumeration" text="${description}"/>
+                                </default-field>
+                            </field>
+                            <field name="channelSeqId">
+                                <default-field title="支付通道">
+                                    <display-entity entity-name="nacs.channel.ChannelView" key-field-name="channelNo" text="${channelNm}"/>
+                                </default-field>
+                            </field>
+                            <field name="takeEffectFlg">
+                                <default-field title="生效标志">
+                                    <drop-down>
+                                        <list-options list="takeEffectFlgList" text="${description}"/>
+                                    </drop-down>
+                                </default-field>
+                            </field>
+                            <!--更新按钮-->
+                            <field name="submitButton">
+                                <default-field title="Update">
+                                    <submit icon="glyphicon glyphicon-edit"/>
+                                </default-field>
+                            </field>
+                        </form-list>
+                    </box-body>
+                </container-box>
+            </row-col>
+        </container-row>
+        <container-row>
+            <row-col>
+                <container-box>
+                    <box-header>
+                        <label text="知识库设置" type="h5"/>
+                    </box-header>
+                    <box-body>
+                        <form-list name="ListKnowledgeBaseSet" list="knowledgeBaseSetList" transition="updateKnowledgeBaseSet">
+                            <field name="nacsTxId">
+                                <default-field title="平台流水号">
+                                    <hidden/>
+                                </default-field>
+                            </field>
+                            <field name="mrchntSeqId" from="mrchntSeqId">
+                                <default-field title="关联商户">
+                                    <hidden/>
+                                </default-field>
+                            </field>
+                            <field name="mrchntNo" from="mrchntNo">
+                                <default-field title="商户编号">
+                                    <hidden/>
+                                </default-field>
+                            </field>
+                            <field name="mrchntNm" from="mrchntNm">
+                                <default-field title="商户名称">
+                                    <hidden/>
+                                </default-field>
+                            </field>
+                            <field name="version" from="version">
+                                <default-field title="协议版本">
+                                    <hidden/>
+                                </default-field>
+                            </field>
+                            <field name="trxCtgy">
+                                <default-field title="交易类型">
+                                    <display-entity entity-name="moqui.basic.Enumeration" text="${description}"/>
+                                </default-field>
+                            </field>
+                            <field name="pyeeAcctId">
+                                <default-field title="收款人账号">
+                                    <display/>
+                                </default-field>
+                            </field>
+                            <field name="pyeeNm">
+                                <default-field title="收款人姓名">
+                                    <display/>
+                                </default-field>
+                            </field>
+                            <field name="pyerAcctId">
+                                <default-field title="付款人账号">
+                                    <display/>
+                                </default-field>
+                            </field>
+                            <field name="pyerNm">
+                                <default-field title="付款人姓名">
+                                    <display/>
+                                </default-field>
+                            </field>
+                            <field name="tranStas">
+                                <default-field title="处理状态">
+                                    <display-entity entity-name="moqui.basic.StatusItem" text="${description}"/>
+                                </default-field>
+                            </field>
+                            <field name="tranDesc">
+                                <default-field title="处理结果信息">
+                                    <display/>
+                                </default-field>
+                            </field>
+                            <field name="takeEffectFlg">
+                                <default-field title="生效标志">
+                                    <drop-down>
+                                        <list-options list="takeEffectFlgList" text="${description}"/>
+                                    </drop-down>
+                                </default-field>
+                            </field>
+                            <!--更新按钮-->
+                            <field name="submitButton">
+                                <default-field title="Update">
+                                    <submit icon="glyphicon glyphicon-edit"/>
+                                </default-field>
+                            </field>
+                        </form-list>
+                    </box-body>
+                </container-box>
+            </row-col>
+        </container-row>
+    </widgets>
+</screen>

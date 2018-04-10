@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<services xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns=""
+          xsi:noNamespaceSchemaLocation="http://moqui.org/xsd/service-definition-2.1.xsd">
+    <!--FTP获取文件服务-->
+    <service verb="get" noun="FtpFile" authenticate="false" type="java" location="com.sunyard.usl.FtpServices" method="getFile">
+        <in-parameters>
+            <parameter name="hostname" required="true" type="String"/>
+            <parameter name="username" required="true" type="String"/>
+            <parameter name="password" required="true" type="String"/>
+            <parameter name="localFilename" required="true" type="String"/>
+            <parameter name="remoteFilename" required="true" type="String"/>
+            <parameter name="binaryTransfer" required="true" type="String"/>
+            <parameter name="passiveMode" required="true" type="String"/>
+        </in-parameters>
+
+    </service>
+    <!--解压文件服务-->
+    <service verb="unzip" noun="File" authenticate="false"
+             type="java" location="com.sunyard.usl.FtpServices" method="getFile">
+        <in-parameters>
+            <parameter name="srcRarPath" required="true" type="String"/>
+        </in-parameters>
+    </service>
+
+
+    <!--将应答数据存储到缓存服务-->
+    <service verb="put" noun="ResultToCache" authenticate="false" type="inline" validate="true">
+        <description>将应答数据存储到缓存,以指定的业务索引作为缓存的键值</description>
+        <in-parameters>
+            <parameter name="cacheName" required="true" type="String" default-value="nacs.async.cache">
+                <description>缓存名字</description>
+            </parameter>
+            <parameter name="trxCtgy" required="true" type="String">
+                <description>交易类别</description>
+            </parameter>
+            <parameter name="mrchntNo" required="true" type="String">
+                <description>商户编号</description>
+            </parameter>
+            <parameter name="workDate" required="true" type="String">
+                <description>工作日期</description>
+            </parameter>
+            <parameter name="nacsTxId" required="true" type="String">
+                <description>流水号</description>
+            </parameter>
+            <parameter name="resultCache"  type="Map" format="true">
+                <description>应答数据缓存,MAP格式</description>
+            </parameter>
+        </in-parameters>
+        <actions>
+            <script>
+                import org.moqui.context.ExecutionContext;
+                import org.moqui.context.LoggerFacade;
+                import org.moqui.util.ContextStack;
+                import javax.cache.Cache;
+                import java.util.Map;
+
+                LoggerFacade logger = ec.getLogger();
+                ContextStack context = ec.getContext();
+                String trxCtgy = (String) context.get("trxCtgy");
+                String mrchntNo = (String) context.get("mrchntNo");
+                String workDate = (String) context.get("workDate");
+                String nacsTxId = (String) context.get("nacsTxId");
+                logger.trace("=============交易类别trxCtgy:"+trxCtgy+"==================");
+                logger.trace("=============商户编号mrchntNo:"+mrchntNo+"==================");
+                logger.trace("=============工作日期workDate:"+workDate+"==================");
+                logger.trace("=============交易流水号nacsTxId:"+nacsTxId+"==================");
+
+                String resultKey = trxCtgy + "_" + mrchntNo + "_" + workDate + "_" + nacsTxId;
+                String cacheName = (String)context.get("cacheName");
+                logger.trace("=============PutResultToCacheService服务的resultKey:"+resultKey+"==================");
+                Map dataMap = (Map) context.get("resultCache");
+
+                //Map dataMap = new HashMap();
+                //dataMap.put("a","a");
+                //dataMap.put("c","c");
+                //dataMap.put("s","s");
+                //dataMap.put("e","e");
+
+                if(dataMap==null){
+                dataMap = FastMap.newInstance();
+                dataMap.putAll(context);
+                }
+                cacheName  =  "mapCacheService"+cacheName==null?"":cacheName;
+                Cache cache = ec.getCache().getCache(cacheName);
+                logger.trace("=============PutResultToCacheService服务将上下文内容放到缓存中,上下文内容为"+dataMap+"==================");
+                cache.put(resultKey, dataMap);
+            </script>
+        </actions>
+    </service>
+
+    <!--从缓存获取应答数据服务-->
+    <service verb="get" noun="ResultFromCache" authenticate="false" type="inline" validate="true">
+        <description>以同步等待方式从缓存中获取指定业务索引的应答数据</description>
+        <in-parameters>
+            <parameter name="cacheName" required="true" type="String" default-value="nacs.async.cache">
+                <description>缓存名字</description>
+            </parameter>
+            <parameter name="trxCtgy" required="true" type="String">
+                <description>交易类别</description>
+            </parameter>
+            <parameter name="mrchntNo" required="true" type="String">
+                <description>商户编号</description>
+            </parameter>
+            <parameter name="workDate" required="true" type="String">
+                <description>工作日期</description>
+            </parameter>
+            <parameter name="nacsTxId" required="true" type="String">
+                <description>流水号</description>
+            </parameter>
+            <parameter name="putResultCache" required="true" type="String" default-value="true">
+                <description>缓存数据是否返回到指定MAP中,默认为true,false-返回到上下文context中</description>
+            </parameter>
+            <parameter name="waitTime" required="true" type="Long" default-value="45000">
+                <description>读取应答缓存时的等待时间,单位毫秒,默认值45秒</description>
+            </parameter>
+            <parameter name="interval" required="true" type="Long" default-value="1000">
+                <description>读取应答缓存时的间隔时间,单位毫秒,默认值1秒</description>
+            </parameter>
+            <parameter name="isDestroy" required="true" type="String" default-value="Y">
+                <description>缓存读取后是否销毁,默认为Y</description>
+            </parameter>
+        </in-parameters>
+        <out-parameters>
+            <parameter name="resultCache"  type="Map" required="false">
+                <description>应答数据缓存,MAP格式</description>
+            </parameter>
+            <parameter name="asyncCommFlag"  type="String" required="true">
+                <description>通信回执标志</description>
+            </parameter>
+        </out-parameters>
+        <actions>
+            <script><![CDATA[
+                import org.moqui.context.ExecutionContext;
+                import org.moqui.context.LoggerFacade;
+                import org.moqui.util.ContextStack;
+                import javax.cache.Cache;
+                import java.util.Map;
+
+                LoggerFacade logger = ec.getLogger();
+                ContextStack context = ec.getContext();
+
+
+                String trxCtgy = (String) context.get("trxCtgy");
+                String mrchntNo = (String) context.get("mrchntNo");
+                String workDate = (String) context.get("workDate");
+                String nacsTxId = (String) context.get("nacsTxId");
+                logger.trace("=============交易类别trxCtgy:"+trxCtgy+"==================");
+                logger.trace("=============商户编号mrchntNo:"+mrchntNo+"==================");
+                logger.trace("=============工作日期workDate:"+workDate+"==================");
+                logger.trace("=============交易流水号nacsTxId:"+nacsTxId+"==================");
+                long waitTime = (Long) context.get("waitTime"); //总的等待时间
+                long interval = (Long) context.get("interval"); //遍历一次的时间间隔
+                boolean isDestroy =  !"N".equals(context.get("isDestroy"));
+                String resultKey = trxCtgy + "_" + mrchntNo + "_" + workDate + "_" + nacsTxId;
+                String cacheName = (String)context.get("cacheName");
+                cacheName  =  "mapCacheService"+cacheName==null?"":cacheName;
+                logger.trace("GetResultFromCacheService服务的resultKey:"+resultKey);
+
+                boolean putResultCache =  !"false".equals(context.get("putResultCache"));
+
+                long poolTime = waitTime/interval;
+                for(int i = 0 ;i < poolTime ; i++){
+                    logger.trace("=============GetResultFromCacheService服务第"+(i+1)+"次从缓存中获取上下文."+"==================");
+                    Cache cache = ec.getCache().getCache(cacheName);
+                    if(cache!=null){
+                        if(cache.get(resultKey)!=null){
+                            if(putResultCache){
+                                ec.getContext().put("resultCache", cache.get(resultKey));
+                                logger.trace("=============GetResultFromCacheService服务从缓存中获取应答数据,应答数据为:"+cache.get(resultKey)+"==================");
+                            }else{
+                                Map cacheMap = (Map)cache.get(resultKey);
+                                ec.getContext().put("resultCache", cacheMap);
+                                logger.trace("=============GetResultFromCacheService服务从缓存中获取应答数据,应答数据为:"+cacheMap+"==================");
+                            }
+
+                            if(isDestroy)cache.remove(resultKey);
+                            ec.getContext().put("asyncCommFlag", "true");
+
+                            return ;
+                        }
+
+                    }
+                    try {
+                        Thread.currentThread().sleep(interval);
+                    } catch (InterruptedException e) {
+                         e.printStackTrace();
+                         logger.error("=============GetResultFromCacheService服务处理失败."+"==================");
+                    }
+                }
+                logger.warn("=============GetResultFromCacheService服务从缓存中获取应答数据失败."+"==================");
+                ec.getContext().put("asyncCommFlag", "false");
+                ]]></script>
+        </actions>
+    </service>
+</services>

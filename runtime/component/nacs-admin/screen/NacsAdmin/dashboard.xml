@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<screen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="http://moqui.org/xsd/xml-screen-2.1.xsd"
+        default-menu-title="首页" default-menu-index="1" menu-image="glyphicon glyphicon-dashboard" menu-image-type="icon">
+    <!--基本参数-->
+
+
+    <widgets>
+        <container-row><row-col md="6">
+            <section-include name="ChannelChart501" location="component://nacs-admin/screen/NacsAdmin/Charts.xml"/>
+        </row-col><row-col md="6">
+            <section-include name="ChannelChart401" location="component://nacs-admin/screen/NacsAdmin/Charts.xml"/>
+        </row-col></container-row>
+
+        <container-row><row-col md="6">
+            <section-include name="MrchntChart501" location="component://nacs-admin/screen/NacsAdmin/Charts.xml"/>
+        </row-col><row-col md="6">
+            <section-include name="MrchntChart401" location="component://nacs-admin/screen/NacsAdmin/Charts.xml"/>
+        </row-col></container-row>
+    </widgets>
+</screen>

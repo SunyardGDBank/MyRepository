@@ -1,0 +1,61 @@
+html body #apps-root #left {
+    display: none;
+    float: left;
+    min-height: calc(100% - 52px);
+    width: 14%;
+    background-color: #0c1b29;
+}
+html body #apps-root #left .dropdown-menu {
+    position: static;
+    float: none;
+}
+html body #apps-root #left > .sunyard-nav-box > ul {
+    display: block;
+    padding-left: 0;
+}
+html body #apps-root #left > .sunyard-nav-box > ul > li {
+    float: none;
+}
+html body #apps-root #left > .sunyard-nav-box > ul > li > a {
+    color: #aaa;
+    font-weight: bold;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    -webkit-transition: background .3s ease;
+    -moz-transition: background .3s ease;
+    transition: background .3s ease;
+    text-shadow: 0 -1px rgba(0, 0, 0, 0.5);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    display: block;
+    padding: .6em 2em;
+    width: 100%;
+    text-decoration: none;
+}
+html body #apps-root #left > .sunyard-nav-box > ul > li > ul {
+    margin: 0;
+    padding: 0;
+    border: 0;
+}
+html body #apps-root #left > .sunyard-nav-box > ul > li > ul > li > a {
+    color: #fff;
+    text-indent: 1em;
+    background-color: #204364;
+}
+html body #apps-root #left > .sunyard-nav-box > ul > li > ul > li > a:hover {
+    color: #fff;
+    background-color: #1d558b;
+}
+html body #apps-root #left > .sunyard-nav-box > ul > li > ul > li > a.active {
+    color: #fff;
+    background-color: #1d558b;
+}
+html body #apps-root #left > .sunyard-nav-box > ul > li > ul > .active > a {
+    color: #fff;
+    background-color: #1d558b;
+}
+.left-open#content{
+    float: left;
+    width: 86%;
+}

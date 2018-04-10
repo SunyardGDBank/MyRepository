@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+This software is in the public domain under CC0 1.0 Universal plus a
+Grant of Patent License.
+
+To the extent possible under law, the author(s) have dedicated all
+copyright and related and neighboring rights to this software to the
+public domain worldwide. This software is distributed without any
+warranty.
+
+You should have received a copy of the CC0 Public Domain Dedication
+along with this software (see the LICENSE.md file). If not, see
+<http://creativecommons.org/publicdomain/zero/1.0/>.
+-->
+<screen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="http://moqui.org/xsd/xml-screen-2.1.xsd"
+        default-menu-title="审计明细" default-menu-include="false">
+
+    <actions>
+        <entity-find entity-name="moqui.entity.EntityAuditLog" list="moreList">
+            <econdition field-name="changedByUserId" from="changedByUserId"/>
+            <econdition field-name="url" from="url"/>
+            <econdition field-name="changedDate" from="new Timestamp(Long.parseLong(changedDate))"/>
+        </entity-find>
+        <service-call name="nacs.admin.NacsAdminService.get#AuditList2" in-map="[moreList:moreList]" out-map="context"/>
+
+    </actions>
+    <widgets>
+        <form-list name="MoreList" list="moreList">
+            <!--<field name="changedEntityName">
+                <default-field title="实体"><display also-hidden="false"/></default-field>
+            </field>-->
+            <field name="entityName">
+                <default-field title="实体"><display also-hidden="false"/></default-field>
+            </field>
+            <field name="pkPrimaryValue">
+                <default-field title="主键"><display also-hidden="false"/></default-field>
+            </field>
+           <!-- <field name="changedFieldName">
+                <default-field title="字段"><display also-hidden="false"/></default-field>
+            </field>-->
+            <field name="fieldName">
+                <default-field title="字段"><display also-hidden="false"/></default-field>
+            </field>
+            <field name="mm" from="oldValueText">
+                <conditional-field condition="isEnum==false" title="修改前">
+                    <display/>
+                </conditional-field>
+                <conditional-field condition="isEnum==true" title="修改前">
+                    <display-entity entity-name="moqui.basic.Enumeration" key-field-name="enumId" text="${description}"/>
+                </conditional-field>
+            </field>
+            <field name="mm1" from="newValueText">
+                <conditional-field condition="isEnum==false" title="修改后">
+                    <display/>
+                </conditional-field>
+                <conditional-field condition="isEnum==true" title="修改后">
+                    <display-entity entity-name="moqui.basic.Enumeration" key-field-name="enumId" text="${description}"/>
+                </conditional-field>
+            </field>
+<!--
+            <field name="isEnum">
+                <default-field>
+                    <display/>
+                </default-field>
+            </field>-->
+
+        </form-list>
+
+    </widgets>
+
+</screen>

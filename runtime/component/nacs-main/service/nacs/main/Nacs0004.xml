@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+This software is in the public domain under CC0 1.0 Universal plus a
+Grant of Patent License.
+
+To the extent possible under law, the author(s) have dedicated all
+copyright and related and neighboring rights to this software to the
+public domain worldwide. This software is distributed without any
+warranty.
+
+You should have received a copy of the CC0 Public Domain Dedication
+along with this software (see the LICENSE.md file). If not, see
+<http://creativecommons.org/publicdomain/zero/1.0/>.
+-->
+<services xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns=""
+          xsi:noNamespaceSchemaLocation="http://moqui.org/xsd/service-definition-2.1.xsd">
+
+    <service verb="nacs" noun="P0004" type="inline" validate="false" authenticate="false">
+        <in-parameters>
+            <parameter name="payeeAcctno"/>
+            <parameter name="payeeAcctName"/>
+            <parameter name="payerAcctno"/>
+            <parameter name="payerAcctName"/>
+            <parameter name="accountType"/>
+            <parameter name="currencyCode"/>
+            <parameter name="trxAmt"/>
+            <parameter name="useRemark"/>
+            <parameter name="remark1"/>
+            <parameter name="remark2"/>
+            <parameter name="remark3"/>
+            <parameter name="buiTxId"/>
+            <parameter name="companyNo"/>
+            <parameter name="subMrchntNo"/>
+            <parameter name="trxCtgy"/>
+            <parameter name="reqDate"/>
+            <parameter name="reqTime"/>
+            <parameter name="version"/>
+        </in-parameters>
+        <out-parameters>
+            <parameter name="payeeAcctno"/>
+            <parameter name="payeeAcctName"/>
+            <parameter name="payerAcctno"/>
+            <parameter name="payerAcctName"/>
+            <parameter name="currencyCode"/>
+            <parameter name="trxAmt"/>
+            <parameter name="useRemark"/>
+            <parameter name="buiTxId"/>
+            <parameter name="nacsTxId"/>
+            <parameter name="companyNo"/>
+            <parameter name="subMrchntNo"/>
+            <parameter name="reqDate"/>
+            <parameter name="reqTime"/>
+            <parameter name="version"/>
+            <parameter name="txStatuId"/>
+            <parameter name="txStatuDsc"/>
+        </out-parameters>
+        <actions>
+            <script><![CDATA[
+               String workTime = new Date().format('yyyy-MM-dd HH:mm:ss');
+               String workDate = new Date().format('yyyy-MM-dd');
+               Double trxAmt = 1.0;
+               ]]></script>
+            <log level="info" message="工作日期：${workDate}"/>
+            <log level="info" message="工作时间：${workTime}"/>
+
+
+            <!--是否重复验证   根据商户唯一流水号+日期+商户号查找-->
+            <log level="info" message="检查商户当天交易是否重复"/>
+            <entity-find entity-name="nacs.trx.TxItem" list="nacsAuth">
+                <econdition field-name="buiTxId" from="buiTxId"/>
+                <econdition field-name="companyNo" from="companyNo"/>
+                <econdition field-name="reqDate" from="reqDate"/>
+            </entity-find>
+            <if condition="!nacsAuth"><then> <!--没有重复记录，登记主交易流水表-->
+                <transaction>
+                    <log level="info" message="不存在重复记录"/>
+                    <entity-make-value entity-name="nacs.trx.TxItem" value-field="nacsAuth" map="context"/>
+                    <entity-sequenced-id-primary-dynamic value-field="nacsAuth"/>
+                    <log level="info" message="工作日期1：${workDate}"/>
+                    <entity-set value-field="nacsAuth" map="[workDate:workDate,buiTxId:'000401',trxCtgy:'000401',buiStatus:'buiStatus',payStatus:'payStatus',trxAmt:12]"/>
+                    <entity-create value-field="nacsAuth"/>
+                </transaction>
+            </then><else>
+                <log level="trace" message="存在重复交易信息"/>
+                <set field="retCode" value="0100118"/>
+                <set field="retMsg" value="交易流水重复"/>
+                <return error="false"/>
+            </else></if>
+
+            <!--调用路由服务(暂不用)-->
+            <!--<service-call name="nacs.route.admin.NacsRouteService.bound#Bound"
+                          in-map="context" out-map="context"/>-->
+            <!--<if condition="!nacsBound"><then> &lt;!&ndash;没有指定路由&ndash;&gt;
+                <log level="info" message="没有匹配路由"/>
+                <set field="retCode" value="0100119"/>
+                <set field="retMsg" value="没有匹配路由"/>
+                <return error="false"/>
+            </then></if>-->
+
+            <!--调用核心记账服务-->
+            <!--<service-call name="nacs.be.NacsToBeService.send#Be"
+                          in-map="context" out-map="context"/>-->
+
+
+            <!--<if condition="!nacsAccount"><then> &lt;!&ndash;记账失败&ndash;&gt;
+                <log level="info" message="核心记账失败"/>
+                <set field="retCode" value="0100120"/>
+                <set field="retMsg" value="核心记账失败"/>
+
+                <return error="false"/>
+            </then></if>-->
+
+            <!--调用支付渠道代付服务-->
+            <!--<service-call name="nacs.channel.${channelName}.NacsToChannelService.send#Channel"
+                          in-map="context" out-map="context"/>-->
+            <log level="trace" message="交易上下文：${context}"/>
+            <log level="trace" message="主交易流水：${nacsTxId}"/>
+            <log level="trace" message="主交易流水：${workDate}"/>
+            <log level="trace" message="主交易流水：${workTime}"/>
+            <service-call name="nacs.channel.unionpayimpl.NacsToChannelService.send#Channel"
+                          in-map="[workDate:workDate,buiTxId:'000401',trxCtgy:'000401',buiStatus:'buiStatus',payStatus:'payStatus',trxAmt:12,nacsTxId:'2018030510000051']" out-map="context"/>
+
+            <!--<if condition="!nacsPayChannel"><then> &lt;!&ndash;支付渠道返回失败&ndash;&gt;
+                <log level="info" message="支付渠道返回失败"/>
+                <set field="retCode" value="0100120"/>
+                <set field="retMsg" value="核心记账失败"/>
+                <return error="false"/>
+            </then></if>-->
+        </actions>
+    </service>
+</services>

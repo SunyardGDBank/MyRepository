@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+This software is in the public domain under CC0 1.0 Universal plus a 
+Grant of Patent License.
+
+To the extent possible under law, the author(s) have dedicated all
+copyright and related and neighboring rights to this software to the
+public domain worldwide. This software is distributed without any
+warranty.
+
+You should have received a copy of the CC0 Public Domain Dedication
+along with this software (see the LICENSE.md file). If not, see
+<http://creativecommons.org/publicdomain/zero/1.0/>.
+-->
+<entities xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:noNamespaceSchemaLocation="http://moqui.org/xsd/entity-definition-2.1.xsd">
+
+    <!-- ========================================================= -->
+    <!--支付通道相关表单-->
+    <!--nacs.channel.Channel 支付通道信息表-->
+    <!--nacs.channel.ChannelQuota 支付通道限额表-->
+    <!--nacs.channel.ChannelFee 支付通道手续费-->
+    <!--nacs.channel.ChannelBusiness 支付通道业务品种-->
+    <!-- ========================================================= -->
+
+
+    <!--nacs.channel.Channel 支付通道信息表-->
+    <entity entity-name="Channel" package="nacs.channel" authorize-skip="true" cache="true">
+        <description>支付通道信息表</description>
+        <field name="seqId" type="id" not-null="true" is-pk="true">
+            <description>序号（主键）</description>
+        </field>
+        <field name="channelNo" type="id"  not-null="true">
+            <description>通道编号（20001-银联渠道 20002-翼支付通道 20003-银联商务渠道）</description>
+        </field>
+        <field name="channelNm" type="id-long" not-null="true" enable-audit-log="true">
+            <description>通道名称（20001-银联渠道 20002-翼支付通道 20003-银联商务渠道）</description>
+        </field>
+        <field name="channelStatus" type="id" not-null="true" enable-audit-log="true">
+            <description>渠道状态(ENABLED-开启,DISABLED-关闭)</description>
+        </field>
+        <field name="channelBegin" type="id" not-null="true" enable-audit-log="true">
+            <description>渠道运行开启时间</description>
+        </field>
+        <field name="channelEnd" type="id" not-null="true" enable-audit-log="true">
+            <description>渠道运行关闭时间</description>
+        </field>
+        <field name="signCheckFlag" type="id" not-null="true" enable-audit-log="true">
+            <description>签约验证标志(VERIFIED-验证,NON-VERIFIED-不验证)</description>
+        </field>
+        <field name="remarks1" type="id-long">
+            <description>备注1</description>
+        </field>
+        <field name="remarks2" type="id-long">
+            <description>备注2</description>
+        </field>
+        <field name="remarks3" type="id-long">
+            <description>备注3</description>
+        </field>
+        <field name="remarks4" type="id-long">
+            <description>备注4</description>
+        </field>
+        <field name="remarks5" type="id-long">
+            <description>备注5</description>
+        </field>
+        <relationship type="one-nofk" related="moqui.basic.Enumeration" title="OpnFlg">
+            <key-map field-name="channelStatus"/>
+        </relationship>
+        <relationship type="one-nofk" related="moqui.basic.Enumeration" title="VerifiedFlg">
+            <key-map field-name="signCheckFlag"/>
+        </relationship>
+        <index name="NACS_CHANNEL_SEQ_INDEX1" unique="true">
+            <index-field name="channelNo"/>
+        </index>
+  </entity>
+
+    <!--nacs.channel.ChannelQuota 支付通道限额表-->
+    <entity entity-name="ChannelQuota" package="nacs.channel" authorize-skip="true" cache="true">
+        <description>支付通道限额表</description>
+        <field name="seqId" type="id" not-null="true" is-pk="true">
+            <description>序号（主键）</description>
+        </field>
+        <field name="channelSeqId" type="id" not-null="true">
+            <description>关联支付通道seqId</description>
+        </field>
+        <field name="trxCtgy" type="id" not-null="true" enable-audit-log="true">
+            <description>交易类别(000401-代付,000501-代收)</description>
+        </field>
+        <field name="singletranLimit" type="currency-amount" not-null="true" enable-audit-log="true">
+            <description>单笔交易限额</description>
+        </field>
+        <field name="singlTodayLimit" type="currency-amount" not-null="true" enable-audit-log="true">
+            <description>当日累计最大限额</description>
+        </field>
+        <field name="singlTodaySum" type="number-integer" not-null="true" enable-audit-log="true">
+            <description>当日累计最大笔数</description>
+        </field>
+        <field name="remarks1" type="id-long">
+            <description>备注1</description>
+        </field>
+        <field name="remarks2" type="id-long">
+            <description>备注2</description>
+        </field>
+        <field name="remarks3" type="id-long">
+            <description>备注3</description>
+        </field>
+        <field name="remarks4" type="id-long">
+            <description>备注4</description>
+        </field>
+        <field name="remarks5" type="id-long">
+            <description>备注5</description>
+        </field>
+        <relationship type="one-nofk" related="nacs.channel.Channel" >
+            <key-map field-name="channelSeqId" related="seqId"/>
+        </relationship>
+        <relationship type="one-nofk" related="moqui.basic.Enumeration" title="TrxCtgy">
+            <key-map field-name="trxCtgy"/>
+        </relationship>
+        <index name="NACS_CHANNEL_QUOTA_INDEX1" unique="true">
+            <index-field name="channelSeqId"/>
+            <index-field name="trxCtgy"/>
+        </index>
+    </entity>
+
+    <!--nacs.channel.ChannelFee 支付通道手续费-->
+    <entity entity-name="ChannelFee" package="nacs.channel" authorize-skip="true" cache="true">
+        <description>支付通道手续费表</description>
+        <field name="seqId" type="id" not-null="true" is-pk="true">
+            <description>序号（主键）</description>
+        </field>
+        <field name="channelSeqId" type="id" not-null="true">
+            <description>关联支付通道seqId</description>
+        </field>
+        <field name="trxCtgy" type="id" not-null="true" enable-audit-log="true">
+            <description>交易类别(000401-代付,000501-代收)</description>
+        </field>
+        <field name="feeType" type="id" not-null="true" enable-audit-log="true">
+            <description>收取方式(FEE_TYPE1-按金额收取,FEE_TYPE2-按百分比收取,FEE_TYPE3-按单笔收取)</description>
+        </field>
+        <field name="beginAmt" type="currency-amount" enable-audit-log="true">
+            <description>金额上限</description>
+        </field>
+        <field name="endAmt" type="currency-amount" enable-audit-log="true">
+            <description>金额下线</description>
+        </field>
+        <field name="percentage" type="number-integer" enable-audit-log="true">
+            <description>百分比</description>
+        </field>
+        <field name="amt" type="currency-amount" enable-audit-log="true">
+            <description>收取金额</description>
+        </field>
+        <field name="remarks1" type="id-long">
+            <description>备注1</description>
+        </field>
+        <field name="remarks2" type="id-long">
+            <description>备注2</description>
+        </field>
+        <field name="remarks3" type="id-long">
+            <description>备注3</description>
+        </field>
+        <field name="remarks4" type="id-long">
+            <description>备注4</description>
+        </field>
+        <field name="remarks5" type="id-long">
+            <description>备注5</description>
+        </field>
+        <relationship type="one-nofk" related="nacs.channel.Channel" >
+            <key-map field-name="channelSeqId" related="seqId"/>
+        </relationship>
+        <relationship type="one-nofk" related="moqui.basic.Enumeration" title="TrxCtgy">
+            <key-map field-name="trxCtgy"/>
+        </relationship>
+        <relationship type="one-nofk" related="moqui.basic.Enumeration" title="FeeType">
+            <key-map field-name="feeType"/>
+        </relationship>
+        <index name="NACS_CHANNEL_FEE_INDEX1" unique="true">
+            <index-field name="channelSeqId"/>
+            <index-field name="trxCtgy"/>
+        </index>
+    </entity>
+
+
+    <!--nacs.channel.ChannelBussType 支付通道业务品种-->
+    <entity entity-name="ChannelBusiness" package="nacs.channel" authorize-skip="true" cache="true">
+        <description>支付通道业务品种</description>
+        <field name="seqId" type="id" not-null="true" is-pk="true">
+            <description>序号（主键）</description>
+        </field>
+        <field name="channelSeqId" type="id" not-null="true">
+            <description>关联支付通道seqId</description>
+        </field>
+        <field name="trxCtgy" type="id" not-null="true" enable-audit-log="true">
+            <description>交易类别(000401-代付,000501-代收)</description>
+        </field>
+        <field name="bizTp" type="id"  not-null="true" enable-audit-log="true">
+            <description>业务种类(11代付业务,12代付状态查询,21代收业务,22代收状态查询,23代收签约)</description>
+        </field>
+        <field name="supportFlg" type="id" not-null="true" enable-audit-log="true">
+            <description>支持标志(SUPPORT-支持,NO_SUPPORT-不支持)</description>
+        </field>
+        <field name="remarks1" type="id-long">
+            <description>备注1</description>
+        </field>
+        <field name="remarks2" type="id-long">
+            <description>备注2</description>
+        </field>
+        <field name="remarks3" type="id-long">
+            <description>备注3</description>
+        </field>
+        <field name="remarks4" type="id-long">
+            <description>备注4</description>
+        </field>
+        <field name="remarks5" type="id-long">
+            <description>备注5</description>
+        </field>
+        <relationship type="one-nofk" related="nacs.channel.Channel" >
+            <key-map field-name="channelSeqId" related="seqId"/>
+        </relationship>
+        <relationship type="one-nofk" related="moqui.basic.Enumeration" title="SupportFlg">
+            <key-map field-name="supportFlg"/>
+        </relationship>
+        <relationship type="one-nofk" related="moqui.basic.Enumeration" title="TrxCtgy">
+            <key-map field-name="trxCtgy"/>
+        </relationship>
+        <relationship type="one-nofk" related="moqui.basic.Enumeration" title="BizTp1">
+            <key-map field-name="bizTp"/>
+        </relationship>
+        <index name="NACS_CHANNEL_BUSINESS_INDEX1" unique="true">
+            <index-field name="channelSeqId"/>
+            <index-field name="trxCtgy"/>
+            <index-field name="bizTp"/>
+        </index>
+    </entity>
+
+
+
+</entities>

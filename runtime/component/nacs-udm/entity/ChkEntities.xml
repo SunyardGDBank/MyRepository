@@ -1,0 +1,309 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+This software is in the public domain under CC0 1.0 Universal plus a 
+Grant of Patent License.
+
+To the extent possible under law, the author(s) have dedicated all
+copyright and related and neighboring rights to this software to the
+public domain worldwide. This software is distributed without any
+warranty.
+
+You should have received a copy of the CC0 Public Domain Dedication
+along with this software (see the LICENSE.md file). If not, see
+<http://creativecommons.org/publicdomain/zero/1.0/>.
+-->
+<entities xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:noNamespaceSchemaLocation="http://moqui.org/xsd/entity-definition-2.1.xsd">
+
+
+    <!-- ========================================================= -->
+    <!--对账相关表单-->
+    <!--nacs.chk.CheckChannel  支付通道对账信息表  -->
+    <!--nacs.chk.CheckChannelError  支付通道错账信息表  -->
+    <!--nacs.chk.CheckClient  业务渠道对账信息表  -->
+    <!--nacs.chk.CheckClientError  业务渠道错账信息表  -->
+    <!-- ========================================================= -->
+
+    <!--nacs.chk.CheckChannel  支付通道对账信息表  -->
+    <entity entity-name="CheckChannel" package="nacs.chk" authorize-skip="true" cache="false" sequence-primary-prefix="${new Date().format('yyyyMMdd)" sequence-primary-name="CheckChannel${new Date().format('yyyyMMdd)">
+        <description>支付通道对账信息表</description>
+        <field name="seqId" type="id" not-null="true" is-pk="true">
+            <description>序号（主键）</description>
+        </field>
+        <field name="checkDate" type="id" not-null="true">
+            <description>对账日期</description>
+        </field>
+        <field name="channelSeqId" type="id" not-null="true">
+            <description>关联支付通道seqId</description>
+        </field>
+        <field name="checkSt" type="id" not-null="true">
+            <description>对账状态(CHK_RESULT_NONE：未对账 CHK_RESULT_BEING：对账中 CHK_RESULT_BEEN：已对账)</description>
+        </field>
+        <field name="trxCtgy" type="id" not-null="true">
+            <description>交易类别（000501：代收 000401：代付）</description>
+        </field>
+        <field name="totalAmount" type="currency-amount" not-null="true">
+            <description>总金额</description>
+        </field>
+        <field name="totalSum" type="number-integer" not-null="true">
+            <description>总笔数</description>
+        </field>
+        <field name="errorFlg" type="id" not-null="true">
+            <description>错账标识(NO_ERROR-无差错 ERROR-有差错)</description>
+        </field>
+        <field name="checkFiles" type="id-long" not-null="true">
+            <description>对账文件名</description>
+        </field>
+        <field name="remarks1" type="text-medium">
+            <description>备注1</description>
+        </field>
+        <field name="remarks2" type="text-medium">
+            <description>备注2</description>
+        </field>
+        <relationship type="one-nofk" title="CheckSt" related="moqui.basic.StatusItem">
+            <key-map field-name="checkSt"/>
+        </relationship>
+        <relationship type="one-nofk" title="TrxCtgy" related="moqui.basic.Enumeration">
+            <key-map field-name="trxCtgy"/>
+        </relationship>
+        <relationship type="one-nofk" title="ErrorFlg" related="moqui.basic.Enumeration">
+            <key-map field-name="errorFlg"/>
+        </relationship>
+        <index name="NACS_CHK_CHANNEL_INDEX1" unique="true">
+            <index-field name="checkDate"/>
+            <index-field name="channelSeqId"/>
+            <index-field name="trxCtgy"/>
+        </index>
+    </entity>
+
+    <!--nacs.chk.CheckChannelError  支付通道错账信息表  -->
+    <entity entity-name="CheckChannelError" package="nacs.chk" authorize-skip="true" cache="false" sequence-primary-prefix="${new Date().format('yyyyMMdd)" sequence-primary-name="CheckChannelError${new Date().format('yyyyMMdd)">
+        <description>支付通道错账信息表</description>
+        <field name="nacsTxId" type="id" not-null="true" is-pk="true">
+            <description>平台流水号</description>
+        </field>
+        <field name="buiTxId" type="id" not-null="true">
+            <description>业务渠道流水号</description>
+        </field>
+        <field name="payTxId" type="id" not-null="true">
+            <description>支付通道流水号</description>
+        </field>
+        <field name="orderId" type="id">
+            <description>订单号</description>
+        </field>
+        <field name="trxCtgy" type="id">
+            <description>交易类别（000401-代付 000501-代收）</description>
+        </field>
+        <field name="checkSt" type="id">
+            <description>对账状态(CHK_RESULT_NONE：未对账 CHK_RESULT_BEING：对账中 CHK_RESULT_BEEN：已对账)</description>
+        </field>
+        <field name="checkType" type="id">
+            <description>错账类型(PB_UNNECESSARY人行多余 BE_UNNECESSARY核心多余 DSPT_CHECK差错账务)</description>
+        </field>
+        <field name="txStatuId" type="id">
+            <description>跨行清算平台处理状态（TX_STATU_SUCCESS-成功 TX_STATU_UNKNOW-交易未明 TX_STATU_FAIL-失败 TX_STATU_BEEN 已对账 TX_STATU_DONE-已受理）</description>
+        </field>
+        <field name="workDate" type="id">
+            <description>工作日期</description>
+        </field>
+        <field name="mrchntSeqId" type="id" not-null="true">
+            <description>关联商户seqId</description>
+        </field>
+        <field name="channelSeqId" type="id" not-null="true">
+            <description>关联支付通道seqId</description>
+        </field>
+        <field name="reqTime" type="id">
+            <description>请求时间</description>
+        </field>
+        <field name="custCode" type="id">
+            <description>客户编号</description>
+        </field>
+        <field name="extOrderSeq" type="id">
+            <description>外部系统订单号</description>
+        </field>
+        <field name="currencyCode" type="id">
+            <description>币种</description>
+        </field>
+        <field name="trsSummary" type="id-long">
+            <description>交易摘要</description>
+        </field>
+        <field name="trsMemo" type="id-long">
+            <description>交易备注</description>
+        </field>
+        <field name="amount" type="currency-amount">
+            <description>交易金额</description>
+        </field>
+        <field name="payerAccount" type="id-long">
+            <description>付款人账户信息</description>
+        </field>
+        <field name="payeeAccount" type="id-long">
+            <description>收款人企业账户信息</description>
+        </field>
+        <field name="manualflag" type="id">
+            <description>手动修改状态标识</description>
+        </field>
+        <field name="remarks1" type="text-medium">
+            <description>备注1</description>
+        </field>
+        <field name="remarks2" type="text-medium">
+            <description>备注2</description>
+        </field>
+        <field name="remarks3" type="text-medium">
+            <description>备注3</description>
+        </field>
+        <relationship type="one-nofk" title="TrxCtgy" related="moqui.basic.Enumeration">
+            <key-map field-name="trxCtgy"/>
+        </relationship>
+        <relationship type="one-nofk" title="CheckSt" related="moqui.basic.StatusItem">
+            <key-map field-name="checkSt"/>
+        </relationship>
+        <relationship type="one-nofk" title="CheckType" related="moqui.basic.Enumeration">
+            <key-map field-name="checkType"/>
+        </relationship>
+        <relationship type="one-nofk" title="TxStatuId" related="moqui.basic.StatusItem">
+            <key-map field-name="txStatuId"/>
+        </relationship>
+    </entity>
+
+    <!--nacs.chk.CheckClient  业务渠道对账信息表  -->
+    <entity entity-name="CheckClient" package="nacs.chk" authorize-skip="true" cache="false" sequence-primary-prefix="${new Date().format('yyyyMMdd)" sequence-primary-name="CheckClient${new Date().format('yyyyMMdd)">
+        <description>业务渠道对账信息表</description>
+        <field name="seqId" type="id" not-null="true" is-pk="true">
+            <description>序号（主键）</description>
+        </field>
+        <field name="checkDate" type="id" not-null="true">
+            <description>对账日期</description>
+        </field>
+        <field name="mrchntSeqId" type="id" not-null="true">
+            <description>关联商户seqId</description>
+        </field>
+        <field name="trxCtgy" type="id" not-null="true">
+            <description>交易类别（000501：代收 000401：代付）</description>
+        </field>
+        <field name="checkSt" type="id" >
+            <description>对账状态(CHK_RESULT_NONE：未对账 CHK_RESULT_BEING：对账中 CHK_RESULT_BEEN：已对账)</description>
+        </field>
+        <field name="totalAmount" type="currency-amount">
+            <description>总金额</description>
+        </field>
+        <field name="totalSum" type="number-integer" >
+            <description>总笔数</description>
+        </field>
+        <field name="checkFiles" type="id-long">
+            <description>对账文件名</description>
+        </field>
+        <field name="remarks1" type="text-medium">
+            <description>备注1</description>
+        </field>
+        <field name="remarks2" type="text-medium">
+            <description>备注2</description>
+        </field>
+        <relationship type="one-nofk" title="CheckSt" related="moqui.basic.StatusItem">
+            <key-map field-name="checkSt"/>
+        </relationship>
+        <relationship type="one-nofk" title="TrxCtgy" related="moqui.basic.Enumeration">
+            <key-map field-name="trxCtgy"/>
+        </relationship>
+        <index name="NACS_CHK_CLIENT_INDEX1" unique="true">
+            <index-field name="checkDate"/>
+            <index-field name="mrchntSeqId"/>
+            <index-field name="trxCtgy"/>
+        </index>
+    </entity>
+
+    <!--nacs.chk.CheckClientError  业务渠道错账信息表  -->
+    <entity entity-name="CheckClientError" package="nacs.chk" authorize-skip="true" cache="false" sequence-primary-prefix="${new Date().format('yyyyMMdd)" sequence-primary-name="CheckClientError${new Date().format('yyyyMMdd)">
+        <description>业务渠道错账信息表</description>
+        <field name="nacsTxId" type="id" not-null="true" is-pk="true">
+            <description>平台流水号</description>
+        </field>
+        <field name="buiTxId" type="id" not-null="true">
+            <description>业务渠道流水号</description>
+        </field>
+        <field name="payTxId" type="id" not-null="true">
+            <description>支付通道流水号</description>
+        </field>
+        <field name="orderId" type="id">
+            <description>订单号</description>
+        </field>
+        <field name="trxCtgy" type="id">
+            <description>交易类别（000501：代收 000401：代付）</description>
+        </field>
+        <field name="checkSt" type="id">
+            <description>对账状态(CHK_RESULT_NONE：未对账 CHK_RESULT_BEING：对账中 CHK_RESULT_BEEN：已对账)</description>
+        </field>
+        <field name="checkType" type="id">
+            <description>错账类型(PB_UNNECESSARY人行多余 BE_UNNECESSARY核心多余 DSPT_CHECK差错账务)</description>
+        </field>
+        <field name="txStatuId" type="id">
+            <description>跨行清算平台处理状态（TX_STATU_SUCCESS-成功 TX_STATU_UNKNOW-交易未明 TX_STATU_FAIL-失败 TX_STATU_BEEN 已对账 TX_STATU_DONE-已受理）</description>
+        </field>
+        <field name="workDate" type="id">
+            <description>工作日期</description>
+        </field>
+        <field name="mrchntSeqId" type="id" not-null="true">
+            <description>关联商户seqId</description>
+        </field>
+        <field name="subMrchntNo" type="id">
+            <description>子商户编号</description>
+        </field>
+        <field name="subMrchntNm" type="id-long">
+            <description>子商户名称</description>
+        </field>
+        <field name="channelSeqId" type="id" not-null="true">
+            <description>关联支付通道seqId</description>
+        </field>
+        <field name="reqTime" type="id">
+            <description>请求时间</description>
+        </field>
+        <field name="custCode" type="id">
+            <description>客户编号</description>
+        </field>
+        <field name="extOrderSeq" type="id">
+            <description>外部系统订单号</description>
+        </field>
+        <field name="currencyCode" type="id">
+            <description>币种</description>
+        </field>
+        <field name="trsSummary" type="id-long">
+            <description>交易摘要</description>
+        </field>
+        <field name="trsMemo" type="id-long">
+            <description>交易备注</description>
+        </field>
+        <field name="amount" type="currency-amount">
+            <description>交易金额</description>
+        </field>
+        <field name="payerAccount" type="id-long">
+            <description>付款人账户信息</description>
+        </field>
+        <field name="payeeAccount" type="id-long">
+            <description>收款人企业账户信息</description>
+        </field>
+        <field name="manualflag" type="id-long">
+            <description>手动修改状态标识</description>
+        </field>
+        <field name="remarks1" type="text-medium">
+            <description>备注1</description>
+        </field>
+        <field name="remarks2" type="text-medium">
+            <description>备注2</description>
+        </field>
+        <field name="remarks3" type="text-medium">
+            <description>备注3</description>
+        </field>
+        <relationship type="one-nofk" title="CheckSt" related="moqui.basic.StatusItem">
+            <key-map field-name="checkSt"/>
+        </relationship>
+        <relationship type="one-nofk" title="TrxCtgy" related="moqui.basic.Enumeration">
+            <key-map field-name="trxCtgy"/>
+        </relationship>
+        <relationship type="one-nofk" title="CheckType" related="moqui.basic.Enumeration">
+            <key-map field-name="checkType"/>
+        </relationship>
+        <relationship type="one-nofk" title="TxStatuId" related="moqui.basic.StatusItem">
+            <key-map field-name="txStatuId"/>
+        </relationship>
+    </entity>
+
+</entities>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<entity-facade-xml type="seed">
+    <!--银联通道对账定时任务-->
+
+    <moqui.service.job.ServiceJob jobName="UnionPayCheckJob" description="银联通道对账定时任务"
+                                  serviceName="nacs.check.NacsUnionPayCheckService.unionpay#Chk"
+                                  cronExpression="0 5 0 ? * *" paused="Y"/>
+    <moqui.service.job.ServiceJob jobName="HandleChkBeFile" description="定时处理行内对账"
+                                  serviceName="nacs.check.CheckMainServices.check#ChkBeFile"
+                                  cronExpression="0 0/3 * * * ?" paused="N"/>
+    <moqui.service.job.ServiceJob jobName="HandleChkClearFile" description="定时处理清算"
+                                  serviceName="nacs.check.CheckMainServices.clear#ChkClearFile"
+                                  cronExpression="0 0 21 * * ?" paused="Y"/>
+
+</entity-facade-xml>

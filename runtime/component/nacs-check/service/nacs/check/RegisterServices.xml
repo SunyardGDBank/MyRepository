@@ -1,0 +1,273 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+This software is in the public domain under CC0 1.0 Universal plus a 
+Grant of Patent License.
+
+To the extent possible under law, the author(s) have dedicated all
+copyright and related and neighboring rights to this software to the
+public domain worldwide. This software is distributed without any
+warranty.
+
+You should have received a copy of the CC0 Public Domain Dedication
+along with this software (see the LICENSE.md file). If not, see
+<http://creativecommons.org/publicdomain/zero/1.0/>.
+-->
+<services xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns=""
+          xsi:noNamespaceSchemaLocation="http://moqui.org/xsd/service-definition-2.1.xsd">
+    <!--对账登记服务-->
+
+    <!--行内对账-->
+    <service verb="register" noun="ChkCoreFile" type="inline" authenticate="false">
+        <in-parameters>
+            <parameter name="fileName"/>
+
+        </in-parameters>
+        <out-parameters>
+        </out-parameters>
+        <actions>
+            <log level="info" message="开始处理行内对账文件"/>
+            <script>
+                result = new File(fileName).readLines();
+                n=0;
+                //获取总笔数
+                for(i in 0..result.size()-1){
+                   if(result[i].contains("-") &amp;&amp; !result[i].contains("\\|")){
+                      n=i+1;
+                      break;
+                   }
+                }
+                count=result[n].trim().toInteger();
+            </script>
+            <log level="info" message="===================总笔数 ${count}======================="/>
+            <if condition="count==0">
+
+                <log message="====总笔数为0.直接去检查需要调账的记录====="/>
+            </if>
+           <!-- <set field="sub" value="${checkBatch}" type="Integer"/>-->
+            <if condition="count!=0">
+                <set field="flag" value="true" type="Boolean"/>
+                <set field="flag1" value="false" type="Boolean"/>
+                <set field="aaa" value="${result[0].contains('|')}" type="Boolean"/>
+                <log level="info" message="===================aaa ${aaa}======================="/>
+                <if condition="aaa">
+                    <script>
+                        //获取单笔数据集合
+                        single1=result[0].split('\\|');
+                    </script>
+                    <log level="info" message="===================获取单笔数据集合 ${single1}======================="/>
+                    <set field="coreDate" value="${single1[2]}" />
+                    <log level="debug" message="日期=${coreDate}"/>
+                    <set field="coreTxId" value="${single1[3]}" />
+                    <log level="debug" message="流水=${coreTxId}"/>
+                    <set field="coreAmt" value="${single1[8]}" />
+                    <log level="debug" message="金额=${coreAmt}"/>
+                    <set field="flag1" value="true" type="Boolean"/>
+                </if>
+            </if>
+            <!--对账文件中交易记录不为空，才能执行以下的解析-->
+            <set field="startIndex" value="0" type="Integer"/>
+            <while condition="flag &amp;&amp; flag1">
+                <!-- 读取文件中的核心的流水，金额，日期存入账务表-->
+                <log level="info" message="循环读取文件"/>
+                <!--设置每次读取的条数-->
+                <set field="dqSum" value="0" type="Integer"/>
+                <set field="maxLength" value="5000" type="Integer"/>
+                <if condition="!(count &gt; maxLength)">
+                    <set field="flag" value="false" type="Boolean"/>
+                    <set field="dqSum" from="count" type="Integer"/>
+                </if>
+                <if condition="count &gt; maxLength">
+                    <set field="count" value="${count-maxLength}"/>
+                    <set field="dqSum" from="maxLength" type="Integer"/>
+                </if>
+                <log level="info" message="===================起始index ${startIndex} 读取条数${dqSum} result${result}======================="/>
+                <!--<log level="info" message="===================起始index ${startIndex} 读取 result${result}======================="/>-->
+                <!--<service-call name="nacs.check.RegisterServices.resgister#ChkCoreFile1" in-map="[startIndex:startIndex,fileName:fileName]" transaction="force-new"/>-->
+                <service-call name="nacs.check.RegisterServices.resgister#ChkCoreFile1" in-map="[startIndex:startIndex,dqSum:dqSum,fileName:fileName]" transaction="force-new"/>
+                <set field="startIndex" value="${startIndex+maxLength}" type="Integer"/>
+            </while>
+
+            <!--更新核心对账文件里流水表、账务表的记账结果-->
+            <entity-find entity-name="nacs.trx.TxItem" list="txItem">
+                <econdition field-name="workDate" from="workDate"/>
+                <econdition field-name="coreAcctFlag" value="0"/>
+            </entity-find>
+            <iterate list="txItem" entry="txItemEntry">
+                <entity-update-by-condition entity-name="nacs.trx.TxItem">
+                    <econdition field-name="nacsTxId" from="txItem[0].nacsTxId"/>
+                    <set-field field-name="coreStatus" value="ACCT_TRANS_FAIL"/><!--记账失败-->
+                </entity-update-by-condition>
+            </iterate>
+
+            <entity-find entity-name="nacs.trx.TxItemCore" list="TxItemCore">
+                <econdition field-name="workDate" from="workDate"/>
+                <econdition field-name="coreAcctFlag" value="0"/>
+            </entity-find>
+            <iterate list="TxItemCore" entry="TxItemCoreEntry">
+                <entity-update-by-condition entity-name="nacs.trx.TxItemCore">
+                    <econdition field-name="nacsTxId" from="TxItemCore[0].nacsTxId"/>
+                    <set-field field-name="coreStatus" value="ACCT_TRANS_FAIL"/><!--记账失败-->
+                </entity-update-by-condition>
+            </iterate>
+
+            <!--更新通道对账状态-->
+            <entity-find entity-name="nacs.chk.CheckChannel" list="checkChannel">
+                <econdition field-name="checkDate" from="checkDate"/>
+            </entity-find>
+            <if condition="checkChannel">
+                <entity-update-by-condition entity-name="nacs.chk.CheckChannel">
+                    <econdition field-name="channelCode" from="checkChannel[0].channelCode"/>
+                    <econdition field-name="checkDate" from="checkChannel[0].checkDate"/>
+                    <set-field field-name="coreType" value="CORE_CHECKING"/><!--对账中-->
+                </entity-update-by-condition>
+            </if>
+
+            <!--将支付通道状态与行内记账状态不符的登记到调账流水表-->
+            <!--通道多余-->
+            <!-- 查询账务表和流水表的视图-->
+            <entity-find entity-name="NacsTxItemAndCoreView" list="txItem1">
+                <econditions>
+                    <econditions combine="or">
+                        <econdition field-name="txStatuId" value="TX_STATU_SUCCESS"/>
+                    </econditions>
+                    <econdition field-name="coreAcctFalg" operator="not-equals" value="1"/><!--核心没有账务标识-->
+                </econditions>
+            </entity-find>
+            <!--核心多余-->
+            <entity-find entity-name="NacsTxItemAndCoreView" list="txItem2">
+                <econditions>
+                    <econditions combine="or">
+                        <econdition field-name="txStatuId" value="TX_STATU_FAIL"/>
+                    </econditions>
+                    <econdition field-name="coreAcctFalg" operator="equals" value="1"/><!--核心有账务标识-->
+                </econditions>
+            </entity-find>
+
+            <!--登记通道错账信息表之前，先将该记录全部删除-->
+            <entity-delete-by-condition entity-name="nacs.chk.CheckChannelError">
+                <econdition field-name="checkDate" from="checkDate"/>
+            </entity-delete-by-condition>
+            <!--登记开始-->
+            <iterate list="txItem1" entry="txItemEntry">
+                <entity-make-value entity-name="nacs.chk.CheckChannelError" value-field="CheckChannelError1"/>
+                <!--&lt;!&ndash; 查询该错账是否存在&ndash;&gt;-->
+                <!--<entity-find entity-name="nacs.chk.CheckChannelError" list="checkChannelErrorList">-->
+                    <!--<econdition field-name="cpspTxId" from="txItemEntry.cpspTxId"/>-->
+                <!--</entity-find>-->
+
+                <entity-sequenced-id-primary-dynamic value-field="CheckChannelError1"/>
+                <!--<entity-set value-field="CheckChannelError1" map="[cpspTxId:txItemEntry.cpspTxId,buiTxId:txItemEntry.buiTxId,payTxId:txItemEntry.payTxId,orderId:txItemEntry.orderId,bussType:txItemEntry.bussType,-->
+                <!--checkSt:'03',checkType:'01',txStatuId:txItemEntry.txStatuId,workDate:txItemEntry.workDate:txItemEntry.workDate,firMerchantCode:txItemEntry.firMerchantCode,firMerchantName:txItemEntry.firMerchantName,secMerchantCode:txItemEntry.secMerchantCode,secMerchantName:txItemEntry.secMerchantName,-->
+                <!--channelCode:txItemEntry.channelCode,channelName:txItemEntry.channelName,reqTime:txItemEntry.reqTime,custCode:txItemEntry.custCode,extOrderSeq:'',currencyCode:txItemEntry.currencyCode,trsSummary:txItemEntry.useRemark,trsMemo:txItemEntry.trsMemo,amount:txItemEntry.amount,payerAccount:txItemEntry.payerAccount,-->
+                <!--payeeAccount:txItemEntry.payeeAccount,manualflag:''"/>-->
+                <entity-set value-field="CheckChannelError1" map="context"/>
+                <entity-create value-field="CheckChannelError1"/>
+            </iterate>
+
+            <iterate list="txItem2" entry="txItemEntry">
+                <entity-make-value entity-name="nacs.chk.CheckChannelError" value-field="CheckChannelError2"/>
+                <entity-sequenced-id-primary-dynamic value-field="CheckChannelError2"/>
+                <!--<entity-set value-field="CheckChannelError2" map="[cpspTxId:txItemEntry.cpspTxId,buiTxId:txItemEntry.buiTxId,payTxId:txItemEntry.payTxId,orderId:txItemEntry.orderId,bussType:txItemEntry.bussType,-->
+                <!--checkSt:'03',checkType:'01',txStatuId:txItemEntry.txStatuId,workDate:txItemEntry.workDate:txItemEntry.workDate,firMerchantCode:txItemEntry.firMerchantCode,firMerchantName:txItemEntry.firMerchantName,secMerchantCode:txItemEntry.secMerchantCode,secMerchantName:txItemEntry.secMerchantName,-->
+                <!--channelCode:txItemEntry.channelCode,channelName:txItemEntry.channelName,reqTime:txItemEntry.reqTime,custCode:txItemEntry.custCode,extOrderSeq:'',currencyCode:txItemEntry.currencyCode,trsSummary:txItemEntry.useRemark,trsMemo:txItemEntry.trsMemo,amount:txItemEntry.amount,payerAccount:txItemEntry.payerAccount,-->
+                <!--payeeAccount:txItemEntry.payeeAccount,manualflag:''"/>-->
+                <entity-set value-field="CheckChannelError2" map="context"/>
+                <entity-create value-field="CheckChannelError2"/>
+            </iterate>
+
+            <log message="错账入库完成,更新对账状态" level="info"/>
+            <!--更新核心对账状态-->
+            <entity-find entity-name="nacs.chk.CheckChannel" list="checkChannel">
+                <econdition field-name="checkDate" from="checkDate"/>
+                <econdition field-name="channelCode" from="channelCode"/>
+            </entity-find>
+            <if condition="checkChannel">
+                <entity-update-by-condition entity-name="nacs.chk.CheckChannel">
+                    <econdition field-name="channelCode" from="checkChannel[0].channelCode"/>
+                    <econdition field-name="checkDate" from="checkChannel[0].checkDate"/>
+                    <set-field field-name="coreType" value="CORE_CHECKED"/><!--对账完成-->
+                </entity-update-by-condition>
+            </if>
+        </actions>
+    </service>
+
+    <!--循环读取行内对账文件-->
+    <service verb="resgister" noun="ChkCoreFile1" type="inline" authenticate="false">
+        <in-parameters>
+            <parameter name="fileName"/>
+            <parameter name="startIndex" type="Integer"/>
+            <parameter name="dqSum" type="Integer"/>
+        </in-parameters>
+        <out-parameters>
+        </out-parameters>
+        <actions>
+            <set field="xhFlag" value="true" type="Boolean"/>
+            <set field="n" value="0" type="Integer"/>
+            <log level="info" message="===================进入循环读取======================="/>
+            <script>
+                result = new File(fileName).readLines();
+            </script>
+            <log level="info" message="===================result集合  ${result}总笔数${count1}======================="/>
+            <while condition="xhFlag">
+                <log level="info" message="===================进入循环======================="/>
+                <script>
+                    //获取单笔数据集合
+                    single=result[startIndex].split('\\|');
+                </script>
+                <log level="info" message="===================第${n+1}笔数据集合${single}======================="/>
+                <!--后台日期-->
+                <set field="htDate" value="${single[2]}" />
+                <!--后台流水-->
+                <set field="htTxId" value="${single[3]}"/>
+                <!--前台日期-->
+                <set field="qtDate" value="${single[4]}"/>
+                <!--前台流水-->
+                <set field="qtTxId" value="${single[5]}"/>
+                <!--交易金额-->
+                <set field="coreAmt" value="${single[8]}"/>
+
+                <!--将前后台日期装成Date类型-->
+                <!--<set field="qtDate1" from="new java.sql.Date(new java.util.Date().parse('yyyy-MM-dd',(qtDate[0..3]+'-'+qtDate[4..5]+'-'+qtDate[6..7])).getTime())"/>-->
+                <!--<set field="htDate1" from="new java.sql.Date(new java.util.Date().parse('yyyy-MM-dd',(htDate[0..3]+'-'+htDate[4..5]+'-'+htDate[6..7])).getTime())"/>-->
+                <log level="info" message="===================前台日期${qtDate} 前台流水${qtTxId}======================="/>
+                <!--更新流水表记账状态-->
+
+                <entity-find entity-name="nacs.trx.TxItem" list="txItem">
+                    <!--<econdition field-name="workDate" from="qtDate"/>-->
+                    <econdition field-name="nacsTxId" from="qtTxId"/>
+                </entity-find>
+                <if condition="txItem">
+                    <entity-update-by-condition entity-name="nacs.trx.TxItem">
+                        <econdition field-name="nacsTxId" from="txItem[0].nacsTxId"/>
+                        <set-field field-name="coreStatus" value="ACCT_TRANS_SUCCESS"/>
+                        <set-field field-name="coreAcctFlag" value="1"/>
+                    </entity-update-by-condition>
+                </if>
+                <!--更新账务表-->
+                <entity-find entity-name="nacs.trx.TxItemCore" list="txItemCore">
+                        <econdition field-name="nacsTxId" from="qtTxId"/>
+                </entity-find>
+                <if condition="txItemCore">
+                    <entity-update-by-condition entity-name="nacs.trx.TxItemCore">
+                        <econdition field-name="nacsTxId" from="qtTxId"/>
+                        <set-field field-name="acctDate" from="htDate"/>
+                        <set-field field-name="coreId" from="htTxId"/>
+                        <set-field field-name="coreAcctFlag" value="1"/><!--核心是否有账务-->
+                    </entity-update-by-condition>
+                </if>
+
+                <set field="n" value="${n+1}" type="Integer"/>
+                <set field="startIndex" value="${startIndex+1}" type="Integer"/>
+                <set field="xhFlag" value="${n &lt; dqSum}" type="Boolean"/>
+                <log level="info" message="===================循环标志${xhFlag}======================="/>
+            </while>
+        </actions>
+    </service>
+
+
+
+
+
+
+
+</services>

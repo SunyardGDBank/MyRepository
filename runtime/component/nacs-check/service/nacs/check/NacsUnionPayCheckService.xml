@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<services xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns=""
+          xsi:noNamespaceSchemaLocation="http://moqui.org/xsd/service-definition-2.1.xsd">
+    <!--银联通道对账通道对账服务-->
+<service verb="unionpay" noun="Chk" type="inline" authenticate="anonymous-all">
+    <in-parameters>
+    </in-parameters>
+    <out-parameters>
+    </out-parameters>
+    <actions>
+        <script>
+            Map map = ec.web.getRequestParameters()
+            def testId = (String)map.get("testId")
+
+        </script>
+        <log level="info" message="=============创建对账信息表对账状态为：testId=${testId}=================="/>
+        <entity-find-one entity-name="nacs.channel.Channel" value-field="channel" cache="false">
+            <field-map field-name="seqId" value="100004"/>
+        </entity-find-one>
+        <log level="info" message="=============创建对账信息表对账状态为：Channel=${channel.channelNo}=================="/>
+        <set field="seqId" from="channel.seqId"/>
+        <set field="channelNo" from="channel.channelNo"/>
+        <set field="channelNm" from="channel.channelNm"/>
+        <set field="hostname" from="channel.hostname"/>
+        <set field="username" from="channel.username"/>
+        <set field="password" from="channel.password"/>
+        <set field="localFilename" from="channel.localFilename"/>
+        <set field="remoteFilename" from="channel.remoteFilename"/>
+
+        <log level="info" message="=============通道信息：【channelNo=${channelNo}|channelNm=${channelNm}】=================="/>
+        <log level="info" message="=============创建对账信息表对账状态为：对账中=================="/>
+        <set field="checkDate" value="${new Date().format('yyyy-MM-dd')}"/>
+        <set field="channelSeqId" from="seqId"/>
+        <set field="trxCtgy" value="000401"/>
+        <set field="checkSt" value="CHK_RESULT_BEING"/>
+        <set field="totalAmount" value="0"/>
+        <set field="totalSum" value="0"/>
+        <set field="errorFlg" value="NO_ERROR"/>
+        <set field="checkFiles" value="NULL"/>
+        <transaction>
+            <entity-make-value entity-name="nacs.chk.CheckChannel" value-field="checkChannel"/>
+            <entity-sequenced-id-primary value-field="checkChannel"/>
+            <entity-set value-field="checkChannel" include="nonpk"/>
+            <entity-create value-field="checkChannel"/>
+        </transaction>
+        <log level="info" message="=============下载银联对账文件=================="/>
+        <service-call name="nacs.usl.NacsUslService.get#FtpFile"
+                      in-map="[hostname:hostname,username:username,password:password,localFilename:localFilename,remoteFilename:remoteFilename]"
+                      out-map="context"/>
+        <log level="info" message="=============解压银联对账文件=================="/>
+        <service-call name="nacs.usl.NacsUslService.unzip#File"
+                      in-map="[srcRarPath:localFilename]"
+                      out-map="context"/>
+        <log level="info" message="=============持久化银联对账数据=================="/>
+        <service-call name="nacs.unionpay.UnionPayCheckService.unionpay#ChkDataToDb"
+                      in-map="[localFilename:localFilename]"
+                      out-map="context"/>
+        <log level="info" message="=============银联通道对账处理=================="/>
+        <service-call name="nacs.unionpay.UnionPayCheckService.unionpay#ChkProcess"
+                      in-map="[]"
+                      out-map="context"/>
+        <transaction>
+            <entity-update-by-condition entity-name="CheckChannel">
+                <econdition field-name="checkDate" value="${new Date().format('yyyy-MM-dd')}"/>
+                <econdition field-name="channelSeqId" from="seqId"/>
+                <econdition field-name="trxCtgy" value="000401"/>
+                    <set-field field-name="checkSt" value="CHK_RESULT_BEEN"/>
+                    <set-field field-name="totalAmount" value="0"/>
+                    <set-field field-name="totalSum" value="0"/>
+                    <set-field field-name="errorFlg" value="NO_ERROR"/>
+                    <set-field field-name="checkFiles" value="NULL"/>
+            </entity-update-by-condition>
+        </transaction>
+    </actions>
+</service>
+</services>

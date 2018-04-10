@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+This software is in the public domain under CC0 1.0 Universal plus a 
+Grant of Patent License.
+
+To the extent possible under law, the author(s) have dedicated all
+copyright and related and neighboring rights to this software to the
+public domain worldwide. This software is distributed without any
+warranty.
+
+You should have received a copy of the CC0 Public Domain Dedication
+along with this software (see the LICENSE.md file). If not, see
+<http://creativecommons.org/publicdomain/zero/1.0/>.
+-->
+<entities xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:noNamespaceSchemaLocation="http://moqui.org/xsd/entity-definition-2.1.xsd">
+
+    <view-entity entity-name="NacsTxItemAndCoreView" package="nacs.chk" cache="never">
+        <description>交易流水表和交易账务表视图</description>
+        <member-entity entity-alias="NTT" entity-name="nacs.trx.TxItem"/>
+        <member-entity entity-alias="NTC" entity-name="nacs.trx.TxItemCore" join-from-alias="NTT">
+            <key-map field-name="nacsTxId" related="nacsTxId"/>
+        </member-entity>
+        <alias entity-alias="NTT" name="nacsTxId">
+            <description>平台流水号</description>
+        </alias>
+        <alias entity-alias="NTT" name="txStatuId">
+            <description>平台处理状态</description>
+        </alias>
+        <alias entity-alias="NTC" name="coreAcctFlag">
+            <description>核心有没有账务标识</description>
+        </alias>
+
+        <entity-condition>
+
+        </entity-condition>
+    </view-entity>
+
+
+
+
+
+
+
+</entities>

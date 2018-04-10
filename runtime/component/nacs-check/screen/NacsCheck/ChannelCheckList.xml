@@ -1,0 +1,164 @@
+<screen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="http://moqui.org/xsd/xml-screen-2.1.xsd"
+        default-menu-title="通道对账" default-menu-index="1" >
+    <!--对账列表-->
+    <parameter name="checkDate"/>
+    <transition name="before">
+        <service-call name="nacs.check.admin.NacsCheckService.get#Before" in-map="[checkDate:checkDate]"
+                    out-map="context"/>
+        <default-response url="."/>
+    </transition>
+
+    <transition name="after">
+        <service-call name="nacs.check.admin.NacsCheckService.get#After" in-map="[checkDate:checkDate]"
+                      out-map="context"/>
+        <default-response url="."/>
+    </transition>
+
+    <transition name="check">
+        <default-response url="."/>
+    </transition>
+
+
+   <actions>
+       <if condition="!checkDate">
+           <set field="checkDate" value="${new Date().format('yyyy-MM-dd')}"/>
+       </if>
+       <set field="pageSize" value="10"/>
+      <entity-find entity-name="nacs.chk.CheckChannel" list="chkList">
+          <search-form-inputs/>
+          <econdition field-name="checkDate" from="checkDate"/>
+      </entity-find>
+       <entity-find entity-name="moqui.basic.StatusItem" list="checkStList">
+       <econdition field-name="statusTypeId" value="CheckSt"/>
+   </entity-find>
+       <entity-find entity-name="moqui.basic.Enumeration" list="errorFlgList">
+           <econdition field-name="enumTypeId" value="ErrorFlg"/>
+       </entity-find>
+   </actions>
+    <widgets>
+        <form-list name="CheckChannelList" list="chkList" header-dialog="true" saved-finds="true" select-columns="true" >
+            <field name="checkDate">
+                <header-field>
+                    <date-time type="date"/>
+                </header-field>
+                <default-field title="对账日期">
+                    <link url="../ChannelCheckDetail" text="${checkDate}" link-type="anchor"/>
+                </default-field>
+            </field>
+            <field name="channelSeqId">
+                <header-field>
+                    <drop-down allow-empty="true">
+                        <entity-options key="${seqId}" text="${channelNo}-${channelNm}">
+                            <entity-find entity-name="nacs.channel.Channel"/>
+                        </entity-options>
+                    </drop-down>
+                </header-field>
+                <default-field title="通道名称">
+                    <display-entity entity-name="nacs.channel.Channel" key-field-name="seqId"
+                                    text="${channelNm}"/>
+                </default-field>
+            </field>
+            <field name="checkSt">
+                <header-field>
+                    <drop-down allow-empty="true">
+                        <list-options list="checkStList" text="${description}"/>
+                    </drop-down>
+                </header-field>
+                <default-field title="对账状态">
+                    <display-entity entity-name="moqui.basic.StatusItem" key-field-name="statusId"
+                                    text="${description}"/>
+                </default-field>
+            </field>
+            <field name="trxCtgy">
+                <header-field>
+                    <drop-down allow-empty="true">
+                        <entity-options key="${enumId}" text="${description}">
+                            <entity-find entity-name="moqui.basic.Enumeration">
+                                <econdition field-name="enumTypeId" value="TrxCtgy"/>
+                            </entity-find>
+                        </entity-options>
+                    </drop-down>
+                </header-field>
+                <default-field title="交易类别">
+                    <display-entity entity-name="moqui.basic.Enumeration" key-field-name="enumId"
+                                    text="${description}"/>
+                </default-field>
+            </field>
+            <field name="totalAmount" align="right">
+               <!-- <header-field>
+                    <text-line size="15"/>
+                </header-field>-->
+                <default-field title="总金额">
+                    <display/>
+                </default-field>
+            </field>
+            <field name="totalSum" align="right">
+                <!--<header-field>
+                    <text-line size="15"/>
+                </header-field>-->
+                <default-field title="总笔数">
+                    <display/>
+                </default-field>
+            </field>
+            <field name="errorFlg">
+                <header-field>
+                    <drop-down allow-empty="true">
+                        <list-options list="errorFlgList" text="${description}"/>
+                    </drop-down>
+                </header-field>
+                <default-field title="错账标识">
+                    <display-entity entity-name="moqui.basic.Enumeration" key-field-name="enumId"
+                                    text="${description}"/>
+                </default-field>
+            </field>
+            <field name="checkFiles">
+                <header-field>
+                    <text-line size="15"/>
+                </header-field>
+                <default-field title="对账文件名">
+                    <display/>
+                </default-field>
+            </field>
+            <!--查找按钮-->
+            <field name="find">
+                <header-field title="Find">
+                    <submit icon="glyphicon glyphicon-search"/>
+                </header-field>
+                <default-field>
+                    <display text=" "/>
+                </default-field>
+            </field>
+            <field name="mm">
+                <default-field title="">
+                    <link url="check" text="手工对账"/>
+                </default-field>
+            </field>
+        </form-list>
+        <field name="mm1">
+            <default-field>
+              <link url="before" text="前一天" />
+            </default-field>
+        </field>
+        <container-dialog id="findChannelCheck" button-text="${checkDate}">
+            <form-single name="CheckDate">
+                <field name="checkDate">
+                    <default-field title="对账日期">
+                        <date-time type="date"/>
+                    </default-field>
+                </field>
+                <field name="find">
+                    <default-field>
+                        <submit icon="glyphicon glyphicon-search"/>
+                    </default-field>
+                </field>
+            </form-single>
+        </container-dialog>
+        <field name="mm3">
+            <default-field>
+                <link url="after" text="后一天"/>
+            </default-field>
+        </field>
+
+    </widgets>
+</screen>

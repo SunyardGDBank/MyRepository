@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<services xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns=""
+          xsi:noNamespaceSchemaLocation="http://moqui.org/xsd/service-definition-2.1.xsd">
+
+    <!--支付通道增加-->
+    <service verb="create" noun="Channel" authenticate="false">
+        <in-parameters>
+            <!--<auto-parameters include="pk" required="true"/>-->
+            <auto-parameters include="nonpk"/>
+            <parameter name="channelNo" required="true"/>
+            <parameter name="channelNm" required="true"/>
+            <parameter name="channelStatus" required="true"/>
+            <parameter name="channelBegin" required="true"/>
+            <parameter name="channelEnd" required="true"/>
+            <parameter name="signCheckFlag" required="true"/>
+        </in-parameters>
+        <actions>
+            <entity-find entity-name="nacs.channel.Channel" list="channelSeqList">
+                <econdition field-name="channelNo" from="channelNo"/>
+            </entity-find>
+            <if condition="channelSeqList">
+                <if condition="channelSeqList[0].channelNo==channelNo">
+                    <log level="info" message="该支付通道已存在，不能增加！"/>
+                    <return error="true" message="该支付通道已存在，不能增加！"/>
+                </if>
+            </if>
+            <service-call name="create#nacs.channel.Channel" in-map="context"/>
+           </actions>
+    </service>
+
+    <!--支付通道限额信息增加-->
+    <service verb="create" noun="ChannelQuota" authenticate="false">
+        <in-parameters>
+            <auto-parameters include="nonpk"/>
+            <parameter name="channelSeqId" required="true"/>
+            <parameter name="trxCtgy" required="true"/>
+            <parameter name="singletranLimit" required="true"/>
+            <parameter name="singlTodayLimit" required="true"/>
+            <parameter name="singlTodaySum" required="true"/>
+        </in-parameters>
+        <actions>
+            <entity-find entity-name="nacs.channel.ChannelQuota" list="channelQuotaList">
+                <econdition field-name="channelSeqId" from="channelSeqId"/>
+                <econdition field-name="trxCtgy" from="trxCtgy"/>
+            </entity-find>
+            <if condition="channelQuotaList">
+                <if condition="channelQuotaList[0].channelSeqId==channelSeqId &amp;&amp; channelQuotaList[0].trxCtgy==trxCtgy">
+                    <log level="info" message="该支付通道限额信息已存在，不能增加！"/>
+                    <return error="true" message="该支付通道限额信息已存在，不能增加！"/>
+                </if>
+            </if>
+            <service-call name="create#nacs.channel.ChannelQuota" in-map="context"/>
+        </actions>
+    </service>
+
+    <!--增加支付通道手续费信息-->
+    <service verb="create" noun="ChannelFee" authenticate="false">
+        <in-parameters>
+            <auto-parameters include="nonpk"/>
+            <parameter name="channelSeqId" required="true"/>
+            <parameter name="trxCtgy" required="true"/>
+            <parameter name="feeType" required="true"/>
+            <parameter name="beginAmt" />
+            <parameter name="endAmt" />
+            <parameter name="percentage" />
+            <parameter name="amt" />
+        </in-parameters>
+        <actions>
+            <entity-find entity-name="ChannelFee" list="channelFeeList">
+                <econdition field-name="channelSeqId" from="channelSeqId"/>
+                <econdition field-name="trxCtgy" from="trxCtgy"/>
+            </entity-find>
+            <if condition="channelFeeList">
+                <return error="true" message="该支付通道手续费信息已存在，不能增加！"/>
+            </if>
+            <service-call name="create#nacs.channel.ChannelFee" in-map="context"/>
+        </actions>
+    </service>
+
+    <!--更新支付通道手续费信息-->
+    <service verb="update" noun="ChannelFee" authenticate="false">
+        <in-parameters>
+            <auto-parameters include="pk" required="true"/>
+            <auto-parameters include="nonpk"/>
+            <parameter name="feeType" required="true"/>
+            <parameter name="beginAmt"/>
+            <parameter name="endAmt" />
+            <parameter name="percentage"/>
+            <parameter name="amt"/>
+        </in-parameters>
+        <actions>
+            <if condition="feeType=='FEE_CHARGE_MODE1'">
+                <if condition="!beginAmt||!endAmt||!amt">
+                    <return error="false" message="单笔收取金额的方式金额上限，下限，收取金额不能为空"/>
+                </if>
+                <if condition="percentage">
+                    <return error="false" message="单笔收取金额的方式百分比应该为空"/>
+                </if>
+            </if>
+            <if condition="feeType=='FEE_CHARGE_MODE2'">
+                <if condition="!amt">
+                    <return error="false" message="单月收取金额的方式收取金额不能为空"/>
+                </if>
+                <if condition="percentage||endAmt||beginAmt">
+                    <return error="false" message="单月收取金额的方式金额上限，下限，百分比应该为空"/>
+                </if>
+            </if>
+            <if condition="feeType=='FEE_CHARGE_MODE3'">
+                <if condition="!percentage||!beginAmt||!endAmt">
+                    <return error="false" message="百分比收取的方式金额上限，下限，百分比不能为空"/>
+                </if>
+                <if condition="amt">
+                    <return error="false" message="百分比收取的方式收取金额应该为空"/>
+                </if>
+            </if>
+            <service-call name="update#nacs.channel.ChannelFee" in-map="context"/>
+       </actions>
+    </service>
+
+    <!--支付通道信息更新-->
+    <service verb="update" noun="Channel" authenticate="false">
+        <in-parameters>
+            <auto-parameters include="pk"/>
+            <parameter name="seqId" required="true"/>
+            <parameter name="channelNm" required="true"/>
+            <!--<parameter name="channelNo" required="true"/>-->
+            <parameter name="channelStatus" required="true"/>
+            <parameter name="channelBegin" required="true"/>
+            <parameter name="channelEnd" required="true"/>
+            <parameter name="signCheckFlag" required="true"/>
+        </in-parameters>
+        <actions>
+            <service-call name="update#nacs.channel.Channel" in-map="context"/>
+        </actions>
+    </service>
+
+    <!--支付通道限额信息更新-->
+    <service verb="update" noun="ChannelQuota" authenticate="false">
+        <in-parameters>
+            <auto-parameters include="pk"/>
+            <parameter name="singletranLimit" required="true"/>
+            <parameter name="singlTodayLimit" required="true"/>
+            <parameter name="singlTodaySum" required="true"/>
+        </in-parameters>
+        <actions>
+            <service-call name="update#nacs.channel.ChannelQuota" in-map="context"/>
+        </actions>
+    </service>
+
+
+    <!-- 支付通道业务品种管理增加服务 -->
+    <service verb="create" noun="ChannelBusiness" authenticate="false">
+        <in-parameters>
+            <auto-parameters include="nonpk"/>
+            <parameter name="channelSeqId" required="true"/>
+            <parameter name="trxCtgy" required="true"/>
+            <parameter name="bizTp" required="true"/>
+            <parameter name="supportFlg" required="true"/>
+        </in-parameters>
+        <actions>
+            <entity-find entity-name="nacs.channel.ChannelBusiness" list="channelBusinessList">
+                <econdition field-name="channelSeqId" from="channelSeqId"/>
+                <econdition field-name="trxCtgy" from="trxCtgy"/>
+                <econdition field-name="bizTp" from="bizTp"/>
+            </entity-find>
+            <!-- 若通道编号、支持业务种类、业务品种都相同的数据已存在，则不能增加 -->
+            <if condition="channelBusinessList">
+                <return error="true" message="该支付通道业务品种已存在，不能增加！"/>
+            </if>
+            <!-- 若通道编号、支持业务种类、业务品种都相同的数据不存在，则增加一条记录 -->
+            <service-call name="create#nacs.channel.ChannelBusiness" in-map="context"/>
+         </actions>
+    </service>
+
+    <service verb="get" noun="BizList" authenticate="false">
+        <in-parameters>
+            <parameter name="trxCtgy" required="true"/>
+        </in-parameters>
+        <out-parameters><parameter name="resultList" type="List"/></out-parameters>
+        <actions>
+            <if condition="trxCtgy=='000501'">
+                <entity-find entity-name="moqui.basic.Enumeration" list="bizList">
+                    <econdition field-name="enumId" operator="in" value="0002,0004,0006"/>
+                </entity-find>
+            </if>
+            <if condition="trxCtgy=='000401'">
+                <entity-find entity-name="moqui.basic.Enumeration" list="bizList">
+                    <econdition field-name="enumId" operator="in" value="0005,0006"/>
+                </entity-find>
+            </if>
+            <script>
+                resultList = []
+                for (def biz in bizList) resultList.add([enumId:biz.enumId, label:biz.description])
+            </script>
+        </actions>
+    </service>
+
+
+
+
+
+</services>

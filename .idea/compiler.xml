@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="component-runtime_component_nacs-be-spd_main" target="1.8" />
+      <module name="component-runtime_component_nacs-be-spd_test" target="1.8" />
+      <module name="component-runtime_component_nacs-channel-unionpay_main" target="1.8" />
+      <module name="component-runtime_component_nacs-channel-unionpay_test" target="1.8" />
+      <module name="component-runtime_component_nacs-check_main" target="1.8" />
+      <module name="component-runtime_component_nacs-check_test" target="1.8" />
+      <module name="component-runtime_component_nacs-usl_main" target="1.8" />
+      <module name="component-runtime_component_nacs-usl_test" target="1.8" />
+      <module name="framework_execWar" target="1.8" />
+      <module name="framework_main" target="1.8" />
+      <module name="framework_start" target="1.8" />
+      <module name="framework_test" target="1.8" />
+      <module name="moqui-util_main" target="1.8" />
+      <module name="moqui-util_test" target="1.8" />
+      <module name="runtime_component_nacs-be-spd_main" target="1.8" />
+      <module name="runtime_component_nacs-be-spd_test" target="1.8" />
+      <module name="runtime_component_nacs-channel-unionpay_main" target="1.8" />
+      <module name="runtime_component_nacs-channel-unionpay_test" target="1.8" />
+      <module name="runtime_component_nacs-check_main" target="1.8" />
+      <module name="runtime_component_nacs-check_test" target="1.8" />
+      <module name="runtime_component_nacs-usl_main" target="1.8" />
+      <module name="runtime_component_nacs-usl_test" target="1.8" />
+      <module name="trunk-framework_execWar" target="1.8" />
+      <module name="trunk-framework_main" target="1.8" />
+      <module name="trunk-framework_start" target="1.8" />
+      <module name="trunk-framework_test" target="1.8" />
+      <module name="trunk-moqui-util_main" target="1.8" />
+      <module name="trunk-moqui-util_test" target="1.8" />
+      <module name="web-ssm" target="1.5" />
+    </bytecodeTargetLevel>
+  </component>
+</project>

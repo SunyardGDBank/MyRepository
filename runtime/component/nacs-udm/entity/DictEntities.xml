@@ -1,0 +1,285 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+This software is in the public domain under CC0 1.0 Universal plus a 
+Grant of Patent License.
+
+To the extent possible under law, the author(s) have dedicated all
+copyright and related and neighboring rights to this software to the
+public domain worldwide. This software is distributed without any
+warranty.
+
+You should have received a copy of the CC0 Public Domain Dedication
+along with this software (see the LICENSE.md file). If not, see
+<http://creativecommons.org/publicdomain/zero/1.0/>.
+-->
+<entities xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:noNamespaceSchemaLocation="http://moqui.org/xsd/entity-definition-2.1.xsd">
+
+    <extend-entity entity-name="EntityAuditLog" package="moqui.entity">
+        <field name="edit" type="id"><description>具体操作</description></field>
+        <field name="entityName" type="id"><description>实体中文名称</description></field>
+        <field name="fieldName" type="id"><description>字段中文名称</description></field>
+        <field name="isEnum" type="id"><description>修改字段是否是枚举类型</description></field>
+    </extend-entity>
+
+
+
+    <!-- ========================================================= -->
+    <!-- 字典表 -->
+    <!-- nacs.dict.NacsDictFirMerchantParameter 一级商户参数表-->
+    <!-- nacs.dict.NacsDictChannelParameter 支付通道参数表-->
+    <!-- nacs.dict.NacsDictBussTypeParameter 业务类型参数表-->
+    <!-- nacs.dict.NacsDictCertcodeParameter 证件类型参数表-->
+    <!-- nacs.dict.NacsDictCoreStatusParameter 核心状态参数表-->
+    <!-- nacs.dict.NacsDictPayStatusParameter 支付通道状态参数表-->
+    <!-- nacs.dict.NacsDictVersionParameter 商户版本参数表-->
+    <!-- nacs.dict.NacsDictClearTimeParameter 清算周期参数表-->
+    <!-- nacs.dict.NacsDictCurrencyIdParameter 币种ID参数表-->
+    <!-- nacs.dict.NacsDictCheckStParameter 对账状态参数表-->
+    <!-- nacs.dict.NacsDictCheckTypeParameter 错账类型参数表-->
+
+    <!-- nacs.dict.NacsDictBuistatusParameter 业务渠道状态参数表-->
+    <!-- nacs.dict.NacsDictTranStasParameter 处理状态参数表-->
+    <!-- nacs.dict.NacsDictAcctTypeParameter 记账类型参数表-->
+    <!-- nacs.dict.NacsDictSettleStParameter 清算状态参数表-->
+    <!-- nacs.dict.NacsDictTxStatuIdParameter 跨行清算平台处理状态-->
+    <!-- nacs.dict.NacsDictFeeChargeModeParameter 手续费收取方式-->
+    <!-- nacs.dict.NacsDictHoldModeParameter 代收/付款方式-->
+    <!-- nacs.dict.NacsDictMerchantVerIfystsParameter 商户签约验证需求-->
+    <!-- nacs.dict.NacsDictJobTaskParameter 定时任务参数表-->
+
+    <!-- nacs.dict.NacsDictFirMerchantStParameter 一级商户状态-->
+    <!-- ========================================================= -->
+
+ <!--   <entity entity-name="NacsDictFirMerchantParameter" package="nacs.dict" authorize-skip="true" cache="true">
+        <description>一级商户参数表</description>
+        <field name="firMerchantCode" type="id" not-null="true" is-pk="true">
+            <description>一级商户编号</description>
+        </field>
+        <field name="firMerchantName" type="id-long" not-null="true">
+            <description>一级商户名称</description>
+        </field>
+    </entity>-->
+
+<!--    <entity entity-name="NacsDictChannelParameter" package="nacs.dict" authorize-skip="true" cache="true">
+        <description>支付通道参数表</description>
+        <field name="channelCode" type="id" not-null="true" is-pk="true">
+            <description>通道编号</description>
+        </field>
+        <field name="channelName" type="id-long" not-null="true">
+            <description>通道名称</description>
+        </field>
+    </entity>-->
+
+  <!--  <entity entity-name="NacsDictClearTimeParameter" package="nacs.dict" authorize-skip="true" cache="true">
+        <description>清算周期参数表</description>
+        <field name="clearTime" type="id-long" not-null="true" is-pk="true">
+            <description>清除时间</description>
+        </field>
+        <field name="clearTimeDsc" type="id-long" not-null="true">
+            <description>清除时间描述</description>
+        </field>
+    </entity>-->
+
+    <!--<entity entity-name="NacsDictBussTypeParameter" package="nacs.dict" authorize-skip="true" cache="true">
+        <description>业务类型参数表</description>
+        <field name="bussType" type="id-long" not-null="true" is-pk="true">
+            <description>业务编号</description>
+        </field>
+        <field name="bussName" type="id-long" not-null="true">
+            <description>业务名称</description>
+        </field>
+    </entity>-->
+
+<!--    <entity entity-name="NacsDictCheckStParameter" package="nacs.dict" authorize-skip="true" cache="true">
+        <description>对账状态参数表</description>
+        <field name="checkSt" type="id-long" not-null="true" is-pk="true">
+            <description>对账编码</description>
+        </field>
+        <field name="checkStDsc" type="id-long" not-null="true">
+            <description>对账状态</description>
+        </field>
+    </entity>-->
+
+<!--    <entity entity-name="NacsDictCheckTypeParameter" package="nacs.dict" authorize-skip="true" cache="true">
+        <description>错账类型参数表</description>
+        <field name="checkType" type="id-long" not-null="true" is-pk="true">
+            <description>错账类型编码</description>
+        </field>
+        <field name="checkTypeDsc" type="id-long" not-null="true">
+            <description>错账类型描述</description>
+        </field>
+    </entity>-->
+
+<!--    <entity entity-name="NacsDictCoreStatusParameter" package="nacs.dict" authorize-skip="true" cache="true">
+        <description>核心状态参数表</description>
+        <field name="coreStatus" type="id-long" not-null="true" is-pk="true">
+            <description>状态编码</description>
+        </field>
+        <field name="coreStatusDsc" type="id-long" not-null="true">
+            <description>状态类型</description>
+        </field>
+    </entity>-->
+
+ <!--   <entity entity-name="NacsDictPayStatusParameter" package="nacs.dict" authorize-skip="true" cache="true">
+        <description>支付通道状态参数表</description>
+        <field name="payStatus" type="id-long" not-null="true" is-pk="true">
+            <description>状态编码</description>
+        </field>
+        <field name="payStatusDsc" type="id-long" not-null="true">
+            <description>状态类型</description>
+        </field>
+    </entity>-->
+
+    <!--<entity entity-name="NacsDictBuistatusParameter" package="nacs.dict" authorize-skip="true" cache="true">
+        <description>业务渠道状态参数表</description>
+        <field name="buistatus" type="id-long" not-null="true" is-pk="true">
+            <description>状态编码</description>
+        </field>
+        <field name="buistatusDsc" type="id-long" not-null="true">
+            <description>状态类型</description>
+        </field>
+    </entity>-->
+
+
+  <!--  <entity entity-name="NacsDictTranStasParameter" package="nacs.dict" authorize-skip="true" cache="true">
+        <description>处理状态参数表</description>
+        <field name="tranStas" type="id-long" not-null="true" is-pk="true">
+            <description>状态编码</description>
+        </field>
+        <field name="tranStasDsc" type="id-long" not-null="true">
+            <description>状态类型</description>
+        </field>
+    </entity>-->
+
+<!--    <entity entity-name="NacsDictAcctTypeParameter" package="nacs.dict" authorize-skip="true" cache="true">
+        <description>记账类型参数表</description>
+        <field name="acctType" type="id-long" not-null="true" is-pk="true">
+            <description>记账类型</description>
+        </field>
+        <field name="acctTypeDsc" type="id-long" not-null="true">
+            <description>记账类型名称</description>
+        </field>
+    </entity>-->
+
+<!--    <entity entity-name="NacsDictSettleStParameter" package="nacs.dict" authorize-skip="true" cache="true">
+        <description>清算状态参数表</description>
+        <field name="settleSt" type="id-long" not-null="true" is-pk="true">
+            <description>清算状态</description>
+        </field>
+        <field name="settleStDsc" type="id-long" not-null="true">
+            <description>清算状态名称</description>
+        </field>
+    </entity>-->
+
+<!--    <entity entity-name="NacsDictTxStatuIdParameter" package="nacs.dict" authorize-skip="true" cache="true">
+        <description>跨行清算平台处理状态</description>
+        <field name="txStatuId" type="id-long" not-null="true" is-pk="true">
+            <description>状态编码</description>
+        </field>
+        <field name="txStatuIdDsc" type="id-long" not-null="true">
+            <description>状态类型</description>
+        </field>
+    </entity>-->
+
+<!--    <entity entity-name="NacsDictFeeChargeModeParameter" package="nacs.dict" authorize-skip="true" cache="true">
+        <description>手续费收取方式</description>
+        <field name="feeChargeMode" type="id-long" not-null="true" is-pk="true">
+            <description>收取方式编码</description>
+        </field>
+        <field name="feeChargeModeDsc" type="id-long" not-null="true">
+            <description>收取方式类型</description>
+        </field>
+    </entity>-->
+
+ <!--   <entity entity-name="NacsDictHoldModeParameter" package="nacs.dict" authorize-skip="true" cache="true">
+        <description>代收/付款方式</description>
+        <field name="holdMode" type="id-long" not-null="true" is-pk="true">
+            <description>方式编码</description>
+        </field>
+        <field name="holdModeDsc" type="id-long" not-null="true">
+            <description>方式类型</description>
+        </field>
+    </entity>-->
+
+<!--    <entity entity-name="NacsDictMerchantVerIfystsParameter" package="nacs.dict" authorize-skip="true" cache="true">
+        <description>商户签约验证需求</description>
+        <field name="merchantVerIfysts" type="id-long" not-null="true" is-pk="true">
+            <description>需求编码</description>
+        </field>
+        <field name="merchantVerIfystsDsc" type="id-long" not-null="true">
+            <description>需求类型</description>
+        </field>
+    </entity>-->
+
+
+   <!-- <entity entity-name="NacsDictCertcodeParameter" package="nacs.dict" authorize-skip="true" cache="true">
+        <description>证件类型参数表</description>
+        <field name="certCode" type="id-long" not-null="true" is-pk="true">
+            <description>证件类型</description>
+        </field>
+        <field name="certCodeDsc" type="id-long" not-null="true">
+            <description>证件描述</description>
+        </field>
+    </entity>-->
+
+ <!--   <entity entity-name="NacsDictVersionParameter" package="nacs.dict" authorize-skip="true" cache="true">
+        <description>商户版本参数表</description>
+        <field name="versionCode" type="id-long" not-null="true" is-pk="true">
+            <description>状态编码</description>
+        </field>
+        <field name="versionDsc" type="id-long" not-null="true">
+            <description>状态类型</description>
+        </field>
+    </entity>-->
+
+
+
+<!--    <entity entity-name="NacsDictFirMerchantStParameter" package="nacs.dict" authorize-skip="true" cache="true">
+        <description>一级商户状态</description>
+        <field name="firMerchantStCode" type="id" not-null="true" is-pk="true">
+            <description>一级商户状态编号</description>
+        </field>
+        <field name="firMerchantStName" type="id-long" not-null="true">
+            <description>一级商户状态名称</description>
+        </field>
+    </entity>-->
+
+<!--
+    <entity entity-name="NapDictAcctTp" package="nap.dict" authorize-skip="true" cache="true">
+        <description>账户类型</description>
+        <field name="acctTpCd" type="id" not-null="true" is-pk="true">
+            <description>账户类型编码</description>
+        </field>
+        <field name="acctTpNm" type="id-long" not-null="true">
+            <description>账户类型名称</description>
+        </field>
+    </entity>-->
+
+
+
+
+    <!--<entity entity-name="NacsDictCurrencyIdParameter" package="nacs.dict" authorize-skip="true" cache="true">
+        <description>币种ID参数表</description>
+        <field name="currencyId" type="id-long" not-null="true" is-pk="true">
+            <description>币种代码</description>
+        </field>
+        <field name="currencyName" type="id-long" not-null="true">
+            <description>币种名称</description>
+        </field>
+    </entity>
+
+    <entity entity-name="NacsDictJobTaskParameter" package="nacs.dict" authorize-skip="true" cache="true">
+        <description>定时任务参数表</description>
+        <field name="jobId" type="id-long" not-null="true" is-pk="true">
+            <description>定时任务编号</description>
+        </field>
+        <field name="jobName" type="id-long" not-null="true">
+            <description>定时任务名称</description>
+        </field>
+        <field name="runSt" type="id-long" not-null="true">
+            <description>定时任务状态 01-开启 02-关闭</description>
+        </field>
+    </entity>-->
+
+</entities>

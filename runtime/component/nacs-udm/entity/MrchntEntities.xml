@@ -1,0 +1,529 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+This software is in the public domain under CC0 1.0 Universal plus a 
+Grant of Patent License.
+
+To the extent possible under law, the author(s) have dedicated all
+copyright and related and neighboring rights to this software to the
+public domain worldwide. This software is distributed without any
+warranty.
+
+You should have received a copy of the CC0 Public Domain Dedication
+along with this software (see the LICENSE.md file). If not, see
+<http://creativecommons.org/publicdomain/zero/1.0/>.
+-->
+<entities xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:noNamespaceSchemaLocation="http://moqui.org/xsd/entity-definition-2.1.xsd">
+
+    <!-- ========================================================= -->
+    <!--商户相关表单-->
+    <!--nacs.mrchnt.Mrchnt  商户信息表-->
+    <!--nacs.mrchnt.SubMrchnt  子商户信息表-->
+    <!--nacs.mrchnt.MrchntFee  商户手续费信息表-->
+    <!--nacs.mrchnt.MrchntChannel  商户可用通道对照表-->
+    <!--nacs.mrchnt.MrchntType  商户业务品种对照表-->
+    <!--nacs.mrchnt.MrchntQuota  商户限额表-->
+    <!-- ========================================================= -->
+    <entity entity-name="Mrchnt" package="nacs.mrchnt" authorize-skip="true" cache="true">
+        <description>商户信息表</description>
+        <field name="seqId" type="id" not-null="true" is-pk="true">
+            <description>序号</description>
+        </field>
+        <field name="mrchntNo" type="id" not-null="true">
+            <description>商户编号</description>
+        </field>
+        <field name="mrchntNm" type="id-long" not-null="true">
+            <description>商户名称</description>
+        </field>
+        <field name="version" type="id" enable-audit-log="true">
+            <description>协议版本号</description>
+        </field>
+        <field name="mrchntSt" type="id" enable-audit-log="true">
+            <description>商户状态(INVOKE-启用 CLOSE-关闭 NOT_SUFFICIENT_FUNDS-余额不足)</description>
+        </field>
+        <field name="mrchntFlag" type="id" enable-audit-log="true">
+            <description>商户启用标志(ENABLED-启用 DISABLED-关闭)</description>
+        </field>
+        <field name="subMrchntFlag" type="id" not-null="true" enable-audit-log="true">
+            <description>子商户启用标志(ENABLED-启用 DISABLED-关闭)</description>
+        </field>
+        <field name="mrchntBeginTime" type="time" enable-audit-log="true">
+            <description>商户运行开启时间</description>
+        </field>
+        <field name="mrchntEndTime" type="time" enable-audit-log="true">
+            <description>商户运行关闭时间</description>
+        </field>
+        <field name="managerInstiCode" type="id" not-null="true" enable-audit-log="true">
+            <description>客户机构行号</description>
+        </field>
+        <field name="managerInstiName" type="id-long" not-null="true" enable-audit-log="true">
+            <description>客户机构名称</description>
+        </field>
+        <field name="marginFormation" type="id-long" not-null="true" enable-audit-log="true">
+            <description>保证金账户信息</description>
+        </field>
+        <field name="marginAmt" type="currency-amount" not-null="true" enable-audit-log="true">
+            <description>保证金金额</description>
+        </field>
+        <field name="clearAccountMsg" type="id-long" not-null="true" enable-audit-log="true">
+            <description>清算账户</description>
+        </field>
+        <field name="clearAccountName" type="id-long" not-null="true" enable-audit-log="true">
+            <description>清算账户名称</description>
+        </field>
+        <field name="behalfAccount" type="id-long" not-null="true" enable-audit-log="true">
+            <description>代发内部户</description>
+        </field>
+        <field name="whitoutAccount" type="id-long" not-null="true" enable-audit-log="true">
+            <description>代扣内部户</description>
+        </field>
+        <field name="viDate" type="id" not-null="true" enable-audit-log="true">
+            <description>有效期</description>
+        </field>
+        <field name="frozenLimit" type="currency-amount" enable-audit-log="true">
+            <description>冻结额度</description>
+        </field>
+        <field name="zdFrozenLimit" type="currency-amount" enable-audit-log="true">
+            <description>最低冻结额度(到达最低额度冻结)</description>
+        </field>
+        <field name="addFrozenLimit" type="currency-amount" enable-audit-log="true">
+            <description>追加冻结额度</description>
+        </field>
+        <field name="overdraftLimit" type="currency-amount" enable-audit-log="true">
+            <description>透支额度</description>
+        </field>
+        <field name="mrchntVerIfysts" type="id" not-null="true" enable-audit-log="true">
+            <description>商户签约验证需求(Y_VERIFIED_Y_SIGN-需验证需签约 N_VERIFIED_Y_SIGN-无需验证需签约 Y_VERIFIED_N_SIGN- 需验证无需签约 N_VERIFIED_N_SIGN-无需验证无需签约)</description>
+        </field>
+        <field name="remarks1" type="id-long">
+            <description>备注1</description>
+        </field>
+        <field name="remarks2" type="id-long">
+            <description>备注2</description>
+        </field>
+        <field name="remarks3" type="id-long">
+            <description>备注3</description>
+        </field>
+        <relationship type="one-nofk" title="Version" related="moqui.basic.Enumeration">
+            <key-map field-name="version"/>
+        </relationship>
+        <relationship type="one-nofk" related="moqui.basic.StatusItem" title="MrchntSt">
+            <key-map field-name="mrchntSt"/>
+        </relationship>
+        <relationship type="one-nofk" related="moqui.basic.Enumeration" title="OpnFlg">
+            <key-map field-name="mrchntFlag"/>
+        </relationship>
+        <relationship type="one-nofk" related="moqui.basic.Enumeration" title="OpnFlg">
+            <key-map field-name="subMrchntFlag"/>
+        </relationship>
+        <relationship type="one-nofk" related="moqui.basic.Enumeration" title="MerchantVerIfysts">
+            <key-map field-name="mrchntVerIfysts"/>
+        </relationship>
+        <index name="NACS_MRCHNT_FIRST_MRCHNT_INDEX1" unique="true">
+            <index-field name="mrchntNo"/>
+            <index-field name="version"/>
+        </index>
+    </entity>
+
+    <entity entity-name="SubMrchnt" package="nacs.mrchnt" authorize-skip="true" cache="true">
+        <description>子商户信息表</description>
+        <field name="seqId" type="id" not-null="true" is-pk="true">
+            <description>序号</description>
+        </field>
+        <field name="mrchntSeqId" type="id" not-null="true">
+            <description>关联商户seqId</description>
+        </field>
+        <field name="subMrchntNo" type="id" not-null="true">
+            <description>子商户编号</description>
+        </field>
+        <field name="subMrchntNm" type="id-long" not-null="true">
+            <description>子商户名称</description>
+        </field>
+        <field name="subMrchntLevel" type="id" enable-audit-log="true">
+            <description>子商户级别</description>
+        </field>
+        <field name="subMrchntSt" type="id" not-null="true" enable-audit-log="true">
+            <description>子商户启用标志(ENABLED-启用 DISABLED-关闭)</description>
+        </field>
+        <field name="signFlag" type="id" not-null="true" enable-audit-log="true">
+            <description>签约标志(SIGNING-签约 LOGOUT-注销)</description>
+        </field>
+        <field name="subMrchntValisign" type="id" not-null="true" enable-audit-log="true">
+            <description>商户签约验证需求(Y_VERIFIED_Y_SIGN-需验证需签约 N_VERIFIED_Y_SIGN-无需验证需签约 Y_VERIFIED_N_SIGN- 需验证无需签约 N_VERIFIED_N_SIGN-无需验证无需签约)</description>
+        </field>
+        <field name="remarks1" type="id-long">
+            <description>备注1</description>
+        </field>
+        <field name="remarks2" type="id-long">
+            <description>备注2</description>
+        </field>
+        <field name="remarks3" type="id-long">
+            <description>备注3</description>
+        </field>
+        <relationship type="one-nofk" related="nacs.mrchnt.Mrchnt">
+            <key-map field-name="mrchntSeqId" related="seqId"/>
+        </relationship>
+        <relationship type="one-nofk" related="moqui.basic.Enumeration" title="OpnFlg">
+            <key-map field-name="subMrchntSt"/>
+        </relationship>
+        <relationship type="one-nofk" related="moqui.basic.Enumeration" title="SignFlag">
+            <key-map field-name="signFlag"/>
+        </relationship>
+        <relationship type="one-nofk" related="moqui.basic.Enumeration" title="MerchantVerIfysts">
+            <key-map field-name="subMrchntValisign"/>
+        </relationship>
+        <index name="NACS_MRCHNT_SUB_MRCHNT_INDEX1" unique="true">
+            <index-field name="subMrchntNo"/>
+        </index>
+    </entity>
+
+    <entity entity-name="MrchntFee" package="nacs.mrchnt" authorize-skip="true" cache="true">
+        <description>商户手续费信息表</description>
+        <field name="seqId" type="id-long" not-null="true" is-pk="true">
+            <description>序号(主键)</description>
+        </field>
+        <field name="mrchntSeqId" type="id" not-null="true">
+            <description>关联商户seqId</description>
+        </field>
+        <field name="version" type="id" enable-audit-log="true">
+            <description>协议版本号</description>
+        </field>
+        <field name="trxCtgy" type="id"  not-null="true" enable-audit-log="true">
+            <description>交易类型(000501：代收 000401：代付)</description>
+        </field>
+        <field name="feeChargeMode" type="id" enable-audit-log="true">
+            <description>手续费收取方式(FEE_CHARGE_MODE1-单笔收取金额 FEE_CHARGE_MODE2-单月收取金额 FEE_CHARGE_MODE3-百分比)</description>
+        </field>
+        <field name="amtMonth" type="currency-amount" enable-audit-log="true">
+            <description>当月收取金额</description>
+        </field>
+        <field name="amt" type="currency-amount" enable-audit-log="true">
+            <description>单笔收取金额</description>
+        </field>
+        <field name="feeChargeRate" type="id" enable-audit-log="true">
+            <description>手续费费率</description>
+        </field>
+        <field name="remarks1" type="id-long">
+            <description>备注1</description>
+        </field>
+        <field name="remarks2" type="id-long">
+            <description>备注2</description>
+        </field>
+        <field name="remarks3" type="id-long">
+            <description>备注3</description>
+        </field>
+        <relationship type="one-nofk" related="nacs.mrchnt.Mrchnt">
+            <key-map field-name="mrchntSeqId" related="seqId"/>
+            <key-map field-name="version" related="version"/>
+        </relationship>
+        <relationship type="one-nofk" title="Version" related="moqui.basic.Enumeration">
+            <key-map field-name="version"/>
+        </relationship>
+        <relationship type="one-nofk" title="TrxCtgy" related="moqui.basic.Enumeration">
+            <key-map field-name="trxCtgy"/>
+        </relationship>
+        <relationship type="one-nofk" title="FeeChargeMode" related="moqui.basic.Enumeration">
+            <key-map field-name="feeChargeMode"/>
+        </relationship>
+        <index name="NACS_MRCHNT_FEE_INDEX1" unique="true">
+            <index-field name="mrchntSeqId"/>
+            <index-field name="version"/>
+            <index-field name="trxCtgy"/>
+        </index>
+    </entity>
+
+    <entity entity-name="MrchntChannel" package="nacs.mrchnt" authorize-skip="true" cache="true">
+        <description>商户可用通道信息表</description>
+        <field name="seqId" type="id-long" not-null="true" is-pk="true">
+            <description>序号(主键)</description>
+        </field>
+        <field name="mrchntSeqId" type="id" not-null="true">
+            <description>关联商户seqId</description>
+        </field>
+        <field name="version" type="id" enable-audit-log="true">
+            <description>协议版本号</description>
+        </field>
+        <field name="channelSeqId" type="id" not-null="true">
+            <description>关联支付通道seqId</description>
+        </field>
+        <field name="channelSt" type="id" enable-audit-log="true">
+            <description>通道状态（ENABLED-启用 DISABLED-关闭）</description>
+        </field>
+        <field name="remarks1" type="id-long">
+            <description>备注1</description>
+        </field>
+        <field name="remarks2" type="id-long">
+            <description>备注2</description>
+        </field>
+        <field name="remarks3" type="id-long">
+            <description>备注3</description>
+        </field>
+        <relationship type="one-nofk" related="nacs.mrchnt.Mrchnt">
+            <key-map field-name="mrchntSeqId" related="seqId"/>
+            <key-map field-name="version" related="version"/>
+        </relationship>
+        <relationship type="one-nofk" title="Version" related="moqui.basic.Enumeration">
+            <key-map field-name="version"/>
+        </relationship>
+        <relationship type="one-nofk" related="nacs.channel.Channel" >
+            <key-map field-name="channelSeqId" related="seqId"/>
+        </relationship>
+        <relationship type="one-nofk" title="OpnFlg" related="moqui.basic.Enumeration">
+            <key-map field-name="channelSt"/>
+        </relationship>
+        <index name="NACS_MRCHNT_CHANNEL_INDEX1" unique="true">
+            <index-field name="mrchntSeqId"/>
+            <index-field name="version"/>
+            <index-field name="channelSeqId"/>
+        </index>
+    </entity>
+
+    <entity entity-name="MrchntType" package="nacs.mrchnt" authorize-skip="true" cache="true">
+        <description>商户业务品种信息表</description>
+        <field name="seqId" type="id" is-pk="true" not-null="true">
+            <description>序号</description>
+        </field>
+        <field name="mrchntSeqId" type="id" not-null="true">
+            <description>关联商户seqId</description>
+        </field>
+        <field name="version" type="id" enable-audit-log="true">
+            <description>协议版本号</description>
+        </field>
+        <field name="bizTp" type="id"  not-null="true" enable-audit-log="true">
+            <description>业务种类(0002：统一客户签约 0004：统一代扣 0005：统一代发 0006：统一查询 )</description>
+        </field>
+        <field name="bizTpSt" type="id" not-null="true" enable-audit-log="true">
+            <description>支持状态(ENABLED-启用 DISABLED-关闭)</description>
+        </field>
+        <field name="remarks1" type="id-long">
+            <description>备注1</description>
+        </field>
+        <field name="remarks2" type="id-long">
+            <description>备注2</description>
+        </field>
+        <relationship type="one-nofk" related="nacs.mrchnt.Mrchnt">
+            <key-map field-name="mrchntSeqId" related="seqId"/>
+            <key-map field-name="version" related="version"/>
+        </relationship>
+        <relationship type="one-nofk" title="Version" related="moqui.basic.Enumeration">
+            <key-map field-name="version"/>
+        </relationship>
+        <relationship type="one-nofk" title="BizTp" related="moqui.basic.Enumeration">
+            <key-map field-name="bizTp"/>
+        </relationship>
+        <relationship type="one-nofk" title="OpnFlg" related="moqui.basic.Enumeration">
+            <key-map field-name="bizTpSt"/>
+        </relationship>
+        <index name="NACS_MRCHNT_TYPE_INDEX1" unique="true">
+            <index-field name="mrchntSeqId"/>
+            <index-field name="version"/>
+            <index-field name="bizTp"/>
+        </index>
+    </entity>
+
+    <entity entity-name="MrchntQuota" package="nacs.mrchnt" authorize-skip="true" cache="true">
+        <description>商户限额表</description>
+        <field name="seqId" type="id" is-pk="true" not-null="true">
+            <description>序号</description>
+        </field>
+        <field name="mrchntSeqId" type="id" not-null="true">
+            <description>关联商户seqId</description>
+        </field>
+        <field name="version" type="id" enable-audit-log="true">
+            <description>协议版本号</description>
+        </field>
+        <field name="trxCtgy" type="id" not-null="true" enable-audit-log="true">
+            <description>交易类型(000401-代付 000501-代收)</description>
+        </field>
+        <field name="singletranLimit" type="currency-amount" enable-audit-log="true">
+            <description>单笔交易限额</description>
+        </field>
+        <field name="singlTodayLimit" type="currency-amount" enable-audit-log="true">
+            <description>当日累计最大限额</description>
+        </field>
+        <field name="singlTodaySum" type="currency-amount" enable-audit-log="true">
+            <description>当日累计最大笔数</description>
+        </field>
+        <field name="remarks1" type="id-long">
+            <description>备注1</description>
+        </field>
+        <field name="remarks2" type="id-long">
+            <description>备注2</description>
+        </field>
+        <field name="remarks3" type="id-long">
+            <description>备注3</description>
+        </field>
+        <field name="remarks4" type="id-long">
+            <description>备注4</description>
+        </field>
+        <field name="remarks5" type="id-long">
+            <description>备注5</description>
+        </field>
+        <relationship type="one-nofk" related="nacs.mrchnt.Mrchnt">
+            <key-map field-name="mrchntSeqId" related="seqId"/>
+            <key-map field-name="version" related="version"/>
+        </relationship>
+        <relationship type="one-nofk" title="Version" related="moqui.basic.Enumeration">
+            <key-map field-name="version"/>
+        </relationship>
+        <relationship type="one-nofk" title="TrxCtgy" related="moqui.basic.Enumeration">
+            <key-map field-name="trxCtgy"/>
+        </relationship>
+        <index name="NACS_MRCHNT_QUOAT_INDEX1" unique="true">
+            <index-field name="mrchntSeqId"/>
+            <index-field name="version"/>
+            <index-field name="trxCtgy"/>
+        </index>
+    </entity>
+
+
+    <entity entity-name="MrchntCoreAccounting" package="nacs.mrchnt" authorize-skip="true" cache="true">
+        <description>商户账务模式表</description>
+        <field name="seqId" type="id" is-pk="true" not-null="true">
+            <description>序号</description>
+        </field>
+        <field name="mrchntSeqId" type="id" not-null="true">
+            <description>关联商户seqId</description>
+        </field>
+        <field name="version" type="id" enable-audit-log="true">
+            <description>协议版本号</description>
+        </field>
+        <field name="trxCtgy" type="id" not-null="true" enable-audit-log="true">
+            <description>交易类型(000401-代付 000501-代收)</description>
+        </field>
+        <field name="accountingMode" type="id" not-null="true" enable-audit-log="true">
+            <description>账务方式(DIREC_MODE-直扣模式【代付】、FREEZE_MODE-冻结模式【代付】、OVERDRAW_MODE-透支模式【代付】、GENERAL_MODE-通用模式【代收】、DEDUCTIONS_MODE-扣款模式【代收】)</description>
+        </field>
+        <field name="remarks1" type="id-long">
+            <description>备注1</description>
+        </field>
+        <field name="remarks2" type="id-long">
+            <description>备注2</description>
+        </field>
+        <field name="remarks3" type="id-long">
+            <description>备注3</description>
+        </field>
+        <relationship type="one-nofk" related="nacs.mrchnt.Mrchnt">
+            <key-map field-name="mrchntSeqId" related="seqId"/>
+            <key-map field-name="version" related="version"/>
+        </relationship>
+        <relationship type="one-nofk" title="Version" related="moqui.basic.Enumeration">
+            <key-map field-name="version"/>
+        </relationship>
+        <relationship type="one-nofk" title="TrxCtgy" related="moqui.basic.Enumeration">
+            <key-map field-name="trxCtgy"/>
+        </relationship>
+        <index name="NACS_MRCHNT_CORE_ACCT_INDEX1" unique="true">
+            <index-field name="mrchntSeqId"/>
+            <index-field name="version"/>
+            <index-field name="trxCtgy"/>
+        </index>
+    </entity>
+
+    <entity entity-name="MrchntCoreClear" package="nacs.mrchnt" authorize-skip="true" cache="true">
+        <description>商户清算模式表</description>
+        <field name="seqId" type="id" is-pk="true" not-null="true">
+            <description>序号</description>
+        </field>
+        <field name="mrchntSeqId" type="id" not-null="true">
+            <description>关联商户seqId</description>
+        </field>
+        <field name="version" type="id" enable-audit-log="true">
+            <description>协议版本号</description>
+        </field>
+        <field name="trxCtgy" type="id" not-null="true" enable-audit-log="true">
+            <description>交易类型(000401-代付 000501-代收)</description>
+        </field>
+        <field name="clearMode" type="id" not-null="true" enable-audit-log="true">
+            <description>清算方式(CURRENT_CLEAR-C[实时清算]、WORKDAY_CLEAR-T[工作日]、DAY_CLEAR-D[自然日])</description>
+        </field>
+        <field name="clearDay" type="number-integer" not-null="true" enable-audit-log="true">
+            <description>清算日期</description>
+        </field>
+        <field name="remarks1" type="id-long">
+            <description>备注1</description>
+        </field>
+        <field name="remarks2" type="id-long">
+            <description>备注2</description>
+        </field>
+        <field name="remarks3" type="id-long">
+            <description>备注3</description>
+        </field>
+        <relationship type="one-nofk" related="nacs.mrchnt.Mrchnt">
+            <key-map field-name="mrchntSeqId" related="seqId"/>
+            <key-map field-name="version" related="version"/>
+        </relationship>
+        <relationship type="one-nofk" title="Version" related="moqui.basic.Enumeration">
+            <key-map field-name="version"/>
+        </relationship>
+        <relationship type="one-nofk" title="TrxCtgy" related="moqui.basic.Enumeration">
+            <key-map field-name="trxCtgy"/>
+        </relationship>
+        <relationship type="one-nofk" title="ClearMode" related="moqui.basic.Enumeration">
+            <key-map field-name="clearMode"/>
+        </relationship>
+        <index name="NACS_MRCHNT_CORE_CLEAR_INDEX1" unique="true">
+            <index-field name="mrchntSeqId"/>
+            <index-field name="version"/>
+            <index-field name="trxCtgy"/>
+        </index>
+    </entity>
+
+    <entity entity-name="MrchntRoute" package="nacs.mrchnt" authorize-skip="true" cache="true">
+        <description>商户路由规则表</description>
+        <field name="seqId" type="id" is-pk="true" not-null="true">
+            <description>序号</description>
+        </field>
+        <field name="mrchntSeqId" type="id" not-null="true">
+            <description>关联商户seqId</description>
+        </field>
+        <field name="version" type="id" enable-audit-log="true">
+            <description>协议版本号</description>
+        </field>
+        <field name="trxCtgy" type="id" not-null="true" enable-audit-log="true">
+            <description>交易类型(000401-代付 000501-代收)</description>
+        </field>
+        <field name="matchType" type="id" not-null="true" enable-audit-log="true">
+            <description>匹配规则(MATCH_MRC_STATUS-商户状态、MATCH_MRC_TIME-商户时段、MATCH_MRC_TRX-商户品种、MATCH_MRC_QUOTA-商户限额、MATCH_CHANNEL_STATUS-通道状态、MATCH_CHANNEL_TIME-通道时段、MATCH_CHANNEL_TRX-通道品种、MATCH_CHANNEL_QUOTA-通道限额、MATCH_BLACKLIST-黑名单、MATCH_WHITE-白名单、MATCH_REPOSITORY-知识库、MATCH_FEE-手续费)</description>
+        </field>
+        <field name="matchStatus" type="id" not-null="true" enable-audit-log="true">
+            <description>开启标志(ENABLED-开启,DISABLED-关闭)</description>
+        </field>
+        <field name="remarks1" type="id-long">
+            <description>备注1</description>
+        </field>
+        <field name="remarks2" type="id-long">
+            <description>备注2</description>
+        </field>
+        <field name="remarks3" type="id-long">
+            <description>备注3</description>
+        </field>
+        <relationship type="one-nofk" related="nacs.mrchnt.Mrchnt">
+            <key-map field-name="mrchntSeqId" related="seqId"/>
+            <key-map field-name="version" related="version"/>
+        </relationship>
+        <relationship type="one-nofk" title="Version" related="moqui.basic.Enumeration">
+            <key-map field-name="version"/>
+        </relationship>
+        <relationship type="one-nofk" title="TrxCtgy" related="moqui.basic.Enumeration">
+            <key-map field-name="trxCtgy"/>
+        </relationship>
+        <relationship type="one-nofk" title="MatchType" related="moqui.basic.Enumeration">
+            <key-map field-name="matchType"/>
+        </relationship>
+        <relationship type="one-nofk" title="OpnFlg" related="moqui.basic.Enumeration">
+            <key-map field-name="matchStatus"/>
+        </relationship>
+        <index name="NACS_MRCHNT_ROUTE_INDEX1" unique="true">
+            <index-field name="mrchntSeqId"/>
+            <index-field name="version"/>
+            <index-field name="trxCtgy"/>
+            <index-field name="matchType"/>
+        </index>
+    </entity>
+
+
+
+
+
+</entities>

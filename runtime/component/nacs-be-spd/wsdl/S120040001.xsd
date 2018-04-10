@@ -1,0 +1,30 @@
+<x:schema xmlns:x="http://www.w3.org/2001/XMLSchema" xmlns:d="http://esb.spdbbiz.com/metadata" xmlns:s="http://esb.spdbbiz.com/services/S120040001" targetNamespace="http://esb.spdbbiz.com/services/S120040001" elementFormDefault="qualified" attributeFormDefault="qualified">
+<x:import namespace="http://esb.spdbbiz.com/metadata" schemaLocation="http://10.112.20.145:8080/Publish/CBSP/metadata.xsd"/>
+<x:element name="ReqHeader" type="d:ReqHeaderType"/>
+<x:element name="RspHeader" type="d:RspHeaderType"/>
+<x:element name="ReqRvrsTran" type="s:ReqRvrsTranBodyType"/>
+<x:complexType name="ReqRvrsTranBodyType">
+<x:sequence>
+<x:element name="ReqSvcHeader" type="d:ReqSvcHeaderType"/>
+<x:element name="SvcBody" minOccurs="0">
+<x:complexType>
+<x:sequence>
+<x:element ref="d:OldTranDate" minOccurs="0"/>
+<x:element ref="d:OldTranSeqNo" minOccurs="0"/>
+</x:sequence>
+</x:complexType>
+</x:element>
+</x:sequence>
+</x:complexType>
+<x:element name="RspRvrsTran" type="s:RspRvrsTranBodyType"/>
+<x:complexType name="RspRvrsTranBodyType">
+<x:sequence>
+<x:element name="RspSvcHeader" type="d:RspSvcHeaderType"/>
+<x:element minOccurs="0" name="SvcBody">
+<x:complexType>
+<x:sequence/>
+</x:complexType>
+</x:element>
+</x:sequence>
+</x:complexType>
+</x:schema>

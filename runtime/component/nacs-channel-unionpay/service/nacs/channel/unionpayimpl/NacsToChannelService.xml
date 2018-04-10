@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<services xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns=""
+          xsi:noNamespaceSchemaLocation="http://moqui.org/xsd/service-definition-2.1.xsd">
+
+    <!--发送中国银联实现服务-->
+    <service verb="send" noun="Channel"  type="inline">
+        
+        <implements service="nacs.channel.NacsToChannelService.send#Channel"/>
+        <actions>
+            <!--发送银联服务实现-->
+            <service-call name="nacs.channel.unionpayimpl.UnionPayService.send#UnionPay"
+                          in-map="context" out-map="context"/>
+        </actions>
+    </service>
+
+</services>

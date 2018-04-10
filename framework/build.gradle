@@ -1,0 +1,159 @@
+/*
+ * This software is in the public domain under CC0 1.0 Universal plus a
+ * Grant of Patent License.
+ *
+ * To the extent possible under law, the author(s) have dedicated all
+ * copyright and related and neighboring rights to this software to the
+ * public domain worldwide. This software is distributed without any
+ * warranty.
+ *
+ * You should have received a copy of the CC0 Public Domain Dedication
+ * along with this software (see the LICENSE.md file). If not, see
+ * <http://creativecommons.org/publicdomain/zero/1.0/>.
+ */
+
+// tasks.withType(JavaCompile) { options.compilerArgs << "-Xlint:unchecked" }
+// tasks.withType(GroovyCompile) { options.compilerArgs << "-Xlint:unchecked" }
+// tasks.withType(GroovyCompile) { options.compilerArgs << "-Xlint:deprecation" }
+
+version = '2.1.0'
+
+apply plugin: 'groovy'
+apply plugin: 'war'
+// to run gradle-versions-plugin use "gradle dependencyUpdates"
+apply plugin: 'com.github.ben-manes.versions'
+// uncomment to add the Error Prone compiler; not enabled by default (doesn't work on Travis CI)
+// apply plugin: 'net.ltgt.errorprone'
+buildscript {
+    repositories {
+        flatDir { dirs projectDir.parentFile.absolutePath + '/lib' }
+        // uncomment to add the Error Prone compiler: maven { url "https://plugins.gradle.org/m2/" }
+    }
+    dependencies {
+        classpath 'com.github.ben-manes:gradle-versions-plugin:0.15.0'
+        // uncomment to add the Error Prone compiler: classpath 'net.ltgt.gradle:gradle-errorprone-plugin:0.0.8'
+    }
+}
+dependencyUpdates.resolutionStrategy = { componentSelection { rules -> rules.all { ComponentSelection selection ->
+    boolean rejected = ['alpha', 'beta', 'rc', 'cr', 'm', 'b'].any { qualifier -> selection.candidate.version ==~ /(?i).*[.-]${qualifier}[.\d-]*/ }
+    if (rejected) selection.reject('Release candidate')
+} } }
+
+// NOTE: packages should match group, name, version found at https://bintray.com/bintray/jcenter
+repositories {
+    flatDir {
+        dirs projectDir.absolutePath + '/lib', projectDir.absolutePath + '/lib/execWar'
+    }
+}
+
+sourceCompatibility = '1.8'
+targetCompatibility = '1.8'
+archivesBaseName = 'moqui'
+
+sourceSets {
+    start
+    execWar
+}
+
+groovydoc {
+    docTitle = "Moqui Framework ${version}"
+    source = sourceSets.main.allSource
+}
+
+dependencies {
+    compile project(':moqui-util')
+
+    compile fileTree(dir: projectDir.absolutePath + '/lib', includes: ['*.jar'])
+
+    // Apache Shiro
+    compile module('org.apache.shiro:shiro-core:1.4.0') // Apache 2.0
+    compile module('org.apache.shiro:shiro-web:1.4.0') // Apache 2.0
+    compile module('com.cronutils:cron-utils:5.0.5') // Apache 2.0
+
+    // SubEtha SMTP (module as depends on old javax.mail location; also uses SLF4J, activation included elsewhere)
+    compile module('org.subethamail:subethasmtp:3.1.7')
+
+    // Apache XML-RPC (are all modules to not get dependencies which have conflicts)
+    compile module('org.apache.ws.commons.util:ws-commons-util:1.0.2') // Apache 2.0
+    compile module('org.apache.xmlrpc:xmlrpc-common:3.1.3') // Apache 2.0
+    compile module('org.apache.xmlrpc:xmlrpc-server:3.1.3') // Apache 2.0
+
+    compileOnly 'org.apache.ant:ant:1.9.4'
+    compileOnly 'org.apache.ant:ant-antlr:1.9.4'
+    compileOnly 'org.apache.ant:ant-junit:1.9.4'
+    compileOnly 'org.apache.ant:ant:launcher'
+    compileOnly 'org.fusesource.jansi:jansi:1.16'
+    compileOnly 'com.google.code.findbugs:annotations:3.0.1'
+
+    providedCompile 'javax.servlet:javax.servlet-api:3.1.0'
+
+    runtime 'org.apache.logging.log4j:log4j-slf4j-impl:2.9.1'
+
+    testCompile module('org.spockframework:spock-core:1.1-groovy-2.4') // Apache 2.0
+    testCompile 'junit:junit:4.12' // Apache 2.0
+    testCompile 'org.hamcrest:hamcrest-core:1.3' // BSD 3-Clause
+
+    execWarRuntime fileTree(dir: projectDir.absolutePath + '/lib/execWar', includes: ['*.jar'])
+
+}
+
+// setup task dependencies to make sure the start sourceSets always get run
+compileJava.dependsOn startClasses
+compileTestGroovy.dependsOn classes
+sourceSets.test.compileClasspath += files(sourceSets.main.output.classesDir)
+
+// by default the Java plugin runs test on build, change to not do that (only run test if explicit task)
+check.dependsOn.remove(test)
+
+test {
+    dependsOn cleanTest
+    include '**/*MoquiSuite.class'
+
+    systemProperty 'moqui.runtime', '../runtime'
+    systemProperty 'moqui.conf', 'conf/MoquiDevConf.xml'
+    systemProperty 'moqui.init.static', 'true'
+
+    testLogging.showStandardStreams = true; testLogging.showExceptions = true
+
+    classpath += files(sourceSets.main.output.classesDir); classpath += files(projectDir.absolutePath)
+    // filter out classpath entries that don't exist (gradle adds a bunch of these), or ElasticSearch JarHell will blow up
+    classpath = classpath.filter { it.exists() }
+
+    beforeTest { descriptor -> logger.lifecycle("Running test: ${descriptor}") }
+}
+
+jar {
+    // this is necessary otherwise jar won't build when war plugin is applied
+    enabled = true
+    appendix = 'framework'
+    manifest { attributes 'Implementation-Title': 'Moqui Framework', 'Implementation-Version': version, 'Implementation-Vendor': 'Moqui Ecosystem' }
+    from sourceSets.main.output
+    // get all of the "resources" that are in component-standard directories instead of src/main/resources
+    from fileTree(dir: projectDir.absolutePath, includes: ['data/**', 'entity/**', 'screen/**', 'service/**', 'template/**']) // 'xsd/**'
+}
+
+war {
+    dependsOn jar
+    // put the war file in the parent directory, ie the moqui dir instead of the framework dir
+    destinationDir = projectDir.parentFile
+    archiveName = 'moqui.war'
+    // add MoquiInit.properties to the WEB-INF/classes dir for the deployed war mode of operation
+    from(fileTree(dir: destinationDir, includes: ['MoquiInit.properties'])) { into 'WEB-INF/classes' }
+    // this excludes the classes in sourceSets.main.output (better to have the jar file built above)
+    classpath = configurations.runtime - configurations.providedCompile
+    classpath file(jar.archivePath)
+
+    // put start classes and Jetty jars in the root of the war file for the executable war/jar mode of operation
+    from sourceSets.start.output
+    from(files(configurations.execWarRuntime)) { into 'execlib' }
+    // TODO some sort of config for Jetty? from file(projectDir.absolutePath + '/jetty/jetty.xml')
+    // setup the manifest for the executable war/jar mode
+    manifest { attributes 'Implementation-Title': 'Moqui Start', 'Implementation-Vendor': 'Moqui Ecosystem',
+            'Implementation-Version': version, 'Main-Class': 'MoquiStart' }
+}
+
+task copyDependencies { doLast {
+    delete file(projectDir.absolutePath + '/dependencies')
+    copy { from configurations.runtime; into file(projectDir.absolutePath + '/dependencies') }
+    copy { from configurations.testCompile; into file(projectDir.absolutePath + '/dependencies') }
+} }

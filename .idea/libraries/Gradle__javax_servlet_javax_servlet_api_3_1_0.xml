@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="Gradle: javax.servlet:javax.servlet-api:3.1.0">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/moqui-util/lib/javax.servlet-api-3.1.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/framework/lib/execWar/javax.servlet-api-3.1.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/runtime/component/nacs-channel-unionpay/lib/javax.servlet-api-3.1.0.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<services xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns=""
+          xsi:noNamespaceSchemaLocation="http://moqui.org/xsd/service-definition-2.1.xsd">
+<service verb="get" noun="Before" authenticate="false">
+    <in-parameters>
+        <parameter name="checkDate" required="true"/>
+    </in-parameters>
+    <out-parameters>
+        <parameter name="checkDate"/>
+    </out-parameters>
+    <actions>
+        <script>
+            import java.text.ParseException
+            import java.text.SimpleDateFormat
+            import java.util.Date
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            def now = sdf.parse(checkDate)
+            def now1=(now-1).format('yyyy-MM-dd')
+        </script>
+        <set field="checkDate" from="now1"/>
+
+    </actions>
+</service>
+
+    <service verb="get" noun="After" authenticate="false">
+        <in-parameters>
+            <parameter name="checkDate" required="true"/>
+        </in-parameters>
+        <out-parameters>
+            <parameter name="checkDate"/>
+        </out-parameters>
+        <actions>
+            <script>
+                import java.text.ParseException
+                import java.text.SimpleDateFormat
+                import java.util.Date
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                def now = sdf.parse(checkDate)
+                def now1=(now+1).format('yyyy-MM-dd')
+            </script>
+            <set field="checkDate" from="now1"/>
+
+        </actions>
+    </service>
+
+    <service verb="get" noun="Before1" authenticate="false">
+        <in-parameters>
+            <parameter name="settleDate" required="true"/>
+        </in-parameters>
+        <out-parameters>
+            <parameter name="settleDate"/>
+        </out-parameters>
+        <actions>
+            <script>
+                import java.text.ParseException
+                import java.text.SimpleDateFormat
+                import java.util.Date
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                def now = sdf.parse(settleDate)
+                def now1=(now-1).format('yyyy-MM-dd')
+            </script>
+            <set field="settleDate" from="now1"/>
+
+        </actions>
+    </service>
+
+    <service verb="get" noun="After1" authenticate="false">
+        <in-parameters>
+            <parameter name="settleDate" required="true"/>
+        </in-parameters>
+        <out-parameters>
+            <parameter name="settleDate"/>
+        </out-parameters>
+        <actions>
+            <script>
+                import java.text.ParseException
+                import java.text.SimpleDateFormat
+                import java.util.Date
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                def now = sdf.parse(settleDate)
+                def now1=(now+1).format('yyyy-MM-dd')
+            </script>
+            <set field="settleDate" from="now1"/>
+
+        </actions>
+    </service>
+
+
+
+
+
+
+
+
+</services>

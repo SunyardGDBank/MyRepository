@@ -1,0 +1,525 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+This software is in the public domain under CC0 1.0 Universal plus a
+Grant of Patent License.
+
+To the extent possible under law, the author(s) have dedicated all
+copyright and related and neighboring rights to this software to the
+public domain worldwide. This software is distributed without any
+warranty.
+
+You should have received a copy of the CC0 Public Domain Dedication
+along with this software (see the LICENSE.md file). If not, see
+<http://creativecommons.org/publicdomain/zero/1.0/>.
+-->
+<entities xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:noNamespaceSchemaLocation="http://moqui.org/xsd/entity-definition-2.1.xsd">
+
+    <!-- ========================================================= -->
+    <!--交易相关表单-->
+    <!--nacs.trx.TxItem 交易流水主信息表-->
+    <!--nacs.trx.TxItemChannel 交易流水渠道信息表-->
+    <!--nacs.trx.TxItemCore 交易流水账务信息表-->
+    <!--nacs.trx.Agreement 协议登记信息表-->
+    <!-- ========================================================= -->
+
+
+    <!--交易流水主信息表-->
+    <entity entity-name="TxItem" package="nacs.trx" authorize-skip="true" cache="false" sequence-primary-prefix="${new Date().format('yyyyMMdd')}" sequence-primary-name="TxItem${new Date().format('yyyyMMdd')}" primary-start-sequence="10000000">
+        <description>交易流水主信息表</description>
+        <field name="nacsTxId" type="id" is-pk="true" not-null="true">
+            <description>平台流水号</description>
+        </field>
+        <field name="workDate" type="id" not-null="true">
+            <description>工作日期</description>
+        </field>
+        <field name="checkDate" type="id">
+            <description>对账日期</description>
+        </field>
+        <field name="buiTxId" type="id" not-null="true">
+            <description>业务渠道流水号</description>
+        </field>
+        <field name="payTxId" type="id">
+            <description>支付通道流水号</description>
+        </field>
+        <field name="orderId" type="id">
+            <description>订单号</description>
+        </field>
+        <field name="accountType" type="id">
+            <description>账户类型</description>
+        </field>
+        <field name="trxCtgy" type="id" not-null="true">
+            <description>交易类别(000401-代付 000501-代收)</description>
+        </field>
+        <field name="buiStatus" type="id" not-null="true">
+            <description>业务渠道状态(BUI_STATUS1-处理成功，BUI_STATUS2-已拒绝，BUI_STATUS3-处理超时)</description>
+        </field>
+        <field name="payStatus" type="id" not-null="true">
+            <description>支付通道状态(PAY_STATUS1-处理成功，PAY_STATUS2-已拒绝，PAY_STATUS3-状态未明)</description>
+        </field>
+        <field name="coreStatus" type="id">
+            <description>记账状态(ACCT_TRANS_SUCCESS-记账成功，CANCEL_TRANS_SUCCESS-冲正成功，ACCT_TRANS_FAIL-记账失败，FIND_TRANS_UNKNOW-查询不明 HOLD_TRANS_BEEN-已挂账)</description>
+        </field>
+	<field name="coreAcctFlag" type="id" default="0">
+            <description>核心是否有账务(0没有账务 1有账务 对账使用)</description>
+        </field>
+        <field name="acctDate" type="id">
+            <description>核心记账日期</description>
+        </field>
+        <field name="acctSeq" type="id">
+            <description>核心记账流水号</description>
+        </field>
+        <field name="customerNo" type="id-long">
+            <description>客户号</description>
+        </field>
+        <field name="companyNo" type="id">
+            <description>一级商户编号</description>
+        </field>
+        <field name="companyNoName" type="id">
+            <description>一级商户名称</description>
+        </field>
+        <field name="mrchntSeqId" type="id">
+            <description>关联商户seqId</description>
+        </field>
+        <field name="subMrchntNo" type="id">
+            <description>子商户编号</description>
+        </field>
+        <field name="subMrchntNm" type="id-long">
+            <description>子商户名称</description>
+        </field>
+        <field name="channelSeqId" type="id">
+            <description>关联支付通道seqId</description>
+        </field>
+        <field name="tranStas" type="id">
+            <description>处理状态(SIGN_DOING签约中 TERMINATION_DOING解约中 SIGN_SUCCESS签约成功 TERMINATION_SUCCESS解约成功 SIGN_FAIL签约失败 TERMINATION_FAIL解约失败)</description>
+        </field>
+        <field name="tranDesc" type="id-long">
+            <description>处理结果信息</description>
+        </field>
+        <field name="txStatuId" type="id">
+            <description>平台处理状态（TX_STATU_SUCCESS-成功 TX_STATU_UNKNOW-交易未明 TX_STATU_FAIL-失败 TX_STATU_BEEN 已对账 TX_STATU_DONE-已受理）</description>
+        </field>
+        <field name="txStatuDsc" type="id-long">
+            <description>平台处理结果信息</description>
+        </field>
+        <field name="reqTime" type="id">
+            <description>请求时间</description>
+        </field>
+        <field name="reqDate" type="id">
+            <description>请求日期</description>
+        </field>
+        <field name="custCode" type="id-long">
+            <description>客户编号</description>
+        </field>
+        <field name="trsMemo" type="id-long">
+            <description>交易备注</description>
+        </field>
+        <field name="trxAmt" type="currency-amount" not-null="true">
+            <description>交易金额</description>
+        </field>
+        <field name="feeAmount" type="currency-amount">
+            <description>手续费金额</description>
+        </field>
+        <field name="payeeAcctno" type="id-long">
+            <description>收款人账号</description>
+        </field>
+        <field name="payeeAcctName" type="id-long">
+            <description>收款人姓名</description>
+        </field>
+        <field name="payerAcctno" type="id-long">
+            <description>付款人账号</description>
+        </field>
+        <field name="payerAcctName" type="id-long">
+            <description>付款人姓名</description>
+        </field>
+        <field name="certCode" type="id">
+            <description>证件类型</description>
+        </field>
+        <field name="certNo" type="text-short">
+            <description>证件号（客户证件号码）</description>
+        </field>
+        <field name="batchNo" type="text-short">
+            <description>批次号</description>
+        </field>
+        <field name="innerBatchNo" type="text-short">
+            <description>平台批次号</description>
+        </field>
+        <field name="useRemark" type="id-long">
+            <description>摘要</description>
+        </field>
+        <field name="remarks1" type="id-long">
+            <description>备注1</description>
+        </field>
+        <field name="remarks2" type="id-long">
+            <description>备注2</description>
+        </field>
+        <field name="remarks3" type="id-long">
+            <description>备注3</description>
+        </field>
+        <relationship type="one-nofk" related="nacs.mrchnt.Mrchnt">
+            <key-map field-name="mrchntSeqId" related="seqId"/>
+        </relationship>
+        <relationship type="one-nofk" related="nacs.channel.Channel" >
+            <key-map field-name="channelSeqId" related="seqId"/>
+        </relationship>
+        <!--交易类别-->
+        <relationship type="one-nofk" title="TrxCtgy" related="moqui.basic.Enumeration">
+            <key-map field-name="trxCtgy"/>
+        </relationship>
+        <!--业务渠道状态-->
+        <relationship type="one-nofk" title="BuiStatus" related="moqui.basic.StatusItem">
+            <key-map field-name="buiStatus" related="statusId"/>
+        </relationship>
+        <!--支付通道状态-->
+        <relationship type="one-nofk" title="PayStatus" related="moqui.basic.StatusItem">
+            <key-map field-name="payStatus" related="statusId"/>
+        </relationship>
+        <!--记账状态-->
+        <relationship type="one-nofk" related="moqui.basic.StatusItem" title="CoreStatus">
+            <key-map field-name="coreStatus" related="statusId"/>
+        </relationship>
+        <!--平台处理状态-->
+        <relationship type="one-nofk" related="moqui.basic.StatusItem" title="TxStatuId">
+            <key-map field-name="txStatuId" related="statusId"/>
+        </relationship>
+        <!--处理状态-->
+        <relationship related="moqui.basic.StatusItem" title="TranStas" type="one-nofk">
+            <key-map field-name="tranStas" related="statusId"/>
+        </relationship>
+    </entity>
+
+    <!--交易流水通道信息表-->
+    <entity entity-name="TxItemChannel" package="nacs.trx" authorize-skip="true" cache="false" sequence-primary-prefix="${new Date().format('yyyyMMdd')}" sequence-primary-name="TxItemChannel${new Date().format('yyyyMMdd')}" primary-start-sequence="10000000">
+        <description>交易流水通道信息表</description>
+        <field name="nacsTxId" type="id" is-pk="true" not-null="true">
+            <description>平台流水号</description>
+        </field>
+        <field name="mrchntSeqId" type="id" not-null="true">
+            <description>关联商户seqId</description>
+        </field>
+        <field name="channelSeqId" type="id" not-null="true">
+            <description>关联支付通道seqId</description>
+        </field>
+        <field name="workDate" type="id" not-null="true">
+            <description>工作日期</description>
+        </field>
+        <field name="checkDate" type="id" not-null="true">
+            <description>对账日期</description>
+        </field>
+        <field name="txnTime" type="id" not-null="true">
+            <description>订单发送时间</description>
+        </field>
+        <field name="buiTxId" type="id" not-null="true">
+            <description>业务渠道流水号</description>
+        </field>
+        <field name="payTxId" type="id" not-null="true">
+            <description>支付通道流水号</description>
+        </field>
+        <field name="orderId" type="id" not-null="true">
+            <description>订单号</description>
+        </field>
+        <field name="trxCtgy" type="id" not-null="true">
+            <description>交易类别(000401-代付 000501-代收)</description>
+        </field>
+        <field name="payStatus" type="id" not-null="true">
+            <description>支付通道状态(PAY_STATUS1-处理成功，PAY_STATUS2-已拒绝，PAY_STATUS3-状态未明)</description>
+        </field>
+        <field name="subMrchntNo" type="id-long">
+            <description>子商户号</description>
+        </field>
+        <field name="tranStas" type="id" not-null="true">
+            <description>处理状态</description >
+        </field>
+        <field name="tranDesc" type="id-long" not-null="true">
+            <description>处理结果信息</description>
+        </field>
+        <field name="txStatuId" type="id" not-null="true">
+            <description>平台处理状态（TX_STATU_SUCCESS-成功 TX_STATU_UNKNOW-交易未明 TX_STATU_FAIL-失败 TX_STATU_BEEN 已对账 TX_STATU_DONE-已受理）</description>
+        </field>
+        <field name="txStatuDsc" type="id-long" not-null="true">
+            <description>平台处理结果信息</description>
+        </field>
+        <field name="trxAmt" type="currency-amount" not-null="true">
+            <description>交易金额</description>
+        </field>
+        <field name="payeeAcctno" type="id-long" not-null="true">
+            <description>收款人账号</description>
+        </field>
+        <field name="payeeAcctName" type="id-long" not-null="true">
+            <description>收款人姓名</description>
+        </field>
+        <field name="payerAcctno" type="id-long" not-null="true">
+            <description>付款人账号</description>
+        </field>
+        <field name="payerAcctName" type="id-long" not-null="true">
+            <description>付款人姓名</description>
+        </field>
+        <field name="certCode" type="id" not-null="true">
+            <description>证件类型</description>
+        </field>
+        <field name="certNo" type="id" not-null="true">
+            <description>证件号</description>
+        </field>
+        <field name="remarks1" type="id-long">
+            <description>备注1</description>
+        </field>
+        <field name="remarks2" type="id-long">
+            <description>备注2</description>
+        </field>
+        <field name="remarks3" type="id-long">
+            <description>备注3</description>
+        </field>
+        <relationship type="one-nofk" related="nacs.mrchnt.Mrchnt">
+            <key-map field-name="mrchntSeqId" related="seqId"/>
+        </relationship>
+        <relationship type="one-nofk" related="nacs.channel.Channel" >
+            <key-map field-name="channelSeqId" related="seqId"/>
+        </relationship>
+        <!--代收付类型-->
+        <relationship related="moqui.basic.Enumeration" title="TrxCtgy" type="one-nofk">
+            <key-map field-name="trxCtgy" related="enumId"/>
+        </relationship>
+        <!--支付通道状态-->
+        <relationship related="moqui.basic.StatusItem" title="PayStatus" type="one-nofk">
+            <key-map field-name="payStatus" related="statusId"/>
+        </relationship>
+        <!--处理状态-->
+        <relationship related="moqui.basic.StatusItem" title="TranStas" type="one-nofk">
+            <key-map field-name="tranStas" related="statusId"/>
+        </relationship>
+        <!--平台处理状态-->
+        <relationship related="moqui.basic.StatusItem" title="TxStatuId" type="one-nofk">
+            <key-map field-name="txStatuId" related="statusId"/>
+        </relationship>
+        <!--证件类型-->
+        <relationship related="moqui.basic.Enumeration" title="Certcode" type="one-nofk">
+            <key-map field-name="certCode" related="enumId"/>
+        </relationship>
+        <index name="NACS_TRX_TX_ITEM_CHANNEL_INDEX1" unique="false">
+            <index-field name="channelSeqId"/>
+        </index>
+    </entity>
+
+    <!--交易流水账务信息表-->
+    <entity entity-name="TxItemCore" package="nacs.trx" authorize-skip="true" cache="false">
+        <description>交易流水账务信息表</description>
+        <field name="nacsTxId" type="id" is-pk="true" not-null="true">
+            <description>平台流水号</description>
+        </field>
+        <field name="coreId" type="id">
+            <description>核心记账流水号</description>
+        </field>
+        <field name="coreAcctFlag" type="id" default="0">
+            <description>核心是否有账务(0没有账务 1有账务 对账使用)</description>
+        </field>
+        <field name="acctType" type="id" >
+            <description>记账类型（ACCT_TRANS-记账 CANCEL_TRANS-冲正）</description>
+        </field>
+        <field name="workDate" type="id">
+            <description>工作日期</description>
+        </field>
+        <field name="checkDate" type="id" >
+            <description>对账日期</description>
+        </field>
+        <field name="buiTxId" type="id" >
+            <description>业务渠道流水号</description>
+        </field>
+        <field name="payTxId" type="id" >
+            <description>支付通道流水号</description>
+        </field>
+        <field name="orderId" type="id" >
+            <description>订单号</description>
+        </field>
+        <field name="trxCtgy" type="id">
+            <description>交易类别(000401-代付 000501-代收)</description>
+        </field>
+        <field name="coreStatus" type="id" >
+            <description>记账状态(ACCT_TRANS_SUCCESS-记账成功，CANCEL_TRANS_SUCCESS-冲正成功，ACCT_TRANS_FAIL-记账失败，FIND_TRANS_UNKNOW-查询不明 HOLD_TRANS_BEEN-已挂账)</description>
+        </field>
+        <field name="acctDate" type="id" >
+            <description>核心记账日期</description>
+        </field>
+        <field name="channelSeqId" type="id" >
+            <description>关联支付通道seqId</description>
+        </field>
+        <field name="tranStas" type="id" >
+            <description>处理状态(SIGN_DOING签约中 TERMINATION_DOING解约中 SIGN_SUCCESS签约成功 TERMINATION_SUCCESS解约成功 SIGN_FAIL签约失败 TERMINATION_FAIL解约失败)</description>
+        </field>
+        <field name="tranDesc" type="id-long" >
+            <description>处理结果信息</description>
+        </field>
+        <field name="txStatuId" type="id" >
+            <description>平台处理状态（TX_STATU_SUCCESS-成功 TX_STATU_UNKNOW-交易未明 TX_STATU_FAIL-失败 TX_STATU_BEEN 已对账 TX_STATU_DONE-已受理）</description>
+        </field>
+        <field name="txStatuDsc" type="id-long">
+            <description>平台处理结果信息</description>
+        </field>
+        <field name="trxAmt" type="currency-amount" >
+            <description>交易金额</description>
+        </field>
+        <field name="feeAmount" type="currency-amount">
+            <description>手续费金额</description>
+        </field>
+        <field name="payeeAcctno" type="id-long" >
+            <description>收款人账号</description>
+        </field>
+        <field name="payeeAcctName" type="id-long" >
+            <description>收款人姓名</description>
+        </field>
+        <field name="payerAcctno" type="id-long" >
+            <description>付款人账号</description>
+        </field>
+        <field name="payerAcctName" type="id-long" >
+            <description>付款人姓名</description>
+        </field>
+        <field name="payeeBalance" type="currency-amount" >
+            <description>收款人账号余额</description>
+        </field>
+        <field name="payerBalance" type="currency-amount" >
+            <description>付款人账号余额</description>
+        </field>
+        <field name="remarks1" type="id-long">
+            <description>备注1</description>
+        </field>
+        <field name="remarks2" type="id-long">
+            <description>备注2</description>
+        </field>
+        <field name="remarks3" type="id-long">
+            <description>备注3</description>
+        </field>
+        <relationship type="one-nofk" related="nacs.channel.Channel" >
+            <key-map field-name="channelSeqId" related="seqId"/>
+        </relationship>
+        <!--记账类型-->
+        <relationship related="moqui.basic.Enumeration" type="one-nofk" title="AcctType">
+            <key-map field-name="acctType" related="enumId"/>
+        </relationship>
+        <!--代收付类型-->
+        <relationship related="moqui.basic.Enumeration" title="TrxCtgy" type="one-nofk">
+            <key-map field-name="trxCtgy" related="enumId"/>
+        </relationship>
+        <!--记账状态-->
+        <relationship related="moqui.basic.StatusItem" type="one-nofk" title="CoreStatus">
+            <key-map field-name="coreStatus" related="statusId"/>
+        </relationship>
+        <!--平台处理状态-->
+        <relationship related="moqui.basic.StatusItem" title="TxStatuId" type="one-nofk">
+            <key-map field-name="txStatuId" related="statusId"/>
+        </relationship>
+        <!--处理状态-->
+        <relationship related="moqui.basic.StatusItem" title="TranStas" type="one-nofk">
+            <key-map field-name="tranStas" related="statusId"/>
+        </relationship>
+        <index name="NACS_TRX_TX_ITEM_CORE_INDEX1" unique="false">
+            <index-field name="acctDate"/>
+        </index>
+        <index name="NACS_TRX_TX_ITEM_CORE_INDEX2" unique="false">
+            <index-field name="acctType"/>
+        </index>
+    </entity>
+
+    <!--协议登记信息表-->
+    <entity entity-name="Agreement" package="nacs.trx" authorize-skip="true" cache="false" sequence-primary-prefix="${new Date().format('yyyyMMdd')}" sequence-primary-name="AgreementSeq${new Date().format('yyyyMMdd')}" primary-start-sequence="10000000">
+        <description>协议登记信息表</description>
+        <field name="nacsTxId" type="id-long" is-pk="true" not-null="true">
+            <description>平台流水号</description>
+        </field>
+        <field name="buiTxId" type="id-long" not-null="true">
+            <description>业务渠道流水号</description>
+        </field>
+        <field name="payTxId" type="id-long" not-null="true">
+            <description>支付通道流水号</description>
+        </field>
+        <field name="txFlg" type="id" not-null="true">
+            <description>交易标志(SIGN-签约 TERMINATION-解约 FIND_SIGN-查询签约信息)</description>
+        </field>
+        <field name="signDate" type="id" not-null="true">
+            <description>签约日期</description>
+        </field>
+        <field name="mrchntSeqId" type="id" not-null="true">
+            <description>关联商户seqId</description>
+        </field>
+        <field name="subMrchntNo" type="id">
+            <description>子商户编号</description>
+        </field>
+        <field name="subMrchntNm" type="id-long">
+            <description>子商户名称</description>
+        </field>
+        <field name="agreementNum" type="id-long" not-null="true">
+            <description>协议号</description>
+        </field>
+        <field name="tranStas" type="id" not-null="true">
+            <description>处理状态（SIGN_DOING-签约中 TERMINATION_DOING-解约中 SIGN_SUCCESS-签约成功 TERMINATION_SUCCESS-解约成功 SIGN_FAIL-签约成功 TERMINATION_FAIL-解约失败）</description>
+        </field>
+        <field name="tranDesc" type="id-long" not-null="true">
+            <description>处理结果信息</description>
+        </field>
+        <field name="veriType" type="id" not-null="true">
+            <description>验证方式 (Y_VERIFIED_Y_SIGN - 需验证需签约 N_VERIFIED_Y_SIGN - 无需验证需签约 Y_VERIFIED_N_SIGN - 需验证无需签约 N_VERIFIED_N_SIGN - 无需验证无需签约)</description>
+        </field>
+        <field name="viDate" type="id" not-null="true">
+            <description>有效期</description>
+        </field>
+        <field name="channelSeqId" type="id" not-null="true">
+            <description>关联支付通道seqId</description>
+        </field>
+        <field name="trxCtgy" type="id" not-null="true">
+            <description>交易类别(000401-代付 000501-代收)</description>
+        </field>
+        <field name="accAame" type="id-long" not-null="true">
+            <description>银行账户户名</description>
+        </field>
+        <field name="bankAcct" type="id-long" not-null="true">
+            <description>银行账号</description>
+        </field>
+        <field name="certCode" type="id" not-null="true">
+            <description>证件类型</description>
+        </field>
+        <field name="certNo" type="id-long" not-null="true">
+            <description>证件号</description>
+        </field>
+        <field name="contactPhone" type="id" not-null="true">
+            <description>联系电话</description>
+        </field>
+        <field name="contactAddr" type="id-long" not-null="true">
+            <description>联系地址</description>
+        </field>
+        <field name="remarks1" type="id-long">
+            <description>备注1</description>
+        </field>
+        <field name="remarks2" type="id-long">
+            <description>备注2</description>
+        </field>
+        <field name="remarks3" type="id-long">
+            <description>备注3</description>
+        </field>
+        <relationship type="one-nofk" related="nacs.mrchnt.Mrchnt">
+            <key-map field-name="mrchntSeqId" related="seqId"/>
+        </relationship>
+        <relationship type="one-nofk" related="nacs.channel.Channel" >
+            <key-map field-name="channelSeqId" related="seqId"/>
+        </relationship>
+        <!--处理状态-->
+        <relationship related="moqui.basic.StatusItem" title="TranStas" type="one-nofk">
+            <key-map field-name="tranStas" related="statusId"/>
+        </relationship>
+        <!--交易标志-->
+        <relationship type="one-nofk" related="moqui.basic.Enumeration" title="TxFlg">
+            <key-map field-name="txFlg" related="enumId"/>
+        </relationship>
+        <!--代收付类型-->
+        <relationship related="moqui.basic.Enumeration" title="TrxCtgy" type="one-nofk">
+            <key-map field-name="trxCtgy" related="enumId"/>
+        </relationship>
+        <!--证件类型-->
+        <relationship related="moqui.basic.Enumeration" title="Certcode" type="one-nofk">
+            <key-map field-name="certCode" related="enumId"/>
+        </relationship>
+        <!--验证方式-->
+        <relationship related="moqui.basic.Enumeration" title="MerchantVerIfysts" type="one-nofk">
+            <key-map field-name="veriType" related="enumId"/>
+        </relationship>
+    </entity>
+
+
+</entities>

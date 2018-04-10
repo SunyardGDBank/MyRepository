@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<services xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns=""
+          xsi:noNamespaceSchemaLocation="http://moqui.org/xsd/service-definition-2.1.xsd">
+    <!--更新路由信息服务-->
+    <service verb="update" noun="Mrchnt" authenticate="false">
+        <in-parameters>
+            <auto-parameters include="nonpk"/>
+            <parameter name="seqId"/>
+            <parameter name="mrchntNo"/>
+            <parameter name="mrchntFlag"/>
+            <parameter name="mrchntBeginTime"/>
+            <parameter name="mrchntEndTime"/>
+        </in-parameters>
+        <actions>
+            <entity-find entity-name="nacs.mrchnt.Mrchnt" list="mrchntList">
+                <econdition field-name="mrchntNo" from="mrchntNo"/>
+            </entity-find>
+            <service-call name="update#nacs.mrchnt.Mrchnt" in-map="context"/>
+        </actions>
+    </service>
+
+    <!--添加黑名单信息-->
+    <service verb="create" noun="BlacklistTab" authenticate="false">
+        <in-parameters>
+            <auto-parameters include="nonpk"/>
+            <parameter name="seqId"/>
+            <parameter name="mrchntSeqId"/>
+            <parameter name="bankAcctId" required="true"/>
+            <parameter name="trxCtgy" required="true"/>
+            <parameter name="channelSeqId" required="true"/>
+            <parameter name="takeEffectFlg" required="true"/>
+        </in-parameters>
+        <actions>
+            <log level="error" message="mrchntSeqId*********** ${mrchntSeqId}"/>
+            <entity-find entity-name="nacs.para.BlacklistTab" list="blacklistTabList">
+                <econdition field-name="mrchntSeqId" from="mrchntSeqId"/>
+                <econdition field-name="bankAcctId" from="bankAcctId"/>
+                <econdition field-name="trxCtgy" from="trxCtgy"/>
+            </entity-find>
+            <if condition="blacklistTabList">
+                <return error="true" message="该黑名单用户已存在."/>
+            </if>
+            <service-call name="create#nacs.para.BlacklistTab" in-map="context"/>
+           </actions>
+    </service>
+
+    <!--添加白名单信息-->
+    <service verb="create" noun="WhitelistTab" authenticate="false">
+        <in-parameters>
+            <auto-parameters include="nonpk"/>
+            <parameter name="seqId"/>
+            <parameter name="mrchntSeqId"/>
+            <parameter name="bankAcctId" required="true"/>
+            <parameter name="trxCtgy" required="true"/>
+            <parameter name="channelSeqId" required="true"/>
+            <parameter name="takeEffectFlg" required="true"/>
+        </in-parameters>
+        <actions>
+            <log level="error" message="mrchntSeqId====${mrchntSeqId}"/>
+            <entity-find entity-name="nacs.para.WhitelistTab" list="whitelistTabList">
+                <econdition field-name="mrchntSeqId" from="mrchntSeqId"/>
+                <econdition field-name="bankAcctId" from="bankAcctId"/>
+                <econdition field-name="trxCtgy" from="trxCtgy"/>
+            </entity-find>
+            <if condition="whitelistTabList">
+                <return error="true" message="该白名单用户已存在."/>
+            </if>
+            <service-call name="create#nacs.para.WhitelistTab" in-map="context"/>
+        </actions>
+    </service>
+
+    <!--添加匹配规则代付服务-->
+    <service verb="create" noun="MrchntRoute" authenticate="false">
+        <in-parameters>
+            <parameter name="mrchntSeqId"/>
+            <parameter name="trxCtgy" required="true"/>
+            <parameter name="version"/>
+            <parameter name="matchType" required="true"/>
+            <parameter name="matchStatus" required="true"/>
+        </in-parameters>
+        <actions>
+            <log level="error" message="mrchntSeqId*********** ${mrchntSeqId}"/>
+            <entity-find entity-name="nacs.mrchnt.MrchntRoute" list="mrchntRouteList">
+                <econdition field-name="mrchntSeqId" from="mrchntSeqId"/>
+                <econdition field-name="version" from="version"/>
+                <econdition field-name="trxCtgy" from="trxCtgy"/>
+                <econdition field-name="matchType" from="matchType"/>
+            </entity-find>
+            <if condition="mrchntRouteList">
+                <return error="true" message="该匹配规则已存在."/>
+            </if>
+            <service-call name="create#nacs.mrchnt.MrchntRoute" in-map="context"/>
+        </actions>
+    </service>
+
+    <!--更新匹配规则代付服务-->
+    <service verb="update" noun="MrchntRoute" authenticate="false">
+        <in-parameters>
+            <parameter name="seqId"/>
+            <parameter name="mrchntSeqId"/>
+            <parameter name="trxCtgy"/>
+            <parameter name="version"/>
+            <parameter name="matchType"/>
+            <parameter name="matchStatus" required="true"/>
+        </in-parameters>
+        <actions>
+            <log level="error" message="mrchntSeqId*********** ${mrchntSeqId}"/>
+            <entity-update-by-condition entity-name="nacs.mrchnt.MrchntRoute">
+                <econdition field-name="mrchntSeqId" from="mrchntSeqId"/>
+                <econdition field-name="version" from="version"/>
+                <econdition field-name="trxCtgy" from="trxCtgy"/>
+                <econdition field-name="matchType" from="matchType"/>
+                <set-field field-name="matchStatus" from="matchStatus"/>
+            </entity-update-by-condition>
+            <service-call name="update#nacs.mrchnt.MrchntRoute" in-map="context"/>
+        </actions>
+    </service>
+
+    <!--添加匹配规则代收服务-->
+    <service verb="create" noun="MrchntRouteCo" authenticate="false">
+        <in-parameters>
+            <parameter name="mrchntSeqId"/>
+            <parameter name="trxCtgy" required="true"/>
+            <parameter name="version"/>
+            <parameter name="matchType" required="true"/>
+            <parameter name="matchStatus" required="true"/>
+        </in-parameters>
+        <actions>
+            <log level="error" message="mrchntSeqId*********** ${mrchntSeqId}"/>
+            <entity-find entity-name="nacs.mrchnt.MrchntRoute" list="mrchntRouteList">
+                <econdition field-name="mrchntSeqId" from="mrchntSeqId"/>
+                <econdition field-name="version" from="version"/>
+                <econdition field-name="trxCtgy" from="trxCtgy"/>
+                <econdition field-name="matchType" from="matchType"/>
+            </entity-find>
+            <if condition="mrchntRouteList">
+                <return error="true" message="该匹配规则已存在."/>
+            </if>
+            <service-call name="create#nacs.mrchnt.MrchntRoute" in-map="context"/>
+        </actions>
+    </service>
+
+    <!--更新匹配规则代收服务-->
+    <service verb="update" noun="MrchntRouteCo" authenticate="false">
+        <in-parameters>
+            <parameter name="seqId"/>
+            <parameter name="mrchntSeqId"/>
+            <parameter name="trxCtgy"/>
+            <parameter name="version"/>
+            <parameter name="matchType"/>
+            <parameter name="matchStatus" required="true"/>
+        </in-parameters>
+        <actions>
+            <log level="error" message="mrchntSeqId*********** ${mrchntSeqId}"/>
+            <entity-update-by-condition entity-name="nacs.mrchnt.MrchntRoute">
+                <econdition field-name="mrchntSeqId" from="mrchntSeqId"/>
+                <econdition field-name="version" from="version"/>
+                <econdition field-name="trxCtgy" from="trxCtgy"/>
+                <econdition field-name="matchType" from="matchType"/>
+                <set-field field-name="matchStatus" from="matchStatus"/>
+            </entity-update-by-condition>
+            <service-call name="update#nacs.mrchnt.MrchntRoute" in-map="context"/>
+        </actions>
+    </service>
+</services>

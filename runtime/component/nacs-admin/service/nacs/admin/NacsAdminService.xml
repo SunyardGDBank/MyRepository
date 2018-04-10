@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<services xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns=""
+          xsi:noNamespaceSchemaLocation="http://moqui.org/xsd/service-definition-2.1.xsd">
+
+   <service verb="get" noun="AuditList1" authenticate="false">
+       <in-parameters>
+           <parameter name="entityAuditLogList" type="List"/>
+       </in-parameters>
+       <out-parameters>
+           <parameter name="entityAuditLogList" type="List"/>
+       </out-parameters>
+       <actions>
+           <iterate list="entityAuditLogList" entry="eal">
+               <script>
+                   def urlAry=eal.url.split("/")
+                   def edit=urlAry[urlAry.length-1]
+                   def editAry=[updateChannelBusiness:"更新通道支持业务品种信息",createChannelBusiness:"新增通道支持业务品种信息",updateNacsChannelFee:"更新通道手续费信息",
+                                 createNacsChannelFee:"新增通道手续费信息",updateChannelQuota:"更新通道限额信息",createChannelQuota:"新增通道限额信息",
+                                 createChannel:"新增通道信息",updateChannel:"更新通道信息",updateMrchntQuota:"更新商户限额信息",
+                                 createMrchntQuota:"新增商户限额信息",updateNacsSubMrchnt:"更新子商户信息",createNacsSubMrchnt:"新增子商户信息",
+                                 updateMrchntFee:"更新商户手续费信息",createMrchntFee:"新增商户手续费信息",updateMrchntCoreAccounting:"更新商户账务模式信息",
+                                 createMrchntCoreAccounting:"新增商户账务模式信息",updateMrchntType:"更新商户业务品种信息",createMrchntType:"新增商户业务品种信息",
+                                 updateMrchntCoreClear:"更新商户清算模式信息",createMrchntCoreClear:"新增商户清算模式信息",updateMrchntChannel:"更新商户可用通道信息",
+                                 createMrchntChannel:"新增商户可用通道信息",updateNacsMrchnt:"更新商户信息",createNacsMrchnt:"新增商户信息",
+                                 updateMrchntRouteCo:"更新代收业务路由开关",createMrchntRouteCo:"增加代收业务路由开关的匹配规则",updateMrchntRoute:"更新代付业务路由开关",
+                                 createMrchntRoute:"增加代付业务路由开关的匹配规则",updateNacsRoute:"更新路由管理列表的设置"]
+                   def edit1=editAry.get(edit)
+                   eal.edit=editAry.get(edit)
+               </script>
+
+               <set field="edit" value="${edit1}"/>
+               <entity-find entity-name="moqui.entity.EntityAuditLog" list="mmList">
+                   <econdition field-name="changedByUserId" operator="is-not-null"/>
+                   <econdition field-name="url" operator="is-not-null"/>
+                   <econdition field-name="url" from="eal.url"/>
+                   <econdition field-name="changedDate" from="eal.changedDate"/>
+                   <econdition field-name="changedByUserId" from="eal.changedByUserId"/>
+                   <order-by field-name="-changedDate"/>
+               </entity-find>
+              <entity-update-by-condition entity-name="moqui.entity.EntityAuditLog">
+                   <econdition field-name="auditHistorySeqId" from="mmList[0].auditHistorySeqId"/>
+                   <set-field field-name="edit" from="edit"/>
+               </entity-update-by-condition>
+          </iterate>
+        </actions>
+   </service>
+
+
+    <service verb="get" noun="AuditList2" authenticate="false">
+        <in-parameters>
+            <parameter name="moreList" type="List"/>
+        </in-parameters>
+        <out-parameters>
+            <parameter name="moreList" type="List"/>
+        </out-parameters>
+        <actions>
+            <iterate list="moreList" entry="ml">
+                <set field="edit1" value="${ml.isEnum}"/>
+                <script>
+                    def enumAry=["channelStatus","signCheckFlag","trxCtgy","feeType","bizTp","supportFlg","mrchntFlag","subMrchntFlag","mrchntVerIfysts","version","signFlag","subMrchntSt","subMrchntValisign","subMrchntLevel","clearMode","bizTpSt","feeChargeMode","mrchntSt","accountingMode","matchType","matchStatus","channelSt"]
+                    def flag=enumAry.contains(ml.changedFieldName)
+                    ml.isEnum=flag
+                    def entityAry=[nacschannelChannel:"支付通道信息表",nacschannelChannelQuota:"支付通道限额表",
+                                    nacschannelChannelFee:"支付通道手续费",nacschannelChannelBusiness:"支付通道业务品种",nacsmrchntMrchnt:"商户信息表",nacsmrchntSubMrchnt:"子商户信息表",nacsmrchntMrchntFee:"商户手续费信息表",nacsmrchntMrchntChannel:"商户可用通道对照表",nacsmrchntMrchntType:"商户业务品种对照表",nacsmrchntMrchntQuota:"商户限额表",
+                                    nacsmrchntMrchntCoreAccounting:"商户账务模式表",nacsmrchntMrchntCoreClear:"商户清算模式表",nacsmrchntMrchntRoute:"商户路由规则表"]
+                    def key=ml.changedEntityName.split("\\.")
+                    key1=key[0]+key[1]+key[2]+""
+                    def entityName=entityAry.get(key1)
+                    ml.entityName=entityName
+                    def fieldAry=[channelNm:"通道名称",channelStatus:"通道状态",channelBegin:"通道运行开启时间",channelEnd:"通道运行关闭时间",signCheckFlag:"签约验证标志",trxCtgy:"交易类别",singletranLimit:"单笔交易限额",singlTodayLimit:"当日累计最大限额",singlTodaySum:"当日累计最大笔数",feeType:"收取方式",beginAmt:"金额上限",endAmt:"金额下线",percentage:"百分比",amt:"收取金额",bizTp:"业务种类",supportFlg:"支持标志",version:"协议版本号",mrchntSt:"商户状态",mrchntFlag:"商户启用标志",subMrchntFlag:"子商户启用标志",mrchntBeginTime:"商户运行开启时间",mrchntEndTime:"商户运行关闭时间",managerInstiCode:"客户机构行号",managerInstiName:"客户机构名称",marginFormation:"保证金账户信息",marginAmt:"保证金金额",clearAccountMsg:"清算账户",clearAccountName:"清算账户名称",behalfAccount:"代发内部户",whitoutAccount:"代扣内部户",viDate:"有效期",frozenLimit:"冻结额度",zdFrozenLimit:"最低冻结额度",addFrozenLimit:"追加冻结额度",overdraftLimit:"透支额度",mrchntVerIfysts:"商户签约验证需求",subMrchntLevel:"子商户级别",subMrchntSt:"子商户启用标志",subMrchntValisign:"商户签约验证需求",feeChargeMode:"手续费收取方式",amtMonth:"当月收取金额",feeChargeRate:"手续费费率",channelSt:"通道状态",bizTpSt:"支持状态",accountingMode:"账务方式",clearMode:"清算方式",clearDay:"清算日期",matchType:"匹配规则",matchStatus:"开启标志"]
+                    ml.fieldName=fieldAry.get(ml.changedFieldName)
+                </script>
+
+
+            </iterate>
+
+        </actions>
+    </service>
+
+    <service verb="update" noun="ServiceJob" authenticate="true">
+        <in-parameters>
+            <auto-parameters include="pk" required="true"/>
+            <auto-parameters include="nonpk"/>
+            <parameter name="year"/>
+            <parameter name="month"/>
+            <parameter name="date"/>
+            <parameter name="week"/>
+            <parameter name="hour"/>
+            <parameter name="minute"/>
+            <parameter name="second"/>
+        </in-parameters>
+        <actions>
+            <if condition="!year">
+                <set field="year" value=""/>
+            </if>
+            <if condition="year">
+                <set field="year" value="${year+'年'}"/>
+            </if>
+            <if condition="!month">
+                <set field="month" value=""/>
+            </if>
+            <if condition="month">
+                <set field="month" value="${month+'月'}"/>
+            </if>
+            <if condition="!date">
+                <set field="date" value=""/>
+            </if>
+            <if condition="date">
+                <set field="date" value="${date+'日'}"/>
+            </if>
+            <if condition="!week">
+                <set field="week" value=""/>
+            </if>
+            <if condition="week">
+                <set field="week" value="${Integer.parseInt(week)-1}"/>
+                <set field="week" value="${ '周'+week+' '}"/>
+            </if>
+            <if condition="!hour">
+                <set field="hour" value=""/>
+            </if>
+            <if condition="hour">
+                <set field="hour" value="${hour+'时'}"/>
+            </if>
+            <if condition="!minute">
+                <set field="minute" value=""/>
+            </if>
+            <if condition="minute">
+                <set field="minute" value="${minute+'分'}"/>
+            </if>
+            <if condition="!second">
+                <set field="second" value=""/>
+            </if>
+            <if condition="second">
+                <set field="second" value="${second+'秒'}"/>
+            </if>
+            <set field="cronExpression" value="${year+month+date+week+' '+hour+minute+second}"/>
+            <service-call name="update#moqui.service.job.ServiceJob" in-map="context"/>
+        </actions>
+
+    </service>
+</services>

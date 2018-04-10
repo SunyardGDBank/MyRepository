@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entity-facade-xml type="seed">
+    <!--added by chf-->
+    <moqui.basic.LocalizedMessage original="Tools" localized="工具" locale="zh_CN"/>
+    <moqui.basic.LocalizedMessage original="General Tools" localized="通用工具" locale="zh_CN"/>
+    <moqui.basic.LocalizedMessage original="Entity Tools" localized="实体工具" locale="zh_CN"/>
+    <moqui.basic.LocalizedMessage original="Auto Screen" localized="自动界面" locale="zh_CN"/>
+    <moqui.basic.LocalizedMessage original="Artifact Stats" localized="构件统计" locale="zh_CN"/>
+    <moqui.basic.LocalizedMessage original="Data View" localized="数据查看" locale="zh_CN"/>
+    <moqui.basic.LocalizedMessage original="Entity" localized="实体" locale="zh_CN"/>
+    <moqui.basic.LocalizedMessage original="Check/Update All Tables" localized="检查/更新所有表" locale="zh_CN"/>
+    <moqui.basic.LocalizedMessage original="Check/Update Table" localized="检查/更新表" locale="zh_CN"/>
+    <moqui.basic.LocalizedMessage original="Detail" localized="明细" locale="zh_CN"/>
+    <moqui.basic.LocalizedMessage original="Entity Detail" localized="实体明细" locale="zh_CN"/>
+    <moqui.basic.LocalizedMessage original="Service" localized="服务" locale="zh_CN"/>
+    <moqui.basic.LocalizedMessage original="Entity List" localized="实体列表" locale="zh_CN"/>
+    <moqui.basic.LocalizedMessage original="New Value" localized="新值" locale="zh_CN"/>
+    <moqui.basic.LocalizedMessage original="Edit" localized="编辑" locale="zh_CN"/>
+
+</entity-facade-xml>

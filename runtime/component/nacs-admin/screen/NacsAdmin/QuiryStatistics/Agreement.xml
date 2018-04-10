@@ -1,0 +1,766 @@
+<screen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="http://moqui.org/xsd/xml-screen-2.1.xsd"
+        default-menu-title="签约信息流水" default-menu-index="4" >
+
+    <parameter name="signDate_from"/>
+    <transition name="findAgreement">
+        <default-response url="."/>
+    </transition>
+    <actions>
+        <if condition="!signDate_from">
+            <set field="signDate_from" value="${new Date().format('yyyy-MM-dd')}"/>
+        </if>
+        <entity-find entity-name="nacs.trx.Agreement" list="agreementList">
+            <search-form-inputs/>
+            <order-by field-name="-workDate"/>
+        </entity-find>
+        <entity-find entity-name="moqui.basic.Enumeration" list="TxFlgList">
+            <econdition field-name="enumTypeId" value="TxFlg"/>
+        </entity-find>
+        <!--交易类别-->
+        <entity-find entity-name="moqui.basic.Enumeration" cache="true" list="trxCtgyList">
+            <econdition field-name="enumTypeId" value="TrxCtgy"/>
+        </entity-find>
+        <entity-find entity-name="moqui.basic.StatusItem" list="tranStasList">
+            <econdition field-name="statusTypeId" value="TranStas"/>
+        </entity-find>
+        <entity-find entity-name="nacs.channel.ChannelView" list="channelViewList"/>
+        <entity-find entity-name="nacs.mrchnt.MrchntView" list="mrchntViewList"/>
+        <entity-find entity-name="moqui.basic.Enumeration" list="certcodeList">
+            <econdition field-name="enumTypeId" value="Certcode"/>
+        </entity-find>
+        <entity-find entity-name="moqui.basic.Enumeration" list="MerchantVerIfystsList">
+            <econdition field-name="enumTypeId" value="MerchantVerIfysts"/>
+        </entity-find>
+
+        <!--子商户-->
+        <entity-find entity-name="nacs.mrchnt.SubMrchnt" list="subMrchntList"/>
+    </actions>
+
+
+    <widgets>
+        <container-dialog id="findAgreement" button-text="查找" width="1350">
+            <form-single name="FindAgreement" transition="findAgreement">
+                <auto-fields-entity entity-name="nacs.trx.Agreement" field-type="edit">
+                    <exclude field-name="remarks1"/>
+                    <exclude field-name="remarks2"/>
+                    <exclude field-name="remarks3"/>
+                </auto-fields-entity>
+                <field name="nacsTxId">
+                    <default-field title="平台流水号"> </default-field>
+                </field>
+                <field name="buiTxId">
+                    <default-field title="商户流水号"> </default-field>
+                </field>
+
+                <field name="payTxId">
+                    <default-field title="支付通道流水号"> </default-field>
+                </field>
+
+                <field name="txFlg">
+                    <default-field title="交易标志">
+                        <drop-down allow-empty="true">
+                            <list-options list="TxFlgList" key="${enumId}" text="${description}"/>
+                        </drop-down>
+                    </default-field>
+                </field>
+
+                <field name="payTxId">
+                    <default-field title="支付通道流水号"> </default-field>
+                </field>
+
+                <field name="signDate">
+                    <default-field title="签约日期">
+                        <date-find type="date"/>
+                    </default-field>
+                </field>
+
+                <field name="mrchntSeqId">
+                    <default-field title="商户编号">
+                        <drop-down allow-empty="true">
+                            <entity-options key="${seqId}" text="${mrchntNo} - ${mrchntNm}">
+                                <entity-find entity-name="nacs.mrchnt.Mrchnt"/>
+                            </entity-options>
+                        </drop-down>
+                    </default-field>
+                </field>
+
+                <field name="subMrchntNo">
+                    <default-field title="子商户编号">
+                        <drop-down allow-empty="true">
+                            <list-options list="subMrchntList" key="${subMrchntNo}" text="${subMrchntNo} - ${subMrchntNm}"/>
+                        </drop-down>
+                    </default-field>
+                </field>
+
+                <field name="agreementNum">
+                    <default-field title="协议号"> </default-field>
+                </field>
+
+                <field name="tranStas">
+                    <default-field title="处理状态">
+                    <drop-down allow-empty="true">
+                        <list-options list="tranStasList" key="${statusId}" text="${description}"/>
+                    </drop-down>
+                    </default-field>
+                </field>
+
+                <field name="veriType">
+                    <default-field title="验证方式">
+                        <drop-down allow-empty="true">
+                            <list-options list="MerchantVerIfystsList" key="${enumId}" text="${description}"/>
+                        </drop-down>
+                    </default-field>
+                </field>
+
+                <field name="viDate">
+                    <default-field title="有效期"> </default-field>
+                </field>
+
+                <field name="channelSeqId">
+                    <default-field title="支付通道编号">
+                        <drop-down allow-empty="true">
+                            <entity-options key="${seqId}" text="${channelNo} - ${channelNm}">
+                                <entity-find entity-name="nacs.channel.Channel"/>
+                            </entity-options>
+                        </drop-down>
+                    </default-field>
+                </field>
+
+
+                <field name="trxCtgy">
+                    <default-field title="交易类别">
+                        <drop-down allow-empty="true">
+                            <list-options list="trxCtgyList" key="${enumId}" text="${description}"/>
+                        </drop-down>
+                    </default-field>
+                </field>
+
+                <field name="bankAcct">
+                    <default-field title="银行账号"> </default-field>
+                </field>
+
+                <field name="certCode">
+                    <default-field title="证件类型">
+                        <drop-down allow-empty="true">
+                            <list-options list="certcodeList" key="${enumId}" text="${description}" />
+                        </drop-down>
+                    </default-field>
+                </field>
+
+                <field name="certNo">
+                    <default-field title="证件号"> </default-field>
+                </field>
+
+
+                <!--查找按钮-->
+                <field name="searchButton">
+                    <default-field title="Find"><submit icon="glyphicon glyphicon-search"/></default-field>
+                </field>
+
+                <!--布局-->
+                <field-layout>
+                    <field-row>
+                        <field-ref name="nacsTxId"/>
+                        <field-ref name="buiTxId"/>
+                    </field-row>
+                    <field-row>
+                        <field-ref name="payTxId"/>
+                        <field-ref name="txFlg"/>
+                    </field-row>
+                    <field-row>
+                        <field-ref name="signDate"/>
+                        <field-ref name="mrchntSeqId"/>
+                    </field-row>
+                    <field-row>
+                        <field-ref name="subMrchntNo"/>
+                        <field-ref name="agreementNum"/>
+                    </field-row>
+                    <field-row>
+                        <field-ref name="tranStas"/>
+                        <field-ref name="veriType"/>
+                    </field-row>
+                    <field-row>
+                        <field-ref name="channelSeqId"/>
+                        <field-ref name="trxCtgy"/>
+                    </field-row>
+
+                    <field-row>
+                        <field-ref name="bankAcct"/>
+                        <field-ref name="certCode"/>
+                    </field-row>
+                    <field-row>
+                        <field-ref name="certNo"/>
+                        <field-ref name="searchButton" />
+                    </field-row>
+
+                </field-layout>
+            </form-single>
+        </container-dialog>
+
+        <field name="return">
+            <default-field>
+                <link url="." text="返回"/>
+            </default-field>
+        </field>
+
+        <form-list name="AgreementList" list="agreementList" select-columns="true" show-csv-button="true" 	show-text-button="true" show-pdf-button="true" header-dialog="true" saved-finds="true">
+
+            <field name="nacsTxId" align="center" show-total="count">
+                <header-field show-order-by="true">
+                    <text-find size="6" hide-options="true"/>
+                </header-field>
+                <default-field title="平台流水号">
+                    <display/>
+                </default-field>
+            </field>
+
+
+            <field name="buiTxId" align="center">
+                <header-field show-order-by="true">
+                    <text-find size="6" hide-options="true"/>
+                </header-field>
+                <default-field title="商户流水号">
+                    <display/>
+                </default-field>
+            </field>
+
+            <field name="payTxId" align="center">
+                <header-field show-order-by="true">
+                    <text-find size="6" hide-options="true"/>
+                </header-field>
+                <default-field title="支付通道流水号">
+                    <display/>
+                </default-field>
+            </field>
+
+            <field name="txFlg" align="center">
+                <header-field show-order-by="true">
+                    <drop-down allow-empty="true">
+                        <list-options list="TxFlgList" key="${enumId}" text="${description}"/>
+                    </drop-down>
+                </header-field>
+                <default-field title="交易标志">
+                   <display-entity entity-name="moqui.basic.Enumeration" key-field-name="enumId"
+                                   text="${description}"/>
+                </default-field>
+            </field>
+
+            <field name="signDate" align="center">
+                <header-field show-order-by="true">
+                    <date-find type="date"/>
+                </header-field>
+                <default-field title="签约日期">
+                    <display/>
+                </default-field>
+            </field>
+
+            <field name="mrchntSeqId" align="center">
+                <header-field show-order-by="true">
+                    <drop-down allow-empty="true">
+                        <entity-options key="${seqId}" text="${mrchntNo} - ${mrchntNm}">
+                            <entity-find entity-name="nacs.mrchnt.Mrchnt"/>
+                        </entity-options>
+                    </drop-down>
+                </header-field>
+                <default-field title="商户编号">
+                    <display-entity entity-name="nacs.mrchnt.Mrchnt" key-field-name="seqId" text="${mrchntNo} - ${mrchntNm}"/>
+                </default-field>
+            </field>
+
+
+            <!--<field name="mrchntNm" align="center">-->
+                <!--<header-field show-order-by="true">-->
+                    <!--<drop-down>-->
+                        <!--<option key="" text="请选择"/>-->
+                        <!--<list-options list="mrchntViewList" key="${mrchntNm}" text="${mrchntNm}"/>-->
+                    <!--</drop-down>-->
+                <!--</header-field>-->
+                <!--<default-field title="商户名称">-->
+                    <!--<display/>-->
+                <!--</default-field>-->
+            <!--</field>-->
+
+
+            <field name="subMrchntNo" align="center">
+                <header-field show-order-by="true">
+                    <drop-down allow-empty="true">
+                        <list-options list="subMrchntList" key="${subMrchntNo}" text="${subMrchntNo} - ${subMrchntNm}"/>
+                    </drop-down>
+                </header-field>
+                <default-field title="子商户编号">
+                    <display/>
+                </default-field>
+            </field>
+
+            <!--<field name="subMrchntNm" align="center">
+                <header-field show-order-by="true">
+                    <drop-down allow-empty="true">
+                        <list-options list="subMrchntList" key="${subMrchntNm}" text="${subMrchntNm} - ${subMrchntNo}"/>
+                    </drop-down>
+                </header-field>
+                <default-field title="子商户名称">
+                    <display/>
+                </default-field>
+            </field>-->
+
+            <field name="agreementNum" align="center">
+                <header-field show-order-by="true">
+                    <text-find size="6" hide-options="true"/>
+                </header-field>
+                <default-field title="协议号">
+                    <display/>
+                </default-field>
+            </field>
+
+            <field name="tranStas" align="center">
+                <header-field show-order-by="true">
+                    <drop-down allow-empty="true">
+                        <list-options list="tranStasList" key="${statusId}" text="${description}"/>
+                    </drop-down>
+                </header-field>
+                <default-field title="处理状态">
+                    <display-entity entity-name="moqui.basic.StatusItem" key-field-name="statusId" text="${description}"/>
+                </default-field>
+            </field>
+
+            <field name="tranDesc" align="center">
+                <header-field show-order-by="true">
+                    <text-find size="6" hide-options="true"/>
+                </header-field>
+                <default-field title="处理结果信息">
+                    <display/>
+                </default-field>
+            </field>
+
+
+            <field name="veriType" align="center">
+                <header-field show-order-by="true">
+                    <drop-down allow-empty="true">
+                        <list-options list="MerchantVerIfystsList" key="${enumId}" text="${description}"/>
+                    </drop-down>
+                </header-field>
+                <default-field title="验证方式">
+                    <display-entity entity-name="moqui.basic.Enumeration" key-field-name="enumId"
+                                    text="${description}"/>
+                </default-field>
+            </field>
+
+
+            <field name="viDate" align="center">
+                <header-field show-order-by="true">
+                    <date-time type="date"/>
+                </header-field>
+                <default-field title="有效期">
+                    <display/>
+                </default-field>
+            </field>
+
+
+            <field name="channelSeqId" align="center">
+                <header-field show-order-by="true">
+                    <drop-down allow-empty="true">
+                        <entity-options key="${seqId}" text="${channelNo} - ${channelNm}">
+                            <entity-find entity-name="nacs.channel.Channel"/>
+                        </entity-options>
+                    </drop-down>
+                </header-field>
+                <default-field title="支付通道编号">
+                    <display-entity entity-name="nacs.channel.Channel" key-field-name="seqId" text="${channelNo} - ${channelNm}"/>
+                </default-field>
+            </field>
+
+
+            <field name="channelNm" align="center">
+                <header-field show-order-by="true">
+                    <drop-down allow-empty="true">
+                        <list-options list="channelViewList" key="${channelNm}" text="${channelNm}"/>
+                    </drop-down>
+                </header-field>
+                <default-field title="支付通道名称">
+                    <display/>
+                </default-field>
+            </field>
+
+
+            <field name="trxCtgy" align="center">
+                <header-field show-order-by="true">
+                    <drop-down allow-empty="true">
+                        <list-options list="trxCtgyList" key="${enumId}" text="${description}"/>
+                    </drop-down>
+                </header-field>
+                <default-field title="交易类别">
+                    <display-entity entity-name="moqui.basic.Enumeration" key-field-name="enumId" text="${description}"/>
+                </default-field>
+            </field>
+
+
+            <field name="accAame" align="center">
+                <header-field show-order-by="true">
+                    <text-find size="6" hide-options="true"/>
+                </header-field>
+                <default-field title="银行账户户名">
+                    <display/>
+                </default-field>
+            </field>
+
+
+            <field name="bankAcct" align="center">
+                <header-field show-order-by="true">
+                    <text-find size="6" hide-options="true"/>
+                </header-field>
+                <default-field title="银行账号">
+                    <display/>
+                </default-field>
+            </field>
+
+
+            <field name="certCode" align="center">
+                <header-field show-order-by="true">
+                    <drop-down allow-empty="true">
+                        <list-options list="certcodeList" key="${enumId}" text="${description}"/>
+                    </drop-down>
+                </header-field>
+                <default-field title="证件类型">
+                    <display-entity entity-name="moqui.basic.Enumeration" key-field-name="enumId"
+                                    text="${description}"/>
+                </default-field>
+            </field>
+
+
+            <field name="certNo" align="center">
+                <header-field show-order-by="true">
+                    <text-find size="6" hide-options="true"/>
+                </header-field>
+                <default-field title="证件号">
+                    <display/>
+                </default-field>
+            </field>
+
+
+            <field name="contactPhone" align="center">
+                <header-field show-order-by="true">
+                    <text-find size="6" hide-options="true"/>
+                </header-field>
+                <default-field title="联系电话">
+                    <display/>
+                </default-field>
+            </field>
+
+
+            <field name="contactAddr" align="center">
+                <header-field show-order-by="true">
+                    <text-find size="6" hide-options="true"/>
+                </header-field>
+                <default-field title="联系地址">
+                    <display/>
+                </default-field>
+            </field>
+
+            <field name="find">
+                <header-field title="Find">
+                    <submit icon="glyphicon glyphicon-search"/>
+                </header-field>
+                <default-field>
+                    <display text=" "/>
+                </default-field>
+            </field>
+
+
+            <field name="info" align="center">
+                <default-field title="">
+                    <container-dialog condition="signDate" id="opra" button-text="明细" width="1200">
+                        <form-single name="Info" dynamic="true">
+                            <!--平台流水号-->
+                            <field name="nacsTxId">
+                                <default-field title="平台流水号">
+                                    <display/>
+                                </default-field>
+                            </field>
+
+                            <field name="buiTxId">
+                                <default-field title="商户流水号">
+                                    <display/>
+                                </default-field>
+                            </field>
+
+                            <field name="payTxId">
+                                <default-field title="支付通道流水号">
+                                    <display/>
+                                </default-field>
+                            </field>
+
+                            <field name="txFlg">
+                                <default-field title="交易标志">
+                                    <display-entity entity-name="moqui.basic.Enumeration" key-field-name="enumId"
+                                                    text="${description}"/>
+                                </default-field>
+                            </field>
+
+                            <field name="signDate">
+                                <default-field title="签约日期">
+                                    <display/>
+                                </default-field>
+                            </field>
+
+                            <field name="mrchntNo" from="mrchntSeqId">
+                                <default-field title="商户编号">
+                                    <display-entity entity-name="nacs.mrchnt.Mrchnt" key-field-name="seqId" text="${mrchntNo}"/>
+                                </default-field>
+                            </field>
+
+                            <field name="mrchntNm" from="mrchntSeqId">
+                                <default-field title="商户名称">
+                                    <display-entity entity-name="nacs.mrchnt.Mrchnt" key-field-name="seqId" text="${mrchntNm}"/>
+                                </default-field>
+                            </field>
+
+                            <field name="subMrchntNo">
+                                <default-field title="子商户编号">
+                                    <display/>
+                                </default-field>
+                            </field>
+
+                            <field name="subMrchntNm">
+                                <default-field title="子商户名称">
+                                    <display/>
+                                </default-field>
+                            </field>
+
+                            <field name="agreementNum">
+                                <default-field title="协议号">
+                                    <display/>
+                                </default-field>
+                            </field>
+
+                            <field name="tranStas">
+                                <default-field title="处理状态">
+                                    <display-entity entity-name="moqui.basic.StatusItem" key-field-name="statusId" text="${description}"/>
+                                </default-field>
+                            </field>
+
+                            <field name="tranDesc">
+                                <default-field title="处理结果信息">
+                                    <display/>
+                                </default-field>
+                            </field>
+
+                            <field name="veriType">
+                                <default-field title="验证方式">
+                                    <display-entity entity-name="moqui.basic.Enumeration" key-field-name="enumId"
+                                                    text="${description}"/>
+                                </default-field>
+                            </field>
+
+                            <field name="viDate">
+                                <default-field title="有效期">
+                                    <display/>
+                                </default-field>
+                            </field>
+
+                            <field name="channelNo" from="channelSeqId">
+                                <default-field title="支付通道编号">
+                                    <display-entity entity-name="nacs.channel.Channel" key-field-name="seqId" text="${channelNo}"/>
+                                </default-field>
+                            </field>
+
+                            <field name="channelNm" from="channelSeqId">
+                                <default-field title="支付通道名称">
+                                    <display-entity entity-name="nacs.channel.Channel" key-field-name="seqId" text="${channelNm}"/>
+                                </default-field>
+                            </field>
+
+                            <field name="trxCtgy">
+                                <default-field title="交易类别">
+                                    <display-entity entity-name="moqui.basic.Enumeration" key-field-name="enumId" text="${description}"/>
+                                </default-field>
+                            </field>
+
+                            <field name="accAame">
+                                <default-field title="银行账户户名">
+                                    <display/>
+                                </default-field>
+                            </field>
+
+                            <field name="bankAcct">
+                                <default-field title="银行账号">
+                                    <display/>
+                                </default-field>
+                            </field>
+
+                            <field name="certCode">
+                                <default-field title="证件类型">
+                                    <display-entity entity-name="moqui.basic.Enumeration" key-field-name="enumId"
+                                                    text="${description}"/>
+                                </default-field>
+                            </field>
+
+                            <field name="certNo">
+                                <default-field title="证件号">
+                                    <display/>
+                                </default-field>
+                            </field>
+
+                            <field name="contactPhone">
+                                <default-field title="联系电话">
+                                    <display/>
+                                </default-field>
+                            </field>
+
+                            <field name="contactAddr">
+                                <default-field title="联系地址">
+                                    <display/>
+                                </default-field>
+                            </field>
+
+
+                            <field-layout>
+                                <field-row>
+                                    <field-ref name="nacsTxId"/>
+                                    <field-ref name="buiTxId"/>
+                                </field-row>
+                                <field-row>
+                                    <field-ref name="payTxId"/>
+                                    <field-ref name="txFlg"/>
+                                </field-row>
+                                <field-row>
+                                    <field-ref name="signDate"/>
+                                    <field-ref name="mrchntNo"/>
+                                </field-row>
+                                <field-row>
+                                    <field-ref name="mrchntNm"/>
+                                    <field-ref name="subMrchntNo"/>
+                                </field-row>
+                                <field-row>
+                                    <field-ref name="subMrchntNm"/>
+                                    <field-ref name="agreementNum"/>
+                                </field-row>
+                                <field-row>
+                                    <field-ref name="tranStas"/>
+                                    <field-ref name="tranDesc"/>
+                                </field-row>
+                                <field-row>
+                                    <field-ref name="veriType"/>
+                                    <field-ref name="viDate"/>
+                                </field-row>
+                                <field-row>
+                                    <field-ref name="channelNo"/>
+                                    <field-ref name="channelNm"/>
+                                </field-row>
+                                <field-row>
+                                    <field-ref name="trxCtgy"/>
+                                    <field-ref name="accAame"/>
+                                </field-row>
+                                <field-row>
+                                    <field-ref name="bankAcct"/>
+                                    <field-ref name="certCode"/>
+                                </field-row>
+                                <field-row>
+                                    <field-ref name="certNo"/>
+                                    <field-ref name="contactPhone"/>
+                                </field-row>
+                                <field-row>
+                                    <field-ref name="contactAddr"/>
+                                </field-row>
+                            </field-layout>
+                            <!--<field-layout>
+                                <field-row-sm col-sm="4">
+                                    <field-ref name="nacsTxId"/>
+                                    <field-ref name="buiTxId"/>
+                                    <field-ref name="payTxId"/>
+                                </field-row-sm>
+                                <field-row>
+
+                                    <field-ref name="txFlg"/>
+                                    <field-ref name="signDate"/>
+                                    <field-ref name="mrchntNo"/>
+                                </field-row>
+                                <field-row>
+
+                                </field-row>
+                                <field-row>
+                                    <field-ref name="mrchntNm"/>
+                                    <field-ref name="subMrchntNo"/>
+                                </field-row>
+                                <field-row>
+                                    <field-ref name="subMrchntNm"/>
+                                    <field-ref name="agreementNum"/>
+                                </field-row>
+                                <field-row>
+                                    <field-ref name="tranStas"/>
+                                    <field-ref name="tranDesc"/>
+                                </field-row>
+                                <field-row>
+                                    <field-ref name="veriType"/>
+                                    <field-ref name="viDate"/>
+                                </field-row>
+                                <field-row>
+                                    <field-ref name="channelNo"/>
+                                    <field-ref name="channelNm"/>
+                                </field-row>
+                                <field-row>
+                                    <field-ref name="trxCtgy"/>
+                                    <field-ref name="accAame"/>
+                                </field-row>
+                                <field-row>
+                                    <field-ref name="bankAcct"/>
+                                    <field-ref name="certCode"/>
+                                </field-row>
+                                <field-row>
+                                    <field-ref name="certNo"/>
+                                    <field-ref name="contactPhone"/>
+                                </field-row>
+                                <field-row>
+                                    <field-ref name="contactAddr"/>
+                                </field-row>
+                            </field-layout>-->
+                        </form-single>
+                    </container-dialog>
+                </default-field>
+            </field>
+
+
+
+            <!--布局-->
+            <form-list-column>
+                <field-ref name="info"/>
+            </form-list-column>
+            <form-list-column>
+                <field-ref name="nacsTxId"/>
+            </form-list-column>
+            <form-list-column>
+                <field-ref name="agreementNum"/>
+            </form-list-column>
+            <form-list-column>
+                <field-ref name="signDate"/>
+            </form-list-column>
+            <form-list-column>
+                <field-ref name="mrchntSeqId"/>
+            </form-list-column>
+            <form-list-column>
+                <field-ref name="tranStas"/>
+            </form-list-column>
+            <form-list-column>
+                <field-ref name="tranDesc"/>
+            </form-list-column>
+            <form-list-column>
+                <field-ref name="veriType"/>
+            </form-list-column>
+            <form-list-column>
+                <field-ref name="viDate"/>
+            </form-list-column>
+            <form-list-column>
+                <field-ref name="channelSeqId"/>
+            </form-list-column>
+            <form-list-column>
+                <field-ref name="accAame"/>
+            </form-list-column>
+            <form-list-column>
+                <field-ref name="bankAcct"/>
+            </form-list-column>
+            <form-list-column>
+                <field-ref name="find"/>
+            </form-list-column>
+        </form-list>
+    </widgets>
+</screen>

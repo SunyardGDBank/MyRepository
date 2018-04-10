@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+This software is in the public domain under CC0 1.0 Universal plus a 
+Grant of Patent License.
+
+To the extent possible under law, the author(s) have dedicated all
+copyright and related and neighboring rights to this software to the
+public domain worldwide. This software is distributed without any
+warranty.
+
+You should have received a copy of the CC0 Public Domain Dedication
+along with this software (see the LICENSE.md file). If not, see
+<http://creativecommons.org/publicdomain/zero/1.0/>.
+-->
+<entities xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:noNamespaceSchemaLocation="http://moqui.org/xsd/entity-definition-2.1.xsd">
+
+    <view-entity entity-name="MrchntView" package="nacs.mrchnt" cache="never">
+        <description>商户参数视图</description>
+        <member-entity entity-alias="ETRX" entity-name="nacs.mrchnt.Mrchnt"/>
+        <alias entity-alias="ETRX" name="mrchntNo">
+            <description>商户编号</description>
+        </alias>
+        <alias entity-alias="ETRX" name="mrchntNm">
+            <description>商户名称</description>
+        </alias>
+        <alias entity-alias="ETRX" name="mrchntFlag">
+            <description>商户启用标志(ENABLED-启用 DISABLED-关闭)</description>
+        </alias>
+        <entity-condition>
+            <econdition field-name="mrchntFlag" value="ENABLED"/>
+        </entity-condition>
+    </view-entity>
+
+    <view-entity entity-name="SubMrchntView" package="nacs.mrchnt" cache="never">
+        <description>子商户视图</description>
+        <member-entity entity-alias="ETRX" entity-name="nacs.mrchnt.SubMrchnt"/>
+        <alias entity-alias="ETRX" name="subMrchntNo">
+            <description>子商户编号</description>
+        </alias>
+        <alias entity-alias="ETRX" name="subMrchntNm">
+            <description>子商户名称</description>
+        </alias>
+    </view-entity>
+
+    <view-entity entity-name="ChannelView" package="nacs.channel" cache="never">
+        <description>支付通道</description>
+        <member-entity entity-alias="ECHANNEL" entity-name="nacs.channel.Channel"/>
+        <alias entity-alias="ECHANNEL" name="channelNo">
+            <description>通道编号</description>
+        </alias>
+        <alias entity-alias="ECHANNEL" name="channelNm">
+            <description>通道名称</description>
+        </alias>
+    </view-entity>
+
+
+
+
+
+
+</entities>

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entity-facade-xml type="seed">
+    <!-- added by chf -->
+    <moqui.basic.LocalizedMessage localized="字段不能为空" original="Field cannot be empty" locale="zh_CN"/>
+    <moqui.basic.LocalizedMessage localized="字段" original="for field" locale="zh_CN"/>
+
+</entity-facade-xml>

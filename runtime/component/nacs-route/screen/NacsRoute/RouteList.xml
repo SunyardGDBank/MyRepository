@@ -1,0 +1,205 @@
+<screen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="http://moqui.org/xsd/xml-screen-2.1.xsd"
+        default-menu-title="路由列表" default-menu-index="1" >
+
+    <transition name="findNacsRoute">
+        <default-response url="."/>
+    </transition>
+    <transition name="updateNacsRoute">
+        <service-call name="nacs.route.admin.NacsRouteService.update#Mrchnt"/>
+        <default-response url="."/>
+    </transition>
+
+    <actions>
+        <entity-find entity-name="nacs.mrchnt.Mrchnt" list="routeList">
+            <search-form-inputs/>
+        </entity-find>
+        <entity-find entity-name="moqui.basic.Enumeration" list="mrchntFlagList">
+            <econdition field-name="enumTypeId" value="OpnFlg"/>
+        </entity-find>
+        <entity-find entity-name="moqui.basic.Enumeration" list="versionList">
+            <econdition field-name="enumTypeId" value="Version"/>
+        </entity-find>
+        <entity-find entity-name="nacs.mrchnt.MrchntView" list="mrchntViewList"/>
+    </actions>
+    <widgets>
+        <!--查找按钮的弹窗页面-->
+        <container-dialog id="FindNacsRouteDialog" button-text="查找" width="1000">
+            <form-single name="FindNacsRoute" transition="findNacsRoute">
+                <field name="mrchntNo">
+                    <default-field title="商户编号">
+                        <drop-down allow-empty="true">
+                            <list-options list="mrchntViewList" key="${mrchntNo}" text="${mrchntNo}-${mrchntNm}"/>
+                        </drop-down>
+                    </default-field>
+                </field>
+                <field name="version">
+                    <default-field title="协议版本">
+                        <drop-down allow-empty="true">
+                            <list-options list="versionList" text="${description}"/>
+                        </drop-down>
+                    </default-field>
+                </field>
+                <field name="mrchntFlag">
+                    <default-field title="商户启用标志">
+                        <drop-down allow-empty="true">
+                            <list-options list="mrchntFlagList" text="${description}"/>
+                        </drop-down>
+                    </default-field>
+                </field>
+                <field name="mrchntBeginTime">
+                    <default-field title="运行开启时间">
+                        <date-time type="date" format="HH:mm" default-value="00:00"/>
+                    </default-field>
+                </field>
+                <field name="mrchntEndTime">
+                    <default-field title="运行关闭时间">
+                        <date-time type="date" format="HH:mm" default-value="00:00"/>
+                    </default-field>
+                </field>
+                <!--查找按钮-->
+                <field name="searchButton">
+                    <default-field title="Find"><submit icon="glyphicon glyphicon-search"/></default-field>
+                </field>
+                <!--布局-->
+                <field-layout>
+                    <field-row>
+                        <field-ref name="mrchntNo"/>
+                        <field-ref name="mrchntFlag"/>
+                    </field-row>
+                    <field-row>
+                        <field-ref name="mrchntBeginTime"/>
+                        <field-ref name="mrchntEndTime"/>
+                    </field-row>
+                    <field-row>
+                        <field-ref name="version"/>
+                    </field-row>
+                    <field-row>
+                        <field-ref name="searchButton"/>
+                    </field-row>
+                </field-layout>
+            </form-single>
+        </container-dialog>
+        <form-list name="ListNacsRoute" list="routeList">
+            <field name="seqId">
+                <default-field title="序号">
+                    <hidden/>
+                </default-field>
+            </field>
+            <field name="mrchntSeqId" from="seqId">
+                <default-field>
+                    <hidden/>
+                </default-field>
+            </field>
+            <field name="mrchntNo">
+                <default-field title="商户编号">
+                    <link url="../RouteDetail" link-type="anchor" text="${mrchntNo}"/>
+                </default-field>
+            </field>
+            <field name="mrchntNm">
+                <default-field title="商户名称">
+                    <display/>
+                </default-field>
+            </field>
+            <field name="version">
+                <default-field title="协议版本">
+                    <display/>
+                </default-field>
+            </field>
+            <field name="mrchntFlag">
+                <default-field title="商户启用标志">
+                    <display-entity entity-name="moqui.basic.Enumeration" key-field-name="enumId"
+                                    text="${description}"/>
+                </default-field>
+            </field>
+           <field name="mrchntBeginTime">
+               <default-field title="运行开启时间">
+                   <display/>
+               </default-field>
+           </field>
+            <field name="mrchntEndTime">
+                <default-field title="运行关闭时间">
+                    <display/>
+                </default-field>
+            </field>
+            <!--设置按钮-->
+            <field name="submitButton">
+                <default-field title="">
+                    <container-dialog id="UpdateNacsRouteDialog" button-text="设置">
+                        <form-single name="UpdateNacsRoute" transition="updateNacsRoute">
+                            <auto-fields-entity entity-name="nacs.mrchnt.Mrchnt" field-type="edit">
+                                <exclude field-name="lastUpdatedStamp"/>
+                            </auto-fields-entity>
+                            <field name="seqId">
+                                <default-field title="序号">
+                                    <hidden/>
+                                </default-field>
+                            </field>
+                            <field name="mrchntNo">
+                                <default-field title="商户编号">
+                                    <display/>
+                                </default-field>
+                            </field>
+                            <field name="mrchntNm">
+                                <default-field title="商户名称">
+                                    <display/>
+                                </default-field>
+                            </field>
+                            <field name="version">
+                                <default-field title="协议版本">
+                                    <display/>
+                                </default-field>
+                            </field>
+                            <field name="mrchntFlag">
+                                <default-field title="商户启用标志">
+                                    <drop-down>
+                                        <list-options list="mrchntFlagList" text="${description}"/>
+                                    </drop-down>
+                                </default-field>
+                            </field>
+                            <field name="mrchntBeginTime">
+                                <default-field title="运行开启时间">
+                                    <date-time type="date" format="HH:mm" default-value="00:00"/>
+                                </default-field>
+                            </field>
+                            <field name="mrchntEndTime">
+                                <default-field title="运行关闭时间">
+                                    <date-time type="date" format="HH:mm" default-value="00:00"/>
+                                </default-field>
+                            </field>
+                            <field name="butten">
+                                <default-field title="">
+                                    <submit text="更新" icon="glyphicon glyphicon-edit"/>
+                                </default-field>
+                            </field>
+                            <!--布局-->
+                            <field-layout>
+                                <field-row>
+                                    <field-ref name="mrchntNo"/>
+                                </field-row>
+                                <field-row>
+                                    <field-ref name="mrchntNm"/>
+                                </field-row>
+                                <field-row>
+                                    <field-ref name="version"/>
+                                </field-row>
+                                <field-row>
+                                    <field-ref name="mrchntFlag"/>
+                                </field-row>
+                                <field-row>
+                                    <field-ref name="mrchntBeginTime"/>
+                                </field-row>
+                                <field-row>
+                                    <field-ref name="mrchntEndTime"/>
+                                </field-row>
+                                <field-row>
+                                    <field-ref name="butten"/>
+                                </field-row>
+                            </field-layout>
+                        </form-single>
+                    </container-dialog>
+                </default-field>
+            </field>
+        </form-list>
+    </widgets>
+</screen>

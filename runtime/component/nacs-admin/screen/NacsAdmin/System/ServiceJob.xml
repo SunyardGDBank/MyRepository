@@ -1,0 +1,311 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+This software is in the public domain under CC0 1.0 Universal plus a 
+Grant of Patent License.
+
+To the extent possible under law, the author(s) have dedicated all
+copyright and related and neighboring rights to this software to the
+public domain worldwide. This software is distributed without any
+warranty.
+
+You should have received a copy of the CC0 Public Domain Dedication
+along with this software (see the LICENSE.md file). If not, see
+<http://creativecommons.org/publicdomain/zero/1.0/>.
+-->
+<screen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="http://moqui.org/xsd/xml-screen-2.1.xsd"
+        default-menu-title="定时任务管理" default-menu-index="1">
+    <transition name="updateServiceJob">
+        <service-call name="nacs.admin.NacsAdminService.update#ServiceJob"/>
+        <default-response url="."/>
+    </transition>
+
+    <actions>
+        <entity-find entity-name="moqui.service.job.ServiceJob" list="serviceJobList">
+            <econdition field-name="serviceName" operator="like" value="%nacs%"  />
+            <order-by field-name="jobName"/>
+        </entity-find>
+        <log level="info" message="####serviceJobList:${serviceJobList}######"/>
+        <set field="cronExpresson0" value="${serviceJobList[0].cronExpression}"/>
+        <log level="info" message="#####${serviceJobList.cronExpression}"/>
+        <log level="info" message='AAAAAAA${serviceJobList.cronExpression[2].split(" ")[1]}'/>
+        <log level="info" message="${cronExpresson0}"/>
+        <log level="info" message='cronExpressonStrings:${cronExpresson0.split(" ")}'/>
+        <log level="trace" message='####:${cronExpresson0.split(" ")[2]}'/>
+
+        <script>
+
+        </script>
+
+        <entity-find entity-name="moqui.basic.Enumeration" list="pausedList">
+            <econdition field-name="enumTypeId" value="Paused"/>
+        </entity-find>
+
+        <entity-find entity-name="moqui.basic.Enumeration" list="weekList">
+            <econdition field-name="enumTypeId" value="Week"/>
+        </entity-find>
+    </actions>
+
+    <widgets>
+        <!--<container>
+            <link url="./">
+                <image url="../cronExpression_Regular.png" url-type="screen" style="invertible" />
+            </link>
+        </container>-->
+        <form-list name="ListServiceJob" list="serviceJobList" header-dialog="true" saved-finds="true" select-columns="true" show-csv-button="true" show-text-button="true" show-pdf-button="true">
+
+            <!--任务名称-->
+            <field name="jobName" align="center" >
+                <header-field show-order-by="true">
+                    <text-find size="6" hide-options="true"/>
+                </header-field>
+                <default-field title="任务名称">
+                    <display/>
+                </default-field>
+            </field>
+
+            <!--描述-->
+            <field name="description" align="center" >
+                <header-field show-order-by="true">
+                    <text-find size="12" hide-options="true"/>
+                </header-field>
+                <default-field title="描述">
+                    <display/>
+                </default-field>
+            </field>
+
+            <!--服务名称-->
+            <field name="serviceName" align="center">
+                <header-field show-order-by="true">
+                    <text-find size="6" hide-options="true"/>
+                </header-field>
+                <default-field title="服务名称">
+                    <display/>
+                </default-field>
+            </field>
+
+            <!--事务超时时间-->
+            <field name="transactionTimeout" align="center">
+                <header-field show-order-by="true">
+                    <text-find size="6" hide-options="true"/>
+                </header-field>
+                <default-field title="事务超时时间">
+                    <display/>
+                </default-field>
+            </field>
+
+            <!--定时表达式-->
+            <!--<field name="cronExpression" align="center">
+                <header-field show-order-by="true">
+                    <text-find size="6" hide-options="true"/>
+                </header-field>
+                <default-field title="定时表达式">
+                    <display/>
+                </default-field>
+            </field>-->
+
+            <!--起始日期-->
+            <field name="fromDate" align="center">
+                <header-field show-order-by="true">
+                    <text-find size="6" hide-options="true"/>
+                </header-field>
+                <default-field title="起始日期">
+                    <display/>
+                </default-field>
+            </field>
+            <!--截止日期-->
+            <field name="thruDate" align="center">
+                <header-field show-order-by="true">
+                    <text-find size="6" hide-options="true"/>
+                </header-field>
+                <default-field title="截止日期">
+                    <display/>
+                </default-field>
+            </field>
+
+            <!--重试次数-->
+            <field name="repeatCount" align="center">
+                <header-field show-order-by="true">
+                    <text-find size="6" hide-options="true"/>
+                </header-field>
+                <default-field title="重试次数">
+                   <display/>
+                </default-field>
+            </field>
+
+            <!--暂停-->
+            <field name="paused" align="center">
+                <header-field show-order-by="true">
+                    <display/>
+                </header-field>
+                <default-field title="暂停">
+                    <display/>
+                </default-field>
+            </field>
+
+            <!--到期锁定时间-->
+            <field name="expireLockTime" align="center">
+                <header-field show-order-by="true">
+                    <text-find size="6" hide-options="true"/>
+                </header-field>
+                <default-field title="到期锁定时间">
+                    <display/>
+                </default-field>
+            </field>
+
+            <!--设置按钮-->
+            <field name="submitButton" >
+                <default-field title="">
+                    <container-dialog id="UpdateNacsServiceJob" button-text="设置">
+                        <form-single name="UpdateNacsServiceJob" transition="updateServiceJob">
+                            <auto-fields-entity entity-name="moqui.service.job.ServiceJob" field-type="edit">
+                                <exclude field-name="jobName"/>
+                            </auto-fields-entity>
+                            <field name="jobName">
+                                <default-field title="任务名称">
+                                    <display/>
+                                </default-field>
+                            </field>
+                            <field name="description">
+                                <default-field title="描述">
+                                    <text-line/>
+                                </default-field>
+                            </field>
+                            <field name="transactionTimeout">
+                                <default-field title="事务超时时间">
+                                    <text-line  default-value="0"/>
+                                </default-field>
+                            </field>
+                            <field name="cronExpression">
+                                <default-field title="定时表达式">
+                                    <display/>
+                                </default-field>
+                            </field>
+                            <field name="paused">
+                                <default-field title="暂停">
+                                    <drop-down allow-empty="true">
+                                        <list-options list="pausedList" text="${description}"/>
+                                    </drop-down>
+                                </default-field>
+                            </field>
+                            <field name="expireLockTime">
+                                <default-field title="到期锁定时间">
+                                    <date-time type="date" format="YYYY-MM-DD HH:mm:ss"/>
+                                </default-field>
+                            </field>
+                            <field name="serviceName">
+                                <default-field title="服务名称">
+                                    <text-line/>
+                                </default-field>
+                            </field>
+                            <field name="fromDate">
+                                <default-field title="起始时间">
+                                    <date-time type="date" format="YYYY-MM-DD HH:mm:ss" />
+                                </default-field>
+                            </field>
+                            <field name="thruDate">
+                                <default-field title="截止时间">
+                                    <date-time type="date" format="YYYY-MM-DD HH:mm:ss" />
+                                </default-field>
+                            </field>
+                            <field name="year" >
+                                <default-field title="年">
+                                    <date-time type="date" format="YYYY" />
+                                </default-field>
+                            </field>
+                            <field name="month">
+                                <default-field title="月">
+                                    <date-time type="date" format="MM" default-value="${cronExpression.split(' ')[5].replaceAll('\\?|\\*','')}"/>
+                                </default-field>
+                            </field>
+                            <field name="date">
+                                <default-field title="日">
+                                    <date-time type="date" format="DD" default-value="${cronExpression.split(' ')[4].replaceAll('\\?|\\*','')}"/>
+                                </default-field>
+                            </field>
+                            <field name="week">
+                                <default-field title="星期">
+                                    <drop-down allow-empty="true">
+                                        <list-options list="weekList" text="${description}" />
+                                    </drop-down>
+                                </default-field>
+                            </field>
+                            <field name="hour">
+                                <default-field title="时">
+                                    <!--<set field="cronExpression1" value="${cronExpression.split(' ')[2]}"/>
+                                    <set field="hour1" value="${cronExpression1[2]}"/>-->
+                                    <date-time type="date" format="HH" default-value="${cronExpression.split(' ')[2].replaceAll('\\?|\\*','')}"/>
+                                </default-field>
+                            </field>
+                            <field name="minute">
+                                <default-field title="分">
+                                    <!--<date-time type="date" format="mm" default-value="${StringUtils.leftPad(cronExpression.split(' ')[1],2,'0')}"/>-->
+                                    <date-time type="date" format="mm" default-value='${StringUtils.leftPad(serviceJobList.cronExpression[2].split(" ")[1]),2,"0"}' />
+                                </default-field>
+                            </field>
+                            <field name="second">
+                                <default-field title="秒">
+                                    <date-time type="date" format="ss" default-value="${cronExpression.split(' ')[0].replaceAll('\\?|\\*','')}"/>
+                                </default-field>
+                            </field>
+
+                            <field name="regular">
+                                <default-field title="定时表达式规则" >
+                                    <!--<link url="./" >
+                                        <image url="../cronExpression_Regular.png" url-type="screen" style="invertible"/>
+                                    </link>-->
+                                </default-field>
+                            </field>
+
+                            <field name="butten">
+                                <default-field title="Update">
+                                    <submit text="更新" icon="glyphicon glyphicon-edit"/>
+                                </default-field>
+                            </field>
+
+                            <!-- 布局 -->
+                            <field-layout>
+                                <field-row>
+                                    <field-ref name="jobName"/>
+                                    <field-ref name="expireLockTime"/>
+                                </field-row>
+                                <field-row>
+                                    <field-ref name="paused"/>
+                                    <field-ref name="transactionTimeout"/>
+                                </field-row>
+                                <field-row>
+                                    <field-ref name="description"/>
+                                    <field-ref name="serviceName"/>
+                                </field-row>
+                                <field-row>
+                                    <field-ref name="fromDate"/>
+                                    <field-ref name="thruDate"/>
+                                </field-row>
+                               <field-row>
+                                    <field-ref name="cronExpression"/>
+                                    <field-ref name="regular"/>
+                                </field-row>
+                                <field-row>
+                                    <field-ref name="year"/>
+                                    <field-ref name="month"/>
+                                </field-row>
+                                <field-row>
+                                    <field-ref name="date"/>
+                                    <field-ref name="week"/>
+                                </field-row>
+                                <field-row>
+                                    <field-ref name="hour"/>
+                                    <field-ref name="minute"/>
+                                </field-row>
+                                <field-row>
+                                    <field-ref name="second"/>
+                                    <field-ref name="butten"/>
+                                </field-row>
+                            </field-layout>
+                        </form-single>
+                    </container-dialog>
+                </default-field>
+            </field>
+        </form-list>
+    </widgets>
+</screen>

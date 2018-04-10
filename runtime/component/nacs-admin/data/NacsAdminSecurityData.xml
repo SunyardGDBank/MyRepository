@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+This software is in the public domain under CC0 1.0 Universal plus a
+Grant of Patent License.
+
+To the extent possible under law, the author(s) have dedicated all
+copyright and related and neighboring rights to this software to the
+public domain worldwide. This software is distributed without any
+warranty.
+
+You should have received a copy of the CC0 Public Domain Dedication
+along with this software (see the LICENSE.md file). If not, see
+<http://creativecommons.org/publicdomain/zero/1.0/>.
+-->
+<entity-facade-xml type="seed">
+    <moqui.screen.SubscreensItem screenLocation="component://webroot/screen/webroot/apps.xml"
+                                 subscreenName="nacs-admin" menuTitle="NacsAdmin" menuIndex="5" menuInclude="Y"
+                                 subscreenLocation="component://nacs-admin/screen/NacsAdmin.xml"/>
+
+    <!-- 清算平台系统应用的构件及授权 -->
+    <artifactGroups artifactGroupId="NACS_APP" description="清算平台系统应用的根权限">
+        <artifacts artifactName="component://nacs-admin/screen/NacsAdmin.xml" artifactTypeEnumId="AT_XML_SCREEN" inheritAuthz="Y"/>
+        <!-- Full permissions for the ADMIN user group -->
+        <authz artifactAuthzId="NACS_APP_ADMIN" userGroupId="ADMIN" authzTypeEnumId="AUTHZT_ALWAYS" authzActionEnumId="AUTHZA_ALL"/>
+    </artifactGroups>
+    <!--  -->
+
+    <moqui.basic.EnumerationType description="构件名称" enumTypeId="MyArtifactName"/>
+    <moqui.basic.Enumeration description="清算平台内管" enumId="ARTIFACT_NAME_NACS_ADMIN"
+                             enumCode="component://nacs-admin/screen/NacsAdmin.xml" enumTypeId="MyArtifactName"/>
+    <moqui.basic.Enumeration description="清算平台路由" enumId="ARTIFACT_NAME_NACS_ROUTE"
+                             enumCode="component://nacs-route/screen/NacsRoute.xml" enumTypeId="MyArtifactName"/>
+    <moqui.basic.Enumeration description="清算平台对账" enumId="ARTIFACT_NAME_NACS_CHECK"
+                             enumCode="component://nacs-check/screen/NacsCheck.xml" enumTypeId="MyArtifactName"/>
+    <moqui.basic.Enumeration description="清算平台通道" enumId="ARTIFACT_NAME_NACS_CHANNEL"
+                             enumCode="component://nacs-channel/screen/NacsChannel.xml" enumTypeId="MyArtifactName"/>
+    <moqui.basic.Enumeration description="清算平台清算" enumId="ARTIFACT_NAME_NACS_CLEAR"
+                             enumCode="component://nacs-clear/screen/NacsClear.xml" enumTypeId="MyArtifactName"/>
+    <moqui.basic.Enumeration description="清算平台商户" enumId="ARTIFACT_NAME_NACS_MRCHNT"
+                             enumCode="component://nacs-mrchnt/screen/NacsMrchnt.xml" enumTypeId="MyArtifactName"/>
+
+    <!-- 二级菜单 -->
+    <moqui.basic.Enumeration description="首页" enumId="ARTIFACT_NAME_DASHBOARD"
+                             enumCode="component://nacs-admin/screen/NacsAdmin/dashboard.xml" enumTypeId="MyArtifactName"/>
+    <moqui.basic.Enumeration description="用户权限" enumId="ARTIFACT_NAME_SECURITY"
+                             enumCode="component://nacs-admin/screen/NacsAdmin/Security.xml" enumTypeId="MyArtifactName"/>
+    <moqui.basic.Enumeration description="商户管理" enumId="ARTIFACT_NAME_MRCHNT"
+                             enumCode="component://nacs-admin/screen/NacsAdmin/Mrchnt.xml" enumTypeId="MyArtifactName"/>
+    <moqui.basic.Enumeration description="通道管理" enumId="ARTIFACT_NAME_CHANNEL"
+                             enumCode="component://nacs-admin/screen/NacsAdmin/Channel.xml" enumTypeId="MyArtifactName"/>
+    <moqui.basic.Enumeration description="路由管理" enumId="ARTIFACT_NAME_ROUTE"
+                             enumCode="component://nacs-admin/screen/NacsAdmin/Route.xml" enumTypeId="MyArtifactName"/>
+    <moqui.basic.Enumeration description="对账管理" enumId="ARTIFACT_NAME_CHECK"
+                             enumCode="component://nacs-admin/screen/NacsAdmin/Check.xml" enumTypeId="MyArtifactName"/>
+    <moqui.basic.Enumeration description="清算管理" enumId="ARTIFACT_NAME_CLEAR"
+                             enumCode="component://nacs-admin/screen/NacsAdmin/Check.xml" enumTypeId="MyArtifactName"/>
+    <moqui.basic.Enumeration description="查询统计" enumId="ARTIFACT_NAME_QUIRY_STATISTICS"
+                             enumCode="component://nacs-admin/screen/NacsAdmin/QuiryStatitics.xml" enumTypeId="MyArtifactName"/>
+
+    <!-- 用户权限 -->
+    <moqui.basic.Enumeration description="用户" enumId="ARTIFACT_NAME_USER_ACCOUNT"
+                             enumCode="component://nacs-admin/screen/NacsAdmin/Security/UserAccount.xml"
+                             enumTypeId="MyArtifactName"/>
+    <moqui.basic.Enumeration description="用户明細" enumId="ARTIFACT_NAME_USER_ACCOUNT_DETAIL"
+                             enumCode="component://nacs-admin/screen/NacsAdmin/Security/UserAccount/UserAccountDetail.xml"
+                             enumTypeId="MyArtifactName"/>
+    <moqui.basic.Enumeration description="用户列表" enumId="ARTIFACT_NAME_USER_ACCOUNT_LIST"
+                             enumCode="component://nacs-admin/screen/NacsAdmin/Security/UserAccount/UserAccountList.xml"
+                             enumTypeId="MyArtifactName"/>
+    <moqui.basic.Enumeration description="用户组" enumId="ARTIFACT_NAME_USER_GROUP"
+                             enumCode="component://nacs-admin/screen/NacsAdmin/Security/UserGroup.xml"
+                             enumTypeId="MyArtifactName"/>
+    <moqui.basic.Enumeration description="本组用户" enumId="ARTIFACT_NAME_GROUP_USERS"
+                             enumCode="component://nacs-admin/screen/NacsAdmin/Security/UserGroup/GroupUsers.xml"
+                             enumTypeId="MyArtifactName"/>
+    <moqui.basic.Enumeration description="用户组明细" enumId="ARTIFACT_NAME_USER_GROUP_DETAIL"
+                             enumCode="component://nacs-admin/screen/NacsAdmin/Security/UserGroup/UserGroupDetail.xml"
+                             enumTypeId="MyArtifactName"/>
+    <moqui.basic.Enumeration description="用户组列表" enumId="ARTIFACT_NAME_USER_GROUP_LIST"
+                             enumCode="component://nacs-admin/screen/NacsAdmin/Security/UserGroup/UserGroupList.xml"
+                             enumTypeId="MyArtifactName"/>
+    <moqui.basic.Enumeration description="构件组" enumId="ARTIFACT_NAME_ARTIFACT_GROUP"
+                             enumCode="component://nacs-admin/screen/NacsAdmin/Security/ArtifactGroup.xml"
+                             enumTypeId="MyArtifactName"/>
+    <moqui.basic.Enumeration description="构件组明细" enumId="ARTIFACT_NAME_ARTIFACT_GROUP_DETAIL"
+                             enumCode="component://nacs-admin/screen/NacsAdmin/Security/ArtifactGroup/ArtifactGroupDetail.xml"
+                             enumTypeId="MyArtifactName"/>
+    <moqui.basic.Enumeration description="构件组列表" enumId="ARTIFACT_NAME_ARTIFACT_GROUP_LIST"
+                             enumCode="component://nacs-admin/screen/NacsAdmin/Security/ArtifactGroup/ArtifactGroupList.xml"
+                             enumTypeId="MyArtifactName"/>
+    <moqui.basic.Enumeration description="活动用户" enumId="ARTIFACT_NAME_ACTIVE_USERS"
+                             enumCode="component://nacs-admin/screen/NacsAdmin/Security/ActiveUsers.xml"
+                             enumTypeId="MyArtifactName"/>
+    <!--商户管理-->
+    <moqui.basic.Enumeration description="商户明细" enumId="ARTIFACT_NAME_MRCHNT_DETAIL"
+                             enumCode="component://nacs-mrchnt/screen/NacsMrchnt/MrchntDetail.xml"
+                             enumTypeId="MyArtifactName"/>
+    <moqui.basic.Enumeration description="商户列表" enumId="ARTIFACT_NAME_MRCHNT_LIST"
+                             enumCode="component://nacs-mrchnt/screen/NacsMrchnt/MrchntList.xml"
+                             enumTypeId="MyArtifactName"/>
+    <!--通道管理-->
+    <moqui.basic.Enumeration description="通道明细" enumId="ARTIFACT_NAME_CHANNEL_DETAIL"
+                             enumCode="component://nacs-channel/screen/NacsChannel/ChannelDetail.xml"
+                             enumTypeId="MyArtifactName"/>
+    <moqui.basic.Enumeration description="通道列表" enumId="ARTIFACT_NAME_CHANNEL_LIST"
+                             enumCode="component://nacs-channel/screen/NacsChannel/ChannelList.xml"
+                             enumTypeId="MyArtifactName"/>
+    <!--路由管理-->
+    <moqui.basic.Enumeration description="路由管理明细" enumId="ARTIFACT_NAME_ROUTE_DETAIL"
+                             enumCode="component://nacs-route/screen/NacsRoute/RouteDetail.xml"
+                             enumTypeId="MyArtifactName"/>
+    <moqui.basic.Enumeration description="路由管理列表" enumId="ARTIFACT_NAME_ROUTE_LIST"
+                             enumCode="component://nacs-route/screen/NacsRoute/RouteList.xml"
+                             enumTypeId="MyArtifactName"/>
+    <!--对账管理-->
+    <moqui.basic.Enumeration description="通道对账明细" enumId="ARTIFACT_NAME_CHANNEL_CHECK_DETAIL"
+                             enumCode="component://nacs-check/screen/NacsCheck/ChannelCheckDetail.xml"
+                             enumTypeId="MyArtifactName"/>
+    <moqui.basic.Enumeration description="通道对账列表" enumId="ARTIFACT_NAME_CHANNEL_CHECK_LIST"
+                             enumCode="component://nacs-check/screen/NacsCheck/ChannelCheckList.xml"
+                             enumTypeId="MyArtifactName"/>
+    <moqui.basic.Enumeration description="商户对账明细" enumId="ARTIFACT_NAME_CLIENT_CHECK_DETAIL"
+                             enumCode="component://nacs-check/screen/NacsCheck/ClientCheckDetail.xml"
+                             enumTypeId="MyArtifactName"/>
+    <moqui.basic.Enumeration description="商户对账列表" enumId="ARTIFACT_NAME_CLIENT_CHECK_LIST"
+                             enumCode="component://nacs-check/screen/NacsCheck/ClientCheckList.xml"
+                             enumTypeId="MyArtifactName"/>
+
+    <!--清算管理-->
+    <moqui.basic.Enumeration description="通道清算列表" enumId="ARTIFACT_NAME_CHANNEL_CLEAR_LIST"
+                             enumCode="component://nacs-clear/screen/NacsClear/ChannelClearList.xml"
+                             enumTypeId="MyArtifactName"/>
+    <moqui.basic.Enumeration description="商户清算列表" enumId="ARTIFACT_NAME_CLIENT_CLEAR_LIST"
+                             enumCode="component://nacs-clear/screen/NacsClear/ClientClearList.xml"
+                             enumTypeId="MyArtifactName"/>
+    <!--查询统计-->
+    <moqui.basic.Enumeration description="统一交易流水" enumId="ARTIFACT_NAME_TAITEM"
+                             enumCode="component://nacs-admin/screen/NacsAdmin/QuiryStatistics/TxItem.xml"
+                             enumTypeId="MyArtifactName"/>
+    <moqui.basic.Enumeration description="支付通道流水" enumId="ARTIFACT_NAME_TXITEM_CHANNEL"
+                             enumCode="component://nacs-admin/screen/NacsAdmin/QuiryStatistics/TxItemChannel.xml"
+                             enumTypeId="MyArtifactName"/>
+    <moqui.basic.Enumeration description="核心账务流水" enumId="ARTIFACT_NAME_TAITEM_CORE"
+                             enumCode="component://nacs-admin/screen/NacsAdmin/QuiryStatistics/TxItemCore.xml"
+                             enumTypeId="MyArtifactName"/>
+    <moqui.basic.Enumeration description="签约信息流水" enumId="ARTIFACT_NAME_AGREEMENT_SEQ"
+                             enumCode="component://nacs-admin/screen/NacsAdmin/QuiryStatistics/AgreementSeq.xml"
+                             enumTypeId="MyArtifactName"/>
+
+</entity-facade-xml>

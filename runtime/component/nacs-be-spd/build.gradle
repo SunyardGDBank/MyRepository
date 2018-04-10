@@ -1,0 +1,61 @@
+/*
+ * This software is in the public domain under CC0 1.0 Universal plus a
+ * Grant of Patent License.
+ *
+ * To the extent possible under law, the author(s) have dedicated all
+ * copyright and related and neighboring rights to this software to the
+ * public domain worldwide. This software is distributed without any
+ * warranty.
+ *
+ * You should have received a copy of the CC0 Public Domain Dedication
+ * along with this software (see the LICENSE.md file). If not, see
+ * <http://creativecommons.org/publicdomain/zero/1.0/>.
+ */
+
+apply plugin: 'java'
+apply plugin: 'groovy'
+sourceCompatibility = '1.8'
+
+version = '1.0.0'
+def jarBaseName='nacs-be-spd'
+def thisArchiveJarName = jarBaseName + "-" + version + ".jar"
+
+def moquiDir = projectDir.parentFile.parentFile.parentFile
+def frameworkDir = file(moquiDir.absolutePath + '/framework')
+def runtimeDir = file(moquiDir.absolutePath + '/runtime')
+def utilDir = file(moquiDir.absolutePath + '/moqui-util')
+
+buildscript {
+    repositories {
+        flatDir { dirs projectDir.parentFile.parentFile.parentFile.absolutePath + '/lib'}
+    }
+    dependencies { classpath 'com.github.ben-manes:gradle-versions-plugin:0.15.0' }
+}
+
+repositories {
+    flatDir {
+        dirs projectDir.absolutePath + '/lib',
+                utilDir.absolutePath + '/lib',
+                frameworkDir.absolutePath + '/lib',
+                runtimeDir.absolutePath + '/lib'
+    }
+}
+
+dependencies {
+    compile project(':framework')
+    compile fileTree(dir: projectDir.absolutePath + '/lib', includes: ['*.jar'])
+}
+
+apply plugin: 'com.github.ben-manes.versions'
+
+check.dependsOn.remove(test)
+task cleanNacsBeSpdJar(type: Delete) {
+    delete projectDir.absolutePath + '/' + thisArchiveJarName
+}
+clean.dependsOn cleanNacsBeSpdJar
+
+jar {
+    destinationDir = file(projectDir.absolutePath + '/lib')
+    archiveName = thisArchiveJarName
+}
+jar.dependsOn cleanNacsBeSpdJar

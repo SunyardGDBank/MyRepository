@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<entity-facade-xml type="seed">
+
+
+    <moqui.service.job.ServiceJob jobName="FindTransState" description="定时查询交易状态"
+                              serviceName="nacs.main.Nacs0006.nacs#P0006"
+                              cronExpression="0 0 0/1 * * ?" paused="Y"/>
+</entity-facade-xml>

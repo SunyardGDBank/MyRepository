@@ -1,0 +1,398 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<services xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns=""
+          xsi:noNamespaceSchemaLocation="http://moqui.org/xsd/service-definition-2.1.xsd">
+
+    <!--添加商户信息-->
+    <service verb="create" noun="Mrchnt" authenticate="false">
+        <in-parameters>
+            <auto-parameters include="nonpk"/>
+            <parameter name="mrchntNo" required="true"/>
+            <parameter name="mrchntNm" required="true"/>
+            <parameter name="mrchntFlag"/>
+            <parameter name="managerInstiCode" required="true"/>
+            <parameter name="managerInstiName" required="true"/>
+            <parameter name="marginFormation" required="true"/>
+            <parameter name="subMrchntFlag" required="true"/>
+            <parameter name="clearAccountMsg" required="true"/>
+            <parameter name="clearAccountName" required="true"/>
+            <parameter name="behalfAccount" required="true"/>
+            <parameter name="whitoutAccount" required="true"/>
+            <parameter name="viDate" required="true"/>
+            <parameter name="marginAmt" required="true"/>
+            <parameter name="mrchntVerIfysts" required="true"/>
+            <parameter name="version" required="true"/>
+        </in-parameters>
+        <actions>
+            <entity-find entity-name="nacs.mrchnt.Mrchnt" list="firstMrchntList">
+                <econdition field-name="mrchntNo" from="mrchntNo"/>
+            </entity-find>
+            <set field="mrchntFlag" value="ENABLED"/>
+            <if condition="firstMrchntList">
+                <return error="true" message="该商户信息已存在，不能增加！"/>
+            </if>
+            <service-call name="create#nacs.mrchnt.Mrchnt" in-map="context"/>
+        </actions>
+    </service>
+
+    <!--更新商户信息-->
+    <service verb="update" noun="Mrchnt" authenticate="false">
+        <in-parameters>
+            <auto-parameters include="nonpk"/>
+            <parameter name="seqId"/>
+            <parameter name="mrchntNo"/>
+            <parameter name="mrchntNm"/>
+            <parameter name="mrchntFlag"/>
+            <parameter name="managerInstiCode" required="true"/>
+            <parameter name="managerInstiName" required="true"/>
+            <parameter name="marginFormation" required="true"/>
+            <parameter name="subMrchntFlag" required="true"/>
+            <parameter name="clearAccountMsg" required="true"/>
+            <parameter name="clearAccountName" required="true"/>
+            <parameter name="behalfAccount" required="true"/>
+            <parameter name="whitoutAccount" required="true"/>
+            <parameter name="viDate" required="true"/>
+            <parameter name="marginAmt" required="true"/>
+            <parameter name="mrchntVerIfysts" required="true"/>
+        </in-parameters>
+        <actions>
+            <entity-find entity-name="nacs.mrchnt.Mrchnt" list="firstMerchantList">
+                <econdition field-name="mrchntNo" from="mrchntNo"/>
+            </entity-find>
+            <service-call name="update#nacs.mrchnt.Mrchnt" in-map="context"/>
+       </actions>
+    </service>
+
+    <!--添加子商户信息-->
+    <service verb="create" noun="SubMrchnt" authenticate="false">
+        <in-parameters>
+            <auto-parameters include="nonpk"/>
+            <parameter name="seqId"/>
+            <parameter name="subMrchntNo" required="true"/>
+            <parameter name="subMrchntNm" required="true"/>
+            <parameter name="subMrchntLevel" required="true"/>
+            <parameter name="signFlag" required="true"/>
+            <parameter name="subMrchntValisign" required="true"/>
+            <parameter name="subMrchntSt" required="true"/>
+            <parameter name="mrchntSeqId"/>
+        </in-parameters>
+        <actions>
+            <entity-find entity-name="nacs.mrchnt.SubMrchnt" list="subMrchntList">
+                <econdition field-name="subMrchntNo" from="subMrchntNo"/>
+            </entity-find>
+            <if condition="subMrchntList">
+                <return error="true" message="该子商户信息已存在，不能增加！"/>
+            </if>
+            <!--<entity-find entity-name="nacs.mrchnt.FirstMerchantView" list="firstMerchantList">-->
+            <!--<econdition field-name="mrchntNo" from="mrchntNo"/>-->
+            <!--</entity-find>-->
+            <service-call name="create#nacs.mrchnt.SubMrchnt" in-map="context"/>
+       </actions>
+    </service>
+
+    <!--更新子商户信息-->
+    <service verb="update" noun="SecondMerchant" authenticate="false">
+        <in-parameters>
+            <auto-parameters include="nonpk"/>
+            <parameter name="seqId"/>
+            <parameter name="secMerchantSt" required="true"/>
+            <parameter name="mrchntNo" required="true"/>
+            <parameter name="signFlag" required="true"/>
+            <parameter name="secMerchantValisign" required="true"/>
+        </in-parameters>
+        <actions>
+            <entity-find entity-name="nacs.mrchnt.SecondMerchant" list="secondMerchantList">
+                <econdition field-name="subMrchntNo" from="subMrchntNo"/>
+            </entity-find>
+            <service-call name="update#nacs.mrchnt.SecondMerchant" in-map="context"/>
+       </actions>
+    </service>
+
+    <!-- 商户动态额度信息更新服务 -->
+    <service verb="update" noun="TemporaryEd" authenticate="false">
+        <in-parameters>
+            <auto-parameters include="pk" required="true"/>
+            <auto-parameters include="nonpk"/>
+            <parameter name="seqId"/>
+            <parameter name="mrchntSeqId" required="true"/>
+            <parameter name="acctId" required="true"/>
+            <parameter name="freezeAmt" required="true"/>
+            <parameter name="overAmt" required="true"/>
+            <parameter name="freezeDate" required="true"/>
+            <parameter name="freezeNo" required="true"/>
+            <parameter name="freezeFlag" required="true"/>
+        </in-parameters>
+        <actions>
+            <entity-find entity-name="nacs.para.TemporaryEd" list="temporaryEdList">
+                <econdition field-name="mrchntSeqId" from="mrchntSeqId"/>
+            </entity-find>
+            <service-call name="update#nacs.para.TemporaryEd" in-map="context"/>
+        </actions>
+    </service>
+
+    <!-- 商户限额增加服务 -->
+    <service verb="create" noun="MrchntQuota" authenticate="false">
+        <in-parameters>
+            <auto-parameters include="nonpk"/>
+            <parameter name="seqId"/>
+            <parameter name="mrchntSeqId" required="true"/>
+            <parameter name="trxCtgy" required="true"/>
+            <parameter name="singletranLimit" required="true"/>
+            <parameter name="singlTodayLimit" required="true"/>
+            <parameter name="singlTodaySum" required="true"/>
+        </in-parameters>
+        <actions>
+            <!-- 条件查询：根据商户编号查实体 -->
+            <entity-find entity-name="nacs.mrchnt.MrchntQuota" list="MrchntQuotaList">
+                <econdition field-name="mrchntSeqId" from="mrchntSeqId"/>
+                <econdition field-name="trxCtgy" from="trxCtgy"/>
+            </entity-find>
+            <!-- 若商户限额信息相同的数据已存在，则不能增加 -->
+            <if condition="MrchntQuotaList">
+                <return error="true" message="该商户限额信息已存在，不能增加！"/>
+            </if>
+            <service-call name="create#nacs.mrchnt.MrchntQuota" in-map="context"/>
+        </actions>
+    </service>
+
+    <!-- 商户限额更新服务 -->
+    <service verb="update" noun="MrchntQuota" authenticate="false">
+        <in-parameters>
+            <auto-parameters include="pk" required="false"/>
+            <auto-parameters include="nonpk"/>
+            <parameter name="seqId" required="true"/>
+            <parameter name="mrchntSeqId" required="true"/>
+            <parameter name="trxCtgy" required="true"/>
+            <parameter name="singletranLimit"/>
+            <parameter name="singlTodayLimit"/>
+            <parameter name="singlTodaySum"/>
+        </in-parameters>
+        <actions>
+            <service-call name="update#nacs.mrchnt.MrchntQuota" in-map="context"/>
+        </actions>
+    </service>
+
+    <!-- 商户可用通道增加服务 -->
+    <service verb="create" noun="MrchntChannel" authenticate="false">
+        <in-parameters>
+            <auto-parameters include="nonpk"/>
+            <parameter name="mrchntSeqId" required="true"/>
+            <parameter name="channelSeqId" required="true"/>
+            <parameter name="channelSt" required="true"/>
+        </in-parameters>
+        <actions>
+            <entity-find entity-name="nacs.channel.Channel" list="ChannelList">
+                <econdition field-name="channelNo" from="channelSeqId"/>
+            </entity-find>
+            <log level="info" message="channelSeqId############${ChannelList[0].seqId}"/>
+            <set field="channelSeqId" value="${ChannelList[0].seqId}"/>
+            <!-- 条件查询：根据商户编号查实体 -->
+            <entity-find entity-name="nacs.mrchnt.MrchntChannel" list="mrchntChannelList">
+                <econdition field-name="mrchntSeqId" from="mrchntSeqId"/>
+                <econdition field-name="channelSeqId" from="channelSeqId"/>
+            </entity-find>
+            <log level="info" message="mrchntChannelList############${mrchntChannelList}"/>
+            <!-- 若商户可用渠道信息相同的数据已存在，则不能增加 -->
+            <if condition="mrchntChannelList">
+                <return error="true" message="该商户可用渠道已存在，不能增加！"/>
+            </if>
+            <!-- 若商户可用渠道信息都相同的数据不存在，则增加一条记录 -->
+            <service-call name="create#nacs.mrchnt.MrchntChannel" in-map="context"/>
+        </actions>
+    </service>
+
+    <!--商户手续费添加服务-->
+    <service verb="create" noun="MrchntFee" authenticate="false">
+        <in-parameters>
+            <!--<auto-parameters include="nonpk"/>-->
+            <auto-parameters include="pk"/>
+            <parameter name="mrchntSeqId" required="true"/>
+            <parameter name="trxCtgy" required="true"/>
+            <parameter name="feeChargeMode" required="true"/>
+            <!--<parameter name="mrchntNm" required="true"/>-->
+            <parameter name="amtMonth" type="BigDecimal"/>
+            <parameter name="amt" type="BigDecimal"/>
+            <parameter name="feeChargeRate" type="BigDecimal"/>
+        </in-parameters>
+        <actions>
+            <entity-find entity-name="nacs.mrchnt.MrchntFee" list="mrchntFeeList">
+                <econdition field-name="mrchntSeqId" from="mrchntSeqId"/>
+                <econdition field-name="trxCtgy" from="trxCtgy"/>
+            </entity-find>
+            <if condition="mrchntFeeList">
+                <return error="true" message="该商户手续费信息已存在，不能增加"/>
+            </if>
+            <service-call name="create#nacs.mrchnt.MrchntFee" in-map="context"/>
+        </actions>
+
+    </service>
+
+    <!-- 商户手续费更新服务 -->
+    <service verb="update" noun="MrchntFee" authenticate="false">
+        <in-parameters>
+            <auto-parameters include="nonpk"/>
+            <auto-parameters include="pk" required="true"/>
+            <parameter name="feeChargeMode" required="true"/>
+            <parameter name="amtMonth"/>
+            <parameter name="amt"/>
+            <parameter name="feeChargeRate"/>
+        </in-parameters>
+        <actions>
+            <if condition="feeChargeMode == 'FEE_CHARGE_MODE1'">
+                <if condition="!amt">
+                    <return error="true" message="单笔收取金额不能为空"/>
+                </if>
+                <if condition="amtMonth || feeChargeRate">
+                    <return error="true" message="单月收取金额或费率应该为空"/>
+                </if>
+            </if>
+            <if condition="feeChargeMode == 'FEE_CHARGE_MODE2'">
+                <if condition="!amtMonth">
+                    <return error="true" message="单月收取金额不能为空"/>
+                </if>
+                <if condition="amt || feeChargeRate">
+                    <return error="true" message="单笔收取金额或费率应该为空"/>
+                </if>
+            </if>
+            <if condition="feeChargeMode == 'FEE_CHARGE_MODE3'">
+                <if condition="!feeChargeRate">
+                    <return error="true" message="费率不能为空"/>
+                </if>
+                <if condition="amtMonth || amt">
+                    <return error="true" message="单笔收取金额或单月收取金额应该为空"/>
+                </if>
+            </if>
+            <service-call name="update#nacs.mrchnt.MrchntFee" in-map="context"/>
+        </actions>
+
+    </service>
+
+    <!-- 商户业务品种添加服务 -->
+    <service verb="create" noun="MrchntType" authenticate="false">
+        <in-parameters>
+            <auto-parameters include="nonpk"/>
+            <parameter name="mrchntSeqId" required="true"/>
+            <parameter name="bizTp" required="true"/>
+            <parameter name="bizTpSt" required="true"/>
+        </in-parameters>
+        <actions>
+            <entity-find entity-name="nacs.mrchnt.MrchntType" list="mrchntTypeList">
+                <econdition field-name="mrchntSeqId" from="mrchntSeqId"/>
+                <econdition field-name="bizTp" from="bizTp"/>
+            </entity-find>
+            <if condition="mrchntTypeList">
+                <return error="true" message="该商户已存在，不能增加"/>
+            </if>
+            <service-call name="create#nacs.mrchnt.MrchntType" in-map="context"/>
+        </actions>
+    </service>
+
+    <!--商户业务品种更新服务-->
+    <service verb="update" noun="MrchntType"  authenticate="false">
+        <in-parameters>
+            <auto-parameters include="pk" required="true"/>
+            <auto-parameters include="nonpk"/>
+            <parameter name="bizTpSt" required="true"/>
+        </in-parameters>
+        <actions>
+            <service-call name="update#nacs.mrchnt.MrchntType" in-map="context"/>
+        </actions>
+    </service>
+
+    <!--商户账务模式增加服务-->
+    <service verb="create" noun="MrchntCoreAccounting" authenticate="false">
+        <in-parameters>
+            <auto-parameters include="nonpk"/>
+            <parameter name="mrchntSeqId"/>
+            <parameter name="version"/>
+            <parameter name="trxCtgy" required="true"/>
+            <parameter name="accountingMode" required="true"/>
+        </in-parameters>
+        <actions>
+            <entity-find entity-name="nacs.mrchnt.MrchntCoreAccounting" list="mrchntCoreAccountingList">
+                <econdition field-name="mrchntSeqId" from="mrchntSeqId"/>
+                <econdition field-name="version" from="version"/>
+                <econdition field-name="trxCtgy" from="trxCtgy"/>
+            </entity-find>
+            <if condition="mrchntCoreAccountingList">
+                <return error="true" message="商户账务信息已存在"/>
+            </if>
+            <service-call name="create#nacs.mrchnt.MrchntCoreAccounting" in-map="context"/>
+        </actions>
+    </service>
+
+    <!--商户清算模式增加服务-->
+    <service verb="create" noun="MrchntCoreClear" authenticate="false">
+        <in-parameters>
+            <auto-parameters include="nonpk"/>
+            <parameter name="mrchntSeqId"/>
+            <parameter name="version"/>
+            <parameter name="trxCtgy" required="true"/>
+            <parameter name="clearMode" required="true"/>
+            <parameter name="clearDay" required="true" type="Integer"/>
+        </in-parameters>
+        <actions>
+            <entity-find entity-name="nacs.mrchnt.MrchntCoreClear" list="mrchntCoreClearList">
+                <econdition field-name="mrchntSeqId" from="mrchntSeqId"/>
+                <econdition field-name="version" from="version"/>
+                <econdition field-name="trxCtgy" from="trxCtgy"/>
+            </entity-find>
+            <if condition="clearMode == 'CURRENT_CLEAR' &amp;&amp; clearDay != 0">
+                <return error="true" message="实时清算周期只能为0"/>
+            </if>
+            <if condition="mrchntCoreClearList">
+                <return error="true" message="商户清算信息已存在"/>
+            </if>
+            <service-call name="create#nacs.mrchnt.MrchntCoreClear" in-map="context"/>
+        </actions>
+    </service>
+
+    <!--商户清算模式更新服务-->
+    <service verb="update" noun="MrchntCoreClear" authenticate="false">
+        <in-parameters>
+            <parameter name="seqId"/>
+            <parameter name="mrchntSeqId"/>
+            <parameter name="version"/>
+            <parameter name="trxCtgy" required="true"/>
+            <parameter name="clearMode" required="true"/>
+            <parameter name="clearDay" required="true" type="Integer"/>
+        </in-parameters>
+        <actions>
+            <log level="info" message="clearMode==${clearMode}********clearDay===${clearDay}"/>
+            <if condition="clearMode == 'CURRENT_CLEAR'">
+                <set field="clearDay" value="0"/>
+            </if>
+            <service-call name="update#nacs.mrchnt.MrchntCoreClear" in-map="context"/>
+        </actions>
+    </service>
+
+    <!--获取关联的账务方式信息服务-->
+    <service verb="get" noun="AccountingMode" authenticate="false">
+        <in-parameters>
+            <parameter name="trxCtgy" required="true"/>
+        </in-parameters>
+        <out-parameters>
+            <parameter name="resultList" type="List"/>
+        </out-parameters>
+        <actions>
+            <if condition="trxCtgy=='000501'">
+                <entity-find entity-name="moqui.basic.Enumeration" list="bizList">
+                    <econdition field-name="enumTypeId" operator="in" value="AccountingMode2"/>
+                </entity-find>
+            </if>
+            <if condition="trxCtgy=='000401'">
+                <entity-find entity-name="moqui.basic.Enumeration" list="bizList">
+                    <econdition field-name="enumTypeId" operator="in" value="AccountingMode1"/>
+                </entity-find>
+            </if>
+            <script>
+                resultList = []
+                for (def biz in bizList) resultList.add([enumId:biz.enumId, label:biz.description])
+            </script>
+        </actions>
+    </service>
+
+
+
+
+</services>

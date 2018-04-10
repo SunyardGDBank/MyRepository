@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+This software is in the public domain under CC0 1.0 Universal plus a 
+Grant of Patent License.
+
+To the extent possible under law, the author(s) have dedicated all
+copyright and related and neighboring rights to this software to the
+public domain worldwide. This software is distributed without any
+warranty.
+
+You should have received a copy of the CC0 Public Domain Dedication
+along with this software (see the LICENSE.md file). If not, see
+<http://creativecommons.org/publicdomain/zero/1.0/>.
+-->
+<entity-facade-xml type="demo">
+    <!-- password=moqui -->
+    <moqui.security.UserAccount userId="EP_ADMIN" username="admin" userFullName="administrator"
+                                currentPassword="9fc826f84982bcae5fce61399e2688115a8309ba" passwordHashType="SHA"
+                                passwordHint="framework name, lowercase" currencyUomId="CNY" locale="zh_CN" timeZone="Asia/Shanghai"
+                                emailAddress=""/>
+    <moqui.security.UserGroupMember userGroupId="ADMIN" userId="EP_ADMIN" fromDate="1265184000000"/>
+    <moqui.security.UserPermission userPermissionId="AdminPerm" description="Admin Permission"/>
+    <moqui.security.UserGroupPermission userGroupId="ADMIN" userPermissionId="AdminPerm"
+                                        fromDate="1265184000000" thruDate=""/>
+    <moqui.security.UserLoginHistory userId="EP_ADMIN" fromDate="1265184000000" successfulLogin="Y"/>
+
+    <!-- password=epcc -->
+    <moqui.security.UserAccount userId="NACS_MASTER_USER" username="nacsmaster" userFullName="清算平台管理员"
+                                currentPassword="9fc826f84982bcae5fce61399e2688115a8309ba" passwordHashType="SHA"
+                                passwordHint="" currencyUomId="CNY" locale="zh_CN" timeZone="Asia/Shanghai"
+                                emailAddress=""/>
+
+    <moqui.security.UserGroup userGroupId="NACS_MASTER_GROUP" description="清算平台管理用户组"/>
+    <moqui.security.UserGroupMember userGroupId="NACS_MASTER_GROUP" userId="NACS_MASTER_USER" fromDate="1265184000000"/>
+    <moqui.security.UserLoginHistory userId="NACS_MASTER_USER" fromDate="1265184000000" successfulLogin="Y"/>
+
+    <moqui.security.ArtifactGroup artifactGroupId="NACS_APP" description="清算平台应用构件组"/>
+    <moqui.security.ArtifactAuthz artifactAuthzId="100000" userGroupId="NACS_MASTER_GROUP" artifactGroupId="NACS_APP"
+                                  authzTypeEnumId="AUTHZT_ALWAYS" authzActionEnumId="AUTHZA_ALL"/>
+    <moqui.security.ArtifactAuthz artifactAuthzId="NACS_AUTHZ_ALL" userGroupId="ADMIN"
+                                  artifactGroupId="NACS_APP"
+                                  authzTypeEnumId="AUTHZT_ALWAYS" authzActionEnumId="AUTHZA_ALL"/>
+    <moqui.security.ArtifactGroupMember artifactGroupId="NACS_APP" artifactTypeEnumId="AT_XML_SCREEN"
+                                        inheritAuthz="Y" artifactName="component://nacs-admin/screen/NacsAdmin.xml"/>
+</entity-facade-xml>

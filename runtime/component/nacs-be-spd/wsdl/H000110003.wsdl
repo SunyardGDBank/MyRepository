@@ -1,0 +1,86 @@
+<wsdl:definitions xmlns:s="http://esb.spdbbiz.com/services/H000110003" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:soapnc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:tns="http://esb.spdbbiz.com/services/H000110003/wsdl" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" targetNamespace="http://esb.spdbbiz.com/services/H000110003/wsdl">
+<wsdl:types>
+<xsd:schema targetNamespace="http://esb.spdbbiz.com/services/H000110003/wsdl" elementFormDefault="qualified" attributeFormDefault="qualified">
+<xsd:import namespace="http://esb.spdbbiz.com/services/H000110003" schemaLocation="http://10.112.20.145:8080/Publish/WSDLfilePath/H000110003.xsd"/>
+</xsd:schema>
+</wsdl:types>
+<wsdl:message name="RspLglInstDdctAndTfr">
+<wsdl:part name="RspLglInstDdctAndTfr" element="s:RspLglInstDdctAndTfr"></wsdl:part>
+</wsdl:message>
+<wsdl:message name="RspFreezeMntn">
+<wsdl:part name="RspFreezeMntn" element="s:RspFreezeMntn"></wsdl:part>
+</wsdl:message>
+<wsdl:message name="ReqFreezeMntn">
+<wsdl:part name="ReqFreezeMntn" element="s:ReqFreezeMntn"></wsdl:part>
+</wsdl:message>
+<wsdl:message name="ReqLglInstFrz">
+<wsdl:part name="ReqLglInstFrz" element="s:ReqLglInstFrz"></wsdl:part>
+</wsdl:message>
+<wsdl:message name="RspHeader">
+<wsdl:part name="RspHeader" element="s:RspHeader"></wsdl:part>
+</wsdl:message>
+<wsdl:message name="RspLglInstFrz">
+<wsdl:part name="RspLglInstFrz" element="s:RspLglInstFrz"></wsdl:part>
+</wsdl:message>
+<wsdl:message name="ReqLglInstDdctAndTfr">
+<wsdl:part name="ReqLglInstDdctAndTfr" element="s:ReqLglInstDdctAndTfr"></wsdl:part>
+</wsdl:message>
+<wsdl:message name="ReqHeader">
+<wsdl:part name="ReqHeader" element="s:ReqHeader"></wsdl:part>
+</wsdl:message>
+<wsdl:portType name="ESBServerPortType">
+<wsdl:operation name="FreezeMntn">
+<wsdl:input message="tns:ReqFreezeMntn"></wsdl:input>
+<wsdl:output message="tns:RspFreezeMntn"></wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="LglInstDdctAndTfr">
+<wsdl:input message="tns:ReqLglInstDdctAndTfr"></wsdl:input>
+<wsdl:output message="tns:RspLglInstDdctAndTfr"></wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="LglInstFrz">
+<wsdl:input message="tns:ReqLglInstFrz"></wsdl:input>
+<wsdl:output message="tns:RspLglInstFrz"></wsdl:output>
+</wsdl:operation>
+</wsdl:portType>
+<wsdl:binding name="ESBServerSoapBinding" type="tns:ESBServerPortType">
+<soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+<wsdl:operation name="FreezeMntn">
+<soap:operation soapAction="urn:/FreezeMntn"/>
+<wsdl:input>
+<soap:header message="tns:ReqHeader" part="ReqHeader" use="literal"></soap:header>
+<soap:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap:header message="tns:RspHeader" part="RspHeader" use="literal"></soap:header>
+<soap:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="LglInstDdctAndTfr">
+<soap:operation soapAction="urn:/LglInstDdctAndTfr"/>
+<wsdl:input>
+<soap:header message="tns:ReqHeader" part="ReqHeader" use="literal"></soap:header>
+<soap:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap:header message="tns:RspHeader" part="RspHeader" use="literal"></soap:header>
+<soap:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="LglInstFrz">
+<soap:operation soapAction="urn:/LglInstFrz"/>
+<wsdl:input>
+<soap:header message="tns:ReqHeader" part="ReqHeader" use="literal"></soap:header>
+<soap:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap:header message="tns:RspHeader" part="RspHeader" use="literal"></soap:header>
+<soap:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+</wsdl:binding>
+<wsdl:service name="H000110003">
+<wsdl:port name="ESBServerSoapEndpoint" binding="tns:ESBServerSoapBinding">
+<soap:address location="http://soaesb.spdbbiz.com:7701/services/H000110003"/>
+</wsdl:port>
+</wsdl:service>
+</wsdl:definitions>

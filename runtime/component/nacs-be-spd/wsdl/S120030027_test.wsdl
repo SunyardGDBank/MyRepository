@@ -1,0 +1,317 @@
+<wsdl:definitions xmlns:s="http://esb.spdbbiz.com/services/S120030027" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:soapnc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:tns="http://esb.spdbbiz.com/services/S120030027/wsdl" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" targetNamespace="http://esb.spdbbiz.com/services/S120030027/wsdl">
+<wsdl:types>
+<xsd:schema targetNamespace="http://esb.spdbbiz.com/services/S120030027/wsdl" elementFormDefault="qualified" attributeFormDefault="qualified">
+<xsd:import namespace="http://esb.spdbbiz.com/services/S120030027" />
+</xsd:schema>
+</wsdl:types>
+<wsdl:message name="ReqSpclListQry">
+<wsdl:part name="ReqSpclListQry" element="s:ReqSpclListQry"></wsdl:part>
+</wsdl:message>
+<wsdl:message name="RspHeader">
+<wsdl:part name="RspHeader" element="s:RspHeader"></wsdl:part>
+</wsdl:message>
+<wsdl:message name="RspRiskInfoQry">
+<wsdl:part name="RspRiskInfoQry" element="s:RspRiskInfoQry"></wsdl:part>
+</wsdl:message>
+<wsdl:message name="ReqSmlMicroClntFlagQry">
+<wsdl:part name="ReqSmlMicroClntFlagQry" element="s:ReqSmlMicroClntFlagQry"></wsdl:part>
+</wsdl:message>
+<wsdl:message name="ReqFncInfoQry">
+<wsdl:part name="ReqFncInfoQry" element="s:ReqFncInfoQry"></wsdl:part>
+</wsdl:message>
+<wsdl:message name="RspSimpClntInfoQryByClntAcctNo">
+<wsdl:part name="RspSimpClntInfoQryByClntAcctNo" element="s:RspSimpClntInfoQryByClntAcctNo"></wsdl:part>
+</wsdl:message>
+<wsdl:message name="RspClntLblInfoQry">
+<wsdl:part name="RspClntLblInfoQry" element="s:RspClntLblInfoQry"></wsdl:part>
+</wsdl:message>
+<wsdl:message name="ReqAlikeClntQry">
+<wsdl:part name="ReqAlikeClntQry" element="s:ReqAlikeClntQry"></wsdl:part>
+</wsdl:message>
+<wsdl:message name="RspSmlMicroClntFlagQry">
+<wsdl:part name="RspSmlMicroClntFlagQry" element="s:RspSmlMicroClntFlagQry"></wsdl:part>
+</wsdl:message>
+<wsdl:message name="RspStmtSendInfoQry">
+<wsdl:part name="RspStmtSendInfoQry" element="s:RspStmtSendInfoQry"></wsdl:part>
+</wsdl:message>
+<wsdl:message name="ReqSimpClntInfoQryByClntAcctNo">
+<wsdl:part name="ReqSimpClntInfoQryByClntAcctNo" element="s:ReqSimpClntInfoQryByClntAcctNo"></wsdl:part>
+</wsdl:message>
+<wsdl:message name="RspClntCtfQry">
+<wsdl:part name="RspClntCtfQry" element="s:RspClntCtfQry"></wsdl:part>
+</wsdl:message>
+<wsdl:message name="ReqClntCtfQry">
+<wsdl:part name="ReqClntCtfQry" element="s:ReqClntCtfQry"></wsdl:part>
+</wsdl:message>
+<wsdl:message name="RspClntNoQryByClntAcctNo">
+<wsdl:part name="RspClntNoQryByClntAcctNo" element="s:RspClntNoQryByClntAcctNo"></wsdl:part>
+</wsdl:message>
+<wsdl:message name="ReqRelPersonQry">
+<wsdl:part name="ReqRelPersonQry" element="s:ReqRelPersonQry"></wsdl:part>
+</wsdl:message>
+<wsdl:message name="ReqClntNoQryByClntAcctNo">
+<wsdl:part name="ReqClntNoQryByClntAcctNo" element="s:ReqClntNoQryByClntAcctNo"></wsdl:part>
+</wsdl:message>
+<wsdl:message name="RspClntAdrQry">
+<wsdl:part name="RspClntAdrQry" element="s:RspClntAdrQry"></wsdl:part>
+</wsdl:message>
+<wsdl:message name="ReqClntAdrQry">
+<wsdl:part name="ReqClntAdrQry" element="s:ReqClntAdrQry"></wsdl:part>
+</wsdl:message>
+<wsdl:message name="RspCtcInfoQry">
+<wsdl:part name="RspCtcInfoQry" element="s:RspCtcInfoQry"></wsdl:part>
+</wsdl:message>
+<wsdl:message name="RspSpclListQry">
+<wsdl:part name="RspSpclListQry" element="s:RspSpclListQry"></wsdl:part>
+</wsdl:message>
+<wsdl:message name="ReqRiskInfoQry">
+<wsdl:part name="ReqRiskInfoQry" element="s:ReqRiskInfoQry"></wsdl:part>
+</wsdl:message>
+<wsdl:message name="RspFncInfoQry">
+<wsdl:part name="RspFncInfoQry" element="s:RspFncInfoQry"></wsdl:part>
+</wsdl:message>
+<wsdl:message name="ReqStmtSendInfoQry">
+<wsdl:part name="ReqStmtSendInfoQry" element="s:ReqStmtSendInfoQry"></wsdl:part>
+</wsdl:message>
+<wsdl:message name="ReqLvlInfoQry">
+<wsdl:part name="ReqLvlInfoQry" element="s:ReqLvlInfoQry"></wsdl:part>
+</wsdl:message>
+<wsdl:message name="RspRelPersonQry">
+<wsdl:part name="RspRelPersonQry" element="s:RspRelPersonQry"></wsdl:part>
+</wsdl:message>
+<wsdl:message name="ReqHeader">
+<wsdl:part name="ReqHeader" element="s:ReqHeader"></wsdl:part>
+</wsdl:message>
+<wsdl:message name="ReqClntLblInfoQry">
+<wsdl:part name="ReqClntLblInfoQry" element="s:ReqClntLblInfoQry"></wsdl:part>
+</wsdl:message>
+<wsdl:message name="RspAlikeClntQry">
+<wsdl:part name="RspAlikeClntQry" element="s:RspAlikeClntQry"></wsdl:part>
+</wsdl:message>
+<wsdl:message name="RspLvlInfoQry">
+<wsdl:part name="RspLvlInfoQry" element="s:RspLvlInfoQry"></wsdl:part>
+</wsdl:message>
+<wsdl:message name="ReqCtcInfoQry">
+<wsdl:part name="ReqCtcInfoQry" element="s:ReqCtcInfoQry"></wsdl:part>
+</wsdl:message>
+<wsdl:portType name="ESBServerPortType">
+<wsdl:operation name="AlikeClntQry">
+<wsdl:input message="tns:ReqAlikeClntQry"></wsdl:input>
+<wsdl:output message="tns:RspAlikeClntQry"></wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="ClntAdrQry">
+<wsdl:input message="tns:ReqClntAdrQry"></wsdl:input>
+<wsdl:output message="tns:RspClntAdrQry"></wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="ClntCtfQry">
+<wsdl:input message="tns:ReqClntCtfQry"></wsdl:input>
+<wsdl:output message="tns:RspClntCtfQry"></wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="ClntLblInfoQry">
+<wsdl:input message="tns:ReqClntLblInfoQry"></wsdl:input>
+<wsdl:output message="tns:RspClntLblInfoQry"></wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="ClntNoQryByClntAcctNo">
+<wsdl:input message="tns:ReqClntNoQryByClntAcctNo"></wsdl:input>
+<wsdl:output message="tns:RspClntNoQryByClntAcctNo"></wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="CtcInfoQry">
+<wsdl:input message="tns:ReqCtcInfoQry"></wsdl:input>
+<wsdl:output message="tns:RspCtcInfoQry"></wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="FncInfoQry">
+<wsdl:input message="tns:ReqFncInfoQry"></wsdl:input>
+<wsdl:output message="tns:RspFncInfoQry"></wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="LvlInfoQry">
+<wsdl:input message="tns:ReqLvlInfoQry"></wsdl:input>
+<wsdl:output message="tns:RspLvlInfoQry"></wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="RelPersonQry">
+<wsdl:input message="tns:ReqRelPersonQry"></wsdl:input>
+<wsdl:output message="tns:RspRelPersonQry"></wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="RiskInfoQry">
+<wsdl:input message="tns:ReqRiskInfoQry"></wsdl:input>
+<wsdl:output message="tns:RspRiskInfoQry"></wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="SimpClntInfoQryByClntAcctNo">
+<wsdl:input message="tns:ReqSimpClntInfoQryByClntAcctNo"></wsdl:input>
+<wsdl:output message="tns:RspSimpClntInfoQryByClntAcctNo"></wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="SmlMicroClntFlagQry">
+<wsdl:input message="tns:ReqSmlMicroClntFlagQry"></wsdl:input>
+<wsdl:output message="tns:RspSmlMicroClntFlagQry"></wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="SpclListQry">
+<wsdl:input message="tns:ReqSpclListQry"></wsdl:input>
+<wsdl:output message="tns:RspSpclListQry"></wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="StmtSendInfoQry">
+<wsdl:input message="tns:ReqStmtSendInfoQry"></wsdl:input>
+<wsdl:output message="tns:RspStmtSendInfoQry"></wsdl:output>
+</wsdl:operation>
+</wsdl:portType>
+<wsdl:binding name="ESBServerSoapBinding" type="tns:ESBServerPortType">
+<soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+<wsdl:operation name="AlikeClntQry">
+<soap:operation soapAction="urn:/AlikeClntQry"/>
+<wsdl:input>
+<soap:header message="tns:ReqHeader" part="ReqHeader" use="literal"></soap:header>
+<soap:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap:header message="tns:RspHeader" part="RspHeader" use="literal"></soap:header>
+<soap:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="ClntAdrQry">
+<soap:operation soapAction="urn:/ClntAdrQry"/>
+<wsdl:input>
+<soap:header message="tns:ReqHeader" part="ReqHeader" use="literal"></soap:header>
+<soap:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap:header message="tns:RspHeader" part="RspHeader" use="literal"></soap:header>
+<soap:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="ClntCtfQry">
+<soap:operation soapAction="urn:/ClntCtfQry"/>
+<wsdl:input>
+<soap:header message="tns:ReqHeader" part="ReqHeader" use="literal"></soap:header>
+<soap:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap:header message="tns:RspHeader" part="RspHeader" use="literal"></soap:header>
+<soap:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="ClntLblInfoQry">
+<soap:operation soapAction="urn:/ClntLblInfoQry"/>
+<wsdl:input>
+<soap:header message="tns:ReqHeader" part="ReqHeader" use="literal"></soap:header>
+<soap:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap:header message="tns:RspHeader" part="RspHeader" use="literal"></soap:header>
+<soap:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="ClntNoQryByClntAcctNo">
+<soap:operation soapAction="urn:/ClntNoQryByClntAcctNo"/>
+<wsdl:input>
+<soap:header message="tns:ReqHeader" part="ReqHeader" use="literal"></soap:header>
+<soap:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap:header message="tns:RspHeader" part="RspHeader" use="literal"></soap:header>
+<soap:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="CtcInfoQry">
+<soap:operation soapAction="urn:/CtcInfoQry"/>
+<wsdl:input>
+<soap:header message="tns:ReqHeader" part="ReqHeader" use="literal"></soap:header>
+<soap:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap:header message="tns:RspHeader" part="RspHeader" use="literal"></soap:header>
+<soap:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="FncInfoQry">
+<soap:operation soapAction="urn:/FncInfoQry"/>
+<wsdl:input>
+<soap:header message="tns:ReqHeader" part="ReqHeader" use="literal"></soap:header>
+<soap:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap:header message="tns:RspHeader" part="RspHeader" use="literal"></soap:header>
+<soap:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="LvlInfoQry">
+<soap:operation soapAction="urn:/LvlInfoQry"/>
+<wsdl:input>
+<soap:header message="tns:ReqHeader" part="ReqHeader" use="literal"></soap:header>
+<soap:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap:header message="tns:RspHeader" part="RspHeader" use="literal"></soap:header>
+<soap:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="RelPersonQry">
+<soap:operation soapAction="urn:/RelPersonQry"/>
+<wsdl:input>
+<soap:header message="tns:ReqHeader" part="ReqHeader" use="literal"></soap:header>
+<soap:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap:header message="tns:RspHeader" part="RspHeader" use="literal"></soap:header>
+<soap:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="RiskInfoQry">
+<soap:operation soapAction="urn:/RiskInfoQry"/>
+<wsdl:input>
+<soap:header message="tns:ReqHeader" part="ReqHeader" use="literal"></soap:header>
+<soap:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap:header message="tns:RspHeader" part="RspHeader" use="literal"></soap:header>
+<soap:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="SimpClntInfoQryByClntAcctNo">
+<soap:operation soapAction="urn:/SimpClntInfoQryByClntAcctNo"/>
+<wsdl:input>
+<soap:header message="tns:ReqHeader" part="ReqHeader" use="literal"></soap:header>
+<soap:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap:header message="tns:RspHeader" part="RspHeader" use="literal"></soap:header>
+<soap:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="SmlMicroClntFlagQry">
+<soap:operation soapAction="urn:/SmlMicroClntFlagQry"/>
+<wsdl:input>
+<soap:header message="tns:ReqHeader" part="ReqHeader" use="literal"></soap:header>
+<soap:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap:header message="tns:RspHeader" part="RspHeader" use="literal"></soap:header>
+<soap:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="SpclListQry">
+<soap:operation soapAction="urn:/SpclListQry"/>
+<wsdl:input>
+<soap:header message="tns:ReqHeader" part="ReqHeader" use="literal"></soap:header>
+<soap:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap:header message="tns:RspHeader" part="RspHeader" use="literal"></soap:header>
+<soap:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="StmtSendInfoQry">
+<soap:operation soapAction="urn:/StmtSendInfoQry"/>
+<wsdl:input>
+<soap:header message="tns:ReqHeader" part="ReqHeader" use="literal"></soap:header>
+<soap:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap:header message="tns:RspHeader" part="RspHeader" use="literal"></soap:header>
+<soap:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+</wsdl:binding>
+<wsdl:service name="S120030027">
+<wsdl:port name="ESBServerSoapEndpoint" binding="tns:ESBServerSoapBinding">
+<soap:address location="http://esb.spdbbiz.com:7701/services/S120030027"/>
+</wsdl:port>
+</wsdl:service>
+</wsdl:definitions>

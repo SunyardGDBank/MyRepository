@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://esb.spdbbiz.com/services/S010030004/wsdl" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:soapnc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:s="http://esb.spdbbiz.com/services/S010030004" targetNamespace="http://esb.spdbbiz.com/services/S010030004/wsdl">
+<wsdl:types>
+<xsd:schema targetNamespace="http://esb.spdbbiz.com/services/S010030004/wsdl" attributeFormDefault="qualified" elementFormDefault="qualified">
+<xsd:import schemaLocation="http://10.112.20.145:8080/Publish/CBSP/S010030004.xsd" namespace="http://esb.spdbbiz.com/services/S010030004"/>
+</xsd:schema>
+</wsdl:types>
+<wsdl:message name="ReqTermAcctBalQry">
+<wsdl:part name="ReqTermAcctBalQry" element="s:ReqTermAcctBalQry"> </wsdl:part>
+</wsdl:message>
+<wsdl:message name="ReqAcntgBalQry">
+<wsdl:part name="ReqAcntgBalQry" element="s:ReqAcntgBalQry"> </wsdl:part>
+</wsdl:message>
+<wsdl:message name="RspTermAcctBalQry">
+<wsdl:part name="RspTermAcctBalQry" element="s:RspTermAcctBalQry"> </wsdl:part>
+</wsdl:message>
+<wsdl:message name="RspAcntgBalQry">
+<wsdl:part name="RspAcntgBalQry" element="s:RspAcntgBalQry"> </wsdl:part>
+</wsdl:message>
+<wsdl:message name="ReqHeader">
+<wsdl:part name="ReqHeader" element="s:ReqHeader"> </wsdl:part>
+</wsdl:message>
+<wsdl:message name="ReqHistNetChgValMntQry">
+<wsdl:part name="ReqHistNetChgValMntQry" element="s:ReqHistNetChgValMntQry"> </wsdl:part>
+</wsdl:message>
+<wsdl:message name="RspTmAIOAcctBalQry">
+<wsdl:part name="RspTmAIOAcctBalQry" element="s:RspTmAIOAcctBalQry"> </wsdl:part>
+</wsdl:message>
+<wsdl:message name="ReqCrnAcctBalQry">
+<wsdl:part name="ReqCrnAcctBalQry" element="s:ReqCrnAcctBalQry"> </wsdl:part>
+</wsdl:message>
+<wsdl:message name="RspCrnAcctBalQry">
+<wsdl:part name="RspCrnAcctBalQry" element="s:RspCrnAcctBalQry"> </wsdl:part>
+</wsdl:message>
+<wsdl:message name="RspHeader">
+<wsdl:part name="RspHeader" element="s:RspHeader"> </wsdl:part>
+</wsdl:message>
+<wsdl:message name="ReqTmAIOAcctBalQry">
+<wsdl:part name="ReqTmAIOAcctBalQry" element="s:ReqTmAIOAcctBalQry"> </wsdl:part>
+</wsdl:message>
+<wsdl:message name="RspHistNetChgValMntQry">
+<wsdl:part name="RspHistNetChgValMntQry" element="s:RspHistNetChgValMntQry"> </wsdl:part>
+</wsdl:message>
+<wsdl:portType name="ESBServerPortType">
+<wsdl:operation name="AcntgBalQry">
+<wsdl:input message="tns:ReqAcntgBalQry"> </wsdl:input>
+<wsdl:output message="tns:RspAcntgBalQry"> </wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="CrnAcctBalQry">
+<wsdl:input message="tns:ReqCrnAcctBalQry"> </wsdl:input>
+<wsdl:output message="tns:RspCrnAcctBalQry"> </wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="HistNetChgValMntQry">
+<wsdl:input message="tns:ReqHistNetChgValMntQry"> </wsdl:input>
+<wsdl:output message="tns:RspHistNetChgValMntQry"> </wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="TermAcctBalQry">
+<wsdl:input message="tns:ReqTermAcctBalQry"> </wsdl:input>
+<wsdl:output message="tns:RspTermAcctBalQry"> </wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="TmAIOAcctBalQry">
+<wsdl:input message="tns:ReqTmAIOAcctBalQry"> </wsdl:input>
+<wsdl:output message="tns:RspTmAIOAcctBalQry"> </wsdl:output>
+</wsdl:operation>
+</wsdl:portType>
+<wsdl:binding type="tns:ESBServerPortType" name="ESBServerSoapBinding">
+<soap:binding transport="http://schemas.xmlsoap.org/soap/http" style="document"/>
+<wsdl:operation name="AcntgBalQry">
+<soap:operation soapAction="urn:/AcntgBalQry"/>
+<wsdl:input>
+<soap:header message="tns:ReqHeader" use="literal" part="ReqHeader"> </soap:header>
+<soap:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap:header message="tns:RspHeader" use="literal" part="RspHeader"> </soap:header>
+<soap:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="CrnAcctBalQry">
+<soap:operation soapAction="urn:/CrnAcctBalQry"/>
+<wsdl:input>
+<soap:header message="tns:ReqHeader" use="literal" part="ReqHeader"> </soap:header>
+<soap:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap:header message="tns:RspHeader" use="literal" part="RspHeader"> </soap:header>
+<soap:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="HistNetChgValMntQry">
+<soap:operation soapAction="urn:/HistNetChgValMntQry"/>
+<wsdl:input>
+<soap:header message="tns:ReqHeader" use="literal" part="ReqHeader"> </soap:header>
+<soap:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap:header message="tns:RspHeader" use="literal" part="RspHeader"> </soap:header>
+<soap:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="TermAcctBalQry">
+<soap:operation soapAction="urn:/TermAcctBalQry"/>
+<wsdl:input>
+<soap:header message="tns:ReqHeader" use="literal" part="ReqHeader"> </soap:header>
+<soap:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap:header message="tns:RspHeader" use="literal" part="RspHeader"> </soap:header>
+<soap:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="TmAIOAcctBalQry">
+<soap:operation soapAction="urn:/TmAIOAcctBalQry"/>
+<wsdl:input>
+<soap:header message="tns:ReqHeader" use="literal" part="ReqHeader"> </soap:header>
+<soap:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap:header message="tns:RspHeader" use="literal" part="RspHeader"> </soap:header>
+<soap:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+</wsdl:binding>
+<wsdl:service name="S010030004">
+<wsdl:port name="ESBServerSoapEndpoint" binding="tns:ESBServerSoapBinding">
+<soap:address location="http://esb.spdbbiz.com:7701/services/S010030004"/>
+</wsdl:port>
+</wsdl:service>
+</wsdl:definitions>

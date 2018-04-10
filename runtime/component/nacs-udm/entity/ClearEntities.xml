@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+This software is in the public domain under CC0 1.0 Universal plus a
+Grant of Patent License.
+
+To the extent possible under law, the author(s) have dedicated all
+copyright and related and neighboring rights to this software to the
+public domain worldwide. This software is distributed without any
+warranty.
+
+You should have received a copy of the CC0 Public Domain Dedication
+along with this software (see the LICENSE.md file). If not, see
+<http://creativecommons.org/publicdomain/zero/1.0/>.
+-->
+<entities xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:noNamespaceSchemaLocation="http://moqui.org/xsd/entity-definition-2.1.xsd">
+
+    <!-- ========================================================= -->
+    <!-- 清算相关表单 -->
+    <!-- nacs.clear.ClearChannel 支付通道清算信息表 -->
+    <!-- nacs.clear.ClearClient 商户清算信息表 -->
+    <!-- ========================================================= -->
+
+    <entity entity-name="ClearChannel" package="nacs.clear" authorize-skip="true" cache="false" sequence-primary-prefix="${new Date().format('yyyyMMdd)" sequence-primary-name="ClearChannel${new Date().format('yyyyMMdd)">
+        <description>支付通道清算信息表</description>
+        <field name="seqId" type="id" not-null="true" is-pk="true">
+            <description>序号（主键）</description>
+        </field>
+        <field name="channelSeqId" type="id" not-null="true">
+            <description>关联支付通道seqId</description>
+        </field>
+        <field name="settleDate" type="id" not-null="true">
+            <description>清算日期</description>
+        </field>
+        <field name="trxCtgy" type="id" not-null="true">
+            <description>交易类别 (000501：代收;000401：代付)</description>
+        </field>
+        <field name="settleAmt" type="currency-amount">
+            <description>清算金额</description>
+        </field>
+        <field name="refundAmt" type="currency-amount">
+            <description>退回金额</description>
+        </field>
+        <field name="netAmt" type="currency-amount">
+            <description>净清算金额</description>
+        </field>
+        <field name="settleSt" type="id">
+            <description>清算状态(SETTLE_NONE：未清算；SETTLE_BEEN：已清算)</description>
+        </field>
+        <field name="checkDate" type="id">
+            <description>对账日期</description>
+        </field>
+        <field name="checkSt" type="id">
+            <description>对账状态(CHK_RESULT_NONE：未对账 CHK_RESULT_BEING：对账中 CHK_RESULT_BEEN：已对账)</description>
+        </field>
+        <field name="remarks1" type="id-long">
+            <description>备注1</description>
+        </field>
+        <field name="remarks2" type="id-long">
+            <description>备注2</description>
+        </field>
+        <relationship type="one-nofk" title="TrxCtgy" related="moqui.basic.Enumeration">
+            <key-map field-name="trxCtgy"/>
+        </relationship>
+        <relationship type="one-nofk" title="SettleSt" related="moqui.basic.StatusItem">
+            <key-map field-name="settleSt"/>
+        </relationship>
+        <relationship type="one-nofk" title="CheckSt" related="moqui.basic.StatusItem">
+            <key-map field-name="checkSt"/>
+        </relationship>
+        <index name="NACS_CLEAR_CHANNEL_INDEX1" unique="true">
+            <index-field name="settleDate"/>
+            <index-field name="channelSeqId"/>
+            <index-field name="trxCtgy"/>
+        </index>
+    </entity>
+
+    <entity entity-name="ClearClient" package="nacs.clear" authorize-skip="true" cache="false" sequence-primary-prefix="${new Date().format('yyyyMMdd)" sequence-primary-name="ClearClient${new Date().format('yyyyMMdd)">
+        <description>商户清算信息表</description>
+        <field name="seqId" type="id" not-null="true" is-pk="true">
+            <description>序号（主键）</description>
+        </field>
+        <field name="mrchntSeqId" type="id" not-null="true">
+            <description>关联商户seqId</description>
+        </field>
+        <field name="settleDate" type="id" not-null="true">
+            <description>清算日期</description>
+        </field>
+        <field name="trxCtgy" type="id" not-null="true">
+            <description>交易类别 (000501：代收;000401：代付)</description>
+        </field>
+        <field name="settleAmt" type="currency-amount">
+            <description>清算金额</description>
+        </field>
+        <field name="refundAmt" type="currency-amount">
+            <description>退回金额</description>
+        </field>
+        <field name="netAmt" type="currency-amount">
+            <description>净清算金额</description>
+        </field>
+        <field name="settleSt" type="id">
+            <description>清算状态(SETTLE_ADD：补充清算；SETTLE_DONE：清算完成)</description>
+        </field>
+        <field name="checkDate" type="id">
+            <description>对账日期</description>
+        </field>
+        <field name="checkSt" type="id">
+            <description>对账状态(CHK_RESULT_NONE：未对账 CHK_RESULT_BEING：对账中 CHK_RESULT_BEEN：已对账)</description>
+        </field>
+        <field name="remarks1" type="id-long">
+            <description>备注1</description>
+        </field>
+        <field name="remarks2" type="id-long">
+            <description>备注2</description>
+        </field>
+        <relationship type="one-nofk" title="TrxCtgy" related="moqui.basic.Enumeration">
+            <key-map field-name="trxCtgy"/>
+        </relationship>
+        <relationship type="one-nofk" title="SettleSt" related="moqui.basic.StatusItem">
+            <key-map field-name="settleSt"/>
+        </relationship>
+        <relationship type="one-nofk" title="CheckSt" related="moqui.basic.StatusItem">
+            <key-map field-name="checkSt"/>
+        </relationship>
+        <index name="NACS_CLEAR_CLIENT_INDEX1" unique="true">
+            <index-field name="settleDate"/>
+            <index-field name="mrchntSeqId"/>
+            <index-field name="trxCtgy"/>
+        </index>
+    </entity>
+
+</entities>

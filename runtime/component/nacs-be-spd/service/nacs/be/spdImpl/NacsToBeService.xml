@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<services xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns=""
+          xsi:noNamespaceSchemaLocation="http://moqui.org/xsd/service-definition-2.1.xsd">
+
+    <!--发送浦发行内核心实现服务-->
+    <service verb="send" noun="Be" type="inline">
+        <implements service="nacs.be.NacsToBeService.send#Be"/>
+
+        <action>
+            <!--核心记账服务实现-->
+
+        </action>
+    </service>
+
+</services>

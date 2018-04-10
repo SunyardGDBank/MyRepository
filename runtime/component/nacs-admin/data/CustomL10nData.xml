@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entity-facade-xml type="seed">
+    <!-- added by chaos -->
+    <moqui.basic.LocalizedMessage original="Enter your username and password to sign in" localized="输入用户名和密码进行登录" locale="default"/>
+    <moqui.basic.LocalizedMessage original="Username" localized="用户名" locale="default"/>
+    <moqui.basic.LocalizedMessage original="Password" localized="密码" locale="default"/>
+    <moqui.basic.LocalizedMessage original="Sign in" localized="登录" locale="default"/>
+    <moqui.basic.LocalizedMessage original="Enter your username to reset and email your password" localized="输入用户名进行重置并发送密码到你的邮箱" locale="default"/>
+    <moqui.basic.LocalizedMessage original="Reset and Email Password" localized="重置并发送密码邮件" locale="default"/>
+    <moqui.basic.LocalizedMessage original="Enter details to change your password" localized="输入详细信息修改密码" locale="default"/>
+    <moqui.basic.LocalizedMessage original="Old Password" localized="旧密码" locale="default"/>
+    <moqui.basic.LocalizedMessage original="New Password" localized="新密码" locale="default"/>
+    <moqui.basic.LocalizedMessage original="New Password Verify" localized="确认新密码" locale="default"/>
+    <moqui.basic.LocalizedMessage original="Login" localized="登录" locale="default"/>
+    <moqui.basic.LocalizedMessage original="Reset Password" localized="重置密码" locale="default"/>
+    <moqui.basic.LocalizedMessage original="Change Password" localized="修改密码" locale="default"/>
+
+    
+</entity-facade-xml>

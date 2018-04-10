@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resource xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:noNamespaceSchemaLocation="http://moqui.org/xsd/rest-api-2.1.xsd"
+        name="access" displayName="Access REST API" version="2.0.0">
+    <!--rest接收商户统一入口-->
+    <resource name="pay" require-authentication="false">
+        <!--rest接收商户统一代付入口-->
+        <resource name="payment" require-authentication="false">
+            <id name="pay0004" require-authentication="false">
+                <method type="post"><service name="nacs.access.Access0004.access#Pay0004"></service></method>
+            </id>
+        </resource>
+        <!--rest接收商户统一代付交易查询入口-->
+        <resource name="payquery" require-authentication="false">
+            <id name="pay0006" require-authentication="false">
+                 <method type="post"><service name="nacs.access.Access0006.access#Pay0006"></service></method>
+             </id>
+        </resource>
+    </resource>
+</resource>

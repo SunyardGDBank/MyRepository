@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<services xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns=""
+          xsi:noNamespaceSchemaLocation="http://moqui.org/xsd/service-definition-2.1.xsd">
+
+  <service verb="get" noun="ChannelChart501" authenticate="false">
+    <out-parameters>
+        <parameter name="resultList1" type="List"/>
+    </out-parameters>
+    <actions>
+        <script>
+            resultList1 = []
+        </script>
+        <entity-find entity-name="nacs.channel.Channel" list="channelList1"/>
+        <iterate list="channelList1" entry="cl">
+            <entity-find-count entity-name="nacs.trx.TxItem" count-field="cl501Count">
+                <econdition field-name="channelSeqId" from="cl.seqId"/>
+                <econdition field-name="trxCtgy" value="000501"/>
+           <!-- <econdition field-name="workDate" value="${new Date().format('yyyy-MM-dd')}"/>-->
+                <econdition field-name="payStatus" value="PAY_STATUS1"/>
+                <econdition field-name="buiStatus" value="BUI_STATUS1"/>
+                <econdition field-name="coreStatus" value="ACCT_TRANS_SUCCESS"/>
+                <econdition field-name="txStatuId" value="TX_STATU_SUCCESS"/>
+            </entity-find-count>
+            <entity-find entity-name="nacs.trx.TxItem" list="cl501List">
+                <econdition field-name="channelSeqId" from="cl.seqId"/>
+                <econdition field-name="trxCtgy" value="000501"/>
+               <!-- <econdition field-name="workDate" value="${new Date().format('yyyy-MM-dd')}"/>-->
+                <econdition field-name="payStatus" value="PAY_STATUS1"/>
+                <econdition field-name="buiStatus" value="BUI_STATUS1"/>
+                <econdition field-name="coreStatus" value="ACCT_TRANS_SUCCESS"/>
+                <econdition field-name="txStatuId" value="TX_STATU_SUCCESS"/>
+            </entity-find>
+
+            <set field="sumAmt" value="0" type="BigDecimal"/>
+            <iterate list="cl501List" entry="cl501">
+                <set field="cl501Amt" from="cl501.trxAmt" type="BigDecimal"/>
+                <script>
+                    sumAmt=cl501Amt+sumAmt
+                </script>
+            </iterate>
+            <script>
+                resultList1.add([channelNm:cl.channelNm,count:cl501Count,sum:sumAmt])
+            </script>
+
+        </iterate>
+    </actions>
+  </service>
+
+
+    <service verb="get" noun="ChannelChart401" authenticate="false">
+        <out-parameters>
+            <parameter name="resultList2" type="List"/>
+        </out-parameters>
+        <actions>
+            <script>
+                resultList2 = []
+            </script>
+            <entity-find entity-name="nacs.channel.Channel" list="channelList2"/>
+            <iterate list="channelList2" entry="cl">
+                <entity-find-count entity-name="nacs.trx.TxItem" count-field="cl401Count">
+                    <econdition field-name="channelSeqId" from="cl.seqId"/>
+                    <econdition field-name="trxCtgy" value="000401"/>
+                   <!-- <econdition field-name="workDate" value="${new Date().format('yyyy-MM-dd')}"/>-->
+                    <econdition field-name="payStatus" value="PAY_STATUS1"/>
+                    <econdition field-name="buiStatus" value="BUI_STATUS1"/>
+                    <econdition field-name="coreStatus" value="ACCT_TRANS_SUCCESS"/>
+                    <econdition field-name="txStatuId" value="TX_STATU_SUCCESS"/>
+                </entity-find-count>
+                <entity-find entity-name="nacs.trx.TxItem" list="cl401List">
+                    <econdition field-name="channelSeqId" from="cl.seqId"/>
+                    <econdition field-name="trxCtgy" value="000401"/>
+                   <!-- <econdition field-name="workDate" value="${new Date().format('yyyy-MM-dd')}"/>-->
+                    <econdition field-name="payStatus" value="PAY_STATUS1"/>
+                    <econdition field-name="buiStatus" value="BUI_STATUS1"/>
+                    <econdition field-name="coreStatus" value="ACCT_TRANS_SUCCESS"/>
+                    <econdition field-name="txStatuId" value="TX_STATU_SUCCESS"/>
+                </entity-find>
+
+                <set field="sumAmt" value="0" type="BigDecimal"/>
+                <iterate list="cl401List" entry="cl401">
+                    <set field="cl401Amt" from="cl401.trxAmt" type="BigDecimal"/>
+                    <script>
+                        sumAmt=cl401Amt+sumAmt
+                    </script>
+                </iterate>
+                <script>
+                    resultList2.add([channelNm:cl.channelNm,count:cl401Count,sum:sumAmt])
+                </script>
+
+            </iterate>
+        </actions>
+    </service>
+
+    <service verb="get" noun="MrchntChart501" authenticate="false">
+        <out-parameters>
+            <parameter name="resultList3" type="List"/>
+        </out-parameters>
+        <actions>
+            <script>
+                resultList3 = []
+            </script>
+            <entity-find entity-name="nacs.mrchnt.Mrchnt" list="mrchntList1"/>
+            <iterate list="mrchntList1" entry="mr">
+                <entity-find-count entity-name="nacs.trx.TxItem" count-field="mr501Count">
+                    <econdition field-name="mrchntSeqId" from="mr.seqId"/>
+                    <econdition field-name="trxCtgy" value="000501"/>
+                  <!--  <econdition field-name="workDate" value="${new Date().format('yyyy-MM-dd')}"/>-->
+                    <econdition field-name="payStatus" value="PAY_STATUS1"/>
+                    <econdition field-name="buiStatus" value="BUI_STATUS1"/>
+                    <econdition field-name="coreStatus" value="ACCT_TRANS_SUCCESS"/>
+                    <econdition field-name="txStatuId" value="TX_STATU_SUCCESS"/>
+                </entity-find-count>
+                <entity-find entity-name="nacs.trx.TxItem" list="mr501List">
+                    <econdition field-name="mrchntSeqId" from="mr.seqId"/>
+                    <econdition field-name="trxCtgy" value="000501"/>
+                    <!--<econdition field-name="workDate" value="${new Date().format('yyyy-MM-dd')}"/>-->
+                    <econdition field-name="payStatus" value="PAY_STATUS1"/>
+                    <econdition field-name="buiStatus" value="BUI_STATUS1"/>
+                    <econdition field-name="coreStatus" value="ACCT_TRANS_SUCCESS"/>
+                    <econdition field-name="txStatuId" value="TX_STATU_SUCCESS"/>
+                </entity-find>
+
+                <set field="sumAmt" value="0" type="BigDecimal"/>
+                <iterate list="mr501List" entry="mr501">
+                    <set field="mr501Amt" from="mr501.trxAmt" type="BigDecimal"/>
+                    <script>
+                        sumAmt=mr501Amt+sumAmt
+                    </script>
+                </iterate>
+                <script>
+                    resultList3.add([mrchntNm:mr.mrchntNm,count:mr501Count,sum:sumAmt])
+                </script>
+
+            </iterate>
+        </actions>
+    </service>
+
+    <service verb="get" noun="MrchntChart401" authenticate="false">
+        <out-parameters>
+            <parameter name="resultList4" type="List"/>
+        </out-parameters>
+        <actions>
+            <script>
+                resultList4 = []
+            </script>
+            <entity-find entity-name="nacs.mrchnt.Mrchnt" list="mrchntList1"/>
+            <iterate list="mrchntList1" entry="mr">
+                <entity-find-count entity-name="nacs.trx.TxItem" count-field="mr401Count">
+                    <econdition field-name="mrchntSeqId" from="mr.seqId"/>
+                    <econdition field-name="trxCtgy" value="000401"/>
+                    <!--<econdition field-name="workDate" value="${new Date().format('yyyy-MM-dd')}"/>-->
+                    <econdition field-name="payStatus" value="PAY_STATUS1"/>
+                    <econdition field-name="buiStatus" value="BUI_STATUS1"/>
+                    <econdition field-name="coreStatus" value="ACCT_TRANS_SUCCESS"/>
+                    <econdition field-name="txStatuId" value="TX_STATU_SUCCESS"/>
+                </entity-find-count>
+                <entity-find entity-name="nacs.trx.TxItem" list="mr401List">
+                    <econdition field-name="mrchntSeqId" from="mr.seqId"/>
+                    <econdition field-name="trxCtgy" value="000401"/>
+                    <!--<econdition field-name="workDate" value="${new Date().format('yyyy-MM-dd')}"/>-->
+                    <econdition field-name="payStatus" value="PAY_STATUS1"/>
+                    <econdition field-name="buiStatus" value="BUI_STATUS1"/>
+                    <econdition field-name="coreStatus" value="ACCT_TRANS_SUCCESS"/>
+                    <econdition field-name="txStatuId" value="TX_STATU_SUCCESS"/>
+                </entity-find>
+
+                <set field="sumAmt" value="0" type="BigDecimal"/>
+                <iterate list="mr401List" entry="mr401">
+                    <set field="mr401Amt" from="mr401.trxAmt" type="BigDecimal"/>
+                    <script>
+                        sumAmt=mr401Amt+sumAmt
+                    </script>
+                </iterate>
+                <script>
+                    resultList4.add([mrchntNm:mr.mrchntNm,count:mr401Count,sum:sumAmt])
+                </script>
+
+            </iterate>
+        </actions>
+    </service>
+
+
+
+</services>

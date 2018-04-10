@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<x:schema xmlns:x="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://esb.spdbbiz.com/metadata" xmlns:d="http://esb.spdbbiz.com/metadata" targetNamespace="http://esb.spdbbiz.com/metadata" elementFormDefault="qualified" attributeFormDefault="qualified">
+	<x:complexType name="ReqHeaderType">
+		<x:sequence>
+			<x:element name="Mac" type="x:string"/>
+			<x:element name="MacOrgId" type="x:string"/>
+			<x:element name="MsgId" type="x:string"/>
+			<x:element name="SourceSysId" type="x:string"/>
+			<x:element name="ConsumerId" type="x:string"/>
+			<x:element name="ServiceAdr" type="x:string"/>
+			<x:element name="ServiceAction" type="x:string"/>
+			<x:element name="ReplyAdr" type="x:string" minOccurs="0"/>
+			<x:element name="ExtendContent" type="x:string" minOccurs="0"/>
+		</x:sequence>
+	</x:complexType>
+	<x:complexType name="RspHeaderType">
+		<x:sequence>
+			<x:element name="Mac" type="x:string"/>
+			<x:element name="MacOrgId" type="x:string"/>
+			<x:element name="MsgId" type="x:string"/>
+			<x:element name="TargetSysId" type="x:string"/>
+			<x:element name="RelatedMsgId" type="x:string" minOccurs="0"/>
+			<x:element name="ServiceAdr" type="x:string" minOccurs="0"/>
+			<x:element name="ServiceAction" type="x:string" minOccurs="0"/>
+			<x:element name="ExtendContent" type="x:string" minOccurs="0"/>
+		</x:sequence>
+	</x:complexType>
+</x:schema>

@@ -1,0 +1,10 @@
+<component name="libraryTable">
+  <library name="Gradle: com.google.code.findbugs:annotations:3.0.1">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/framework/lib/annotations-3.0.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/moqui-util/lib/annotations-3.0.1.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

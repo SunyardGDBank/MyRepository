@@ -1,0 +1,10 @@
+<component name="libraryTable">
+  <library name="Gradle: org.eclipse.jetty:jetty-http-9.4.7.v20170914:">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/moqui-util/lib/jetty-http-9.4.7.v20170914.jar!/" />
+      <root url="jar://$PROJECT_DIR$/framework/lib/execWar/jetty-http-9.4.7.v20170914.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

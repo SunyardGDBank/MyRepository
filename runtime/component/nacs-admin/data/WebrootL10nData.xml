@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entity-facade-xml type="seed">
+    <!-- 主页及应用列表 -->
+    <moqui.basic.LocalizedMessage localized="禁止读取" original="Access Forbidden" locale="zh_CN"/>
+    <moqui.basic.LocalizedMessage localized="主页" original="Go Home" locale="zh_CN"/>
+    <moqui.basic.LocalizedMessage localized="返回" original="Go Back" locale="zh_CN"/>
+    <moqui.basic.LocalizedMessage localized="查看明细" original="See Detail" locale="zh_CN"/>
+    <moqui.basic.LocalizedMessage original="Applications" localized="应用" locale="zh_CN"/>
+    <moqui.basic.LocalizedMessage original="App List" localized="应用列表" locale="zh_CN"/>
+    <moqui.basic.LocalizedMessage original="Choose an Application" localized="选择一个应用" locale="zh_CN"/>
+    <moqui.basic.LocalizedMessage original="Logout" localized="退出" locale="zh_CN"/>
+    <moqui.basic.LocalizedMessage original="Forgot Password" localized="忘记密码" locale="zh_CN"/>
+
+    <!-- 管理员初始界面-->
+    <moqui.basic.LocalizedMessage localized="欢迎使用新系统" original="Welcome to your new system" locale="zh_CN"/>
+    <moqui.basic.LocalizedMessage localized="没有系统账号，请先创建一个管理员账号。" original="There are no user accounts, get started by creating an initial administrator account" locale="zh_CN"/>
+    <moqui.basic.LocalizedMessage original="New Password" localized="新密码" locale="zh_CN"/>
+    <moqui.basic.LocalizedMessage original="New Password Verify" localized="新密码确认" locale="zh_CN"/>
+    <moqui.basic.LocalizedMessage original="User Full Name" localized="全名" locale="zh_CN"/>
+    <moqui.basic.LocalizedMessage original="Email Address" localized="电子邮箱" locale="zh_CN"/>
+    <moqui.basic.LocalizedMessage original="Create Initial Admin Account" localized="创建初始管理员账号" locale="zh_CN"/>
+    <moqui.basic.LocalizedMessage original="Username" localized="用户名" locale="zh_CN"/>
+    <moqui.basic.LocalizedMessage original="Password" localized="密码" locale="zh_CN"/>
+
+    <moqui.basic.LocalizedMessage original="Find Options" localized="查询选项" locale="zh_CN"/>
+    <moqui.basic.LocalizedMessage original="Clear Current Find" localized="清除当前查询" locale="zh_CN"/>
+    <moqui.basic.LocalizedMessage original="Saved Finds" localized="保存查询器" locale="zh_CN"/>
+    <moqui.basic.LocalizedMessage original="Active Saved Find:" localized="可用的查询器:" locale="zh_CN"/>
+    <moqui.basic.LocalizedMessage original="Save New Find" localized="保存为新的查询器" locale="zh_CN"/>
+    <moqui.basic.LocalizedMessage original="Update to Current" localized="更新到当前查询器" locale="zh_CN"/>
+    <moqui.basic.LocalizedMessage original="Do Find" localized="执行查询" locale="zh_CN"/>
+    <moqui.basic.LocalizedMessage original="Find Parameters" localized="查询参数" locale="zh_CN"/>
+    <moqui.basic.LocalizedMessage original="No find parameters, choose some to save a new find or update existing" localized="没有查询参数，选择参数保存为新查询器或更新现有查询器" locale="zh_CN"/>
+    <moqui.basic.LocalizedMessage original="Clear Parameters" localized="清除参数" locale="zh_CN"/>
+
+    <moqui.basic.LocalizedMessage original="Columns" localized="数据列设置" locale="zh_CN"/>
+    <moqui.basic.LocalizedMessage original="Column" localized="列" locale="zh_CN"/>
+    <moqui.basic.LocalizedMessage original="Column Fields" localized="列字段" locale="zh_CN"/>
+    <moqui.basic.LocalizedMessage original="Drag fields to the desired column or do not display" localized="将字段拖到需要的列或不显示" locale="zh_CN"/>
+    <moqui.basic.LocalizedMessage original="Do Not Display" localized="不显示" locale="zh_CN"/>
+    <moqui.basic.LocalizedMessage original="Save Columns" localized="保存列设置" locale="zh_CN"/>
+    <moqui.basic.LocalizedMessage original="Reset to Default" localized="恢复为默认" locale="zh_CN"/>
+
+    <moqui.basic.LocalizedMessage original="Order By" localized="排序" locale="zh_CN"/>
+    <moqui.basic.LocalizedMessage original="Show All" localized="显示全部" locale="zh_CN"/>
+    <moqui.basic.LocalizedMessage original="Paginate" localized="分页显示" locale="zh_CN"/>
+    <moqui.basic.LocalizedMessage original="Ignore Case" localized="忽略大小写" locale="zh_CN"/>
+    <moqui.basic.LocalizedMessage original="From" localized="从" locale="zh_CN"/>
+    <moqui.basic.LocalizedMessage original="Thru" localized="到" locale="zh_CN"/>
+    <moqui.basic.LocalizedMessage original="Form data saved" localized="数据已保存" locale="zh_CN"/>
+
+
+</entity-facade-xml>

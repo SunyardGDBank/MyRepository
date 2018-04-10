@@ -1,0 +1,402 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+This software is in the public domain under CC0 1.0 Universal plus a 
+Grant of Patent License.
+
+To the extent possible under law, the author(s) have dedicated all
+copyright and related and neighboring rights to this software to the
+public domain worldwide. This software is distributed without any
+warranty.
+
+You should have received a copy of the CC0 Public Domain Dedication
+along with this software (see the LICENSE.md file). If not, see
+<http://creativecommons.org/publicdomain/zero/1.0/>.
+-->
+<entity-facade-xml type="seed">
+
+    <!--枚举表数据-->
+
+    <moqui.basic.EnumerationType description="星期" enumTypeId="Week"/>
+    <moqui.basic.Enumeration description="星期一" enumId="2"  enumTypeId="Week"/>
+    <moqui.basic.Enumeration description="星期二" enumId="3"  enumTypeId="Week"/>
+    <moqui.basic.Enumeration description="星期三" enumId="4"  enumTypeId="Week"/>
+    <moqui.basic.Enumeration description="星期四" enumId="5"  enumTypeId="Week"/>
+    <moqui.basic.Enumeration description="星期五" enumId="6"  enumTypeId="Week"/>
+    <moqui.basic.Enumeration description="星期六" enumId="7"  enumTypeId="Week"/>
+    <moqui.basic.Enumeration description="星期日" enumId="8"  enumTypeId="Week"/>
+
+    <moqui.basic.EnumerationType description="暂停标志" enumTypeId="Paused"/>
+    <moqui.basic.Enumeration description="暂停" enumId="Y"  enumTypeId="Paused"/>
+    <moqui.basic.Enumeration description="运行" enumId="N" enumTypeId="Paused"/>
+
+    <!--二级商户标志-->
+    <moqui.basic.EnumerationType description="子商户标志" enumTypeId="subMrchntFlag"/>
+    <moqui.basic.Enumeration description="有" enumId="YES" enumTypeId="subMrchntFlag"/>
+    <moqui.basic.Enumeration description="无" enumId="NO"  enumTypeId="subMrchntFlag"/>
+    <!--二级商户启用标志/通道状态/支持状态/业务种类支持状态-->
+    <moqui.basic.EnumerationType description="启用标志" enumTypeId="OpnFlg"/>
+    <moqui.basic.Enumeration description="启用" enumId="ENABLED"  enumTypeId="OpnFlg"/>
+    <moqui.basic.Enumeration description="关闭" enumId="DISABLED" enumTypeId="OpnFlg"/>
+    <!--删除标识-->
+    <moqui.basic.EnumerationType description="删除标识" enumTypeId="DeleteFlag"/>
+    <moqui.basic.Enumeration description="正常"   enumId="NORMAL" enumTypeId="DeleteFlag"/>
+    <moqui.basic.Enumeration description="已注销" enumId="CANCEL" enumTypeId="DeleteFlag"/>
+    <!--签约标志-->
+    <moqui.basic.EnumerationType description="签约标志" enumTypeId="SignFlag"/>
+    <moqui.basic.Enumeration description="签约" enumId="SIGNING" enumTypeId="SignFlag"/>
+    <moqui.basic.Enumeration description="注销" enumId="LOGOUT"  enumTypeId="SignFlag"/>
+    <!--签约验证标志-->
+    <moqui.basic.EnumerationType description="签约验证标志" enumTypeId="VerifiedFlg"/>
+    <moqui.basic.Enumeration description="验证" enumId="VERIFIED"    enumTypeId="VerifiedFlg"/>
+    <moqui.basic.Enumeration description="非验证"   enumId="NON-VERIFIED"        enumTypeId="VerifiedFlg"/>
+    <!--支持标志-->
+    <moqui.basic.EnumerationType description="支持标志" enumTypeId="SupportFlg"/>
+    <moqui.basic.Enumeration description="支持"   enumId="SUPPORT"    enumTypeId="SupportFlg"/>
+    <moqui.basic.Enumeration description="不支持" enumId="NO_SUPPORT" enumTypeId="SupportFlg"/>
+    <!--错账标志-->
+    <moqui.basic.EnumerationType description="错账标志" enumTypeId="ErrorFlg"/>
+    <moqui.basic.Enumeration description="有差错" enumId="ERROR"     enumTypeId="ErrorFlg"/>
+    <moqui.basic.Enumeration description="无差错" enumId="NO_ERROR" enumTypeId="ErrorFlg"/>
+    <!--交易标志-->
+    <moqui.basic.EnumerationType description="交易标志" enumTypeId="TxFlg"/>
+    <moqui.basic.Enumeration description="签约"           enumId="SIGN"           enumTypeId="TxFlg"/>
+    <moqui.basic.Enumeration description="解约"           enumId="TERMINATION"   enumTypeId="TxFlg"/>
+    <moqui.basic.Enumeration description="查询签约信息"  enumId="FIND_SIGN"       enumTypeId="TxFlg"/>
+    <!--冻结与解冻标志-->
+    <moqui.basic.EnumerationType description="冻结与解冻标志" enumTypeId="FreezeFlag"/>
+    <moqui.basic.Enumeration description="冻结" enumId="FREEZE"   enumTypeId="FreezeFlag"/>
+    <moqui.basic.Enumeration description="解冻" enumId="UNFREEZE" enumTypeId="FreezeFlag"/>
+    <!--生效标志-->
+    <moqui.basic.EnumerationType description="生效标志" enumTypeId="TakeEffectFlg"/>
+    <moqui.basic.Enumeration description="生效" enumId="VALIDITY"         enumTypeId="TakeEffectFlg"/>
+    <moqui.basic.Enumeration description="失效" enumId="INVALIDATION"     enumTypeId="TakeEffectFlg"/>
+    <!--清算方式-->
+    <moqui.basic.EnumerationType description="清算方式" enumTypeId="ClearMode"/>
+    <moqui.basic.Enumeration description="C" enumId="CURRENT_CLEAR" enumTypeId="ClearMode"/>
+    <moqui.basic.Enumeration description="T" enumId="WORKDAY_CLEAR" enumTypeId="ClearMode"/>
+    <moqui.basic.Enumeration description="D" enumId="DAY_CLEAR" enumTypeId="ClearMode"/>
+    <!--交易类别-->
+    <moqui.basic.EnumerationType description="交易类别" enumTypeId="TrxCtgy"/>
+    <moqui.basic.Enumeration description="代收" enumId="000501" enumTypeId="TrxCtgy"/>
+    <moqui.basic.Enumeration description="代付" enumId="000401" enumTypeId="TrxCtgy"/>
+    <!--业务种类-->
+    <moqui.basic.EnumerationType description="业务种类" enumTypeId="BizTp"/>
+    <moqui.basic.Enumeration description="统一客户签约" enumId="0002" enumTypeId="BizTp"/>
+    <moqui.basic.Enumeration description="统一代扣"     enumId="0004" enumTypeId="BizTp"/>
+    <moqui.basic.Enumeration description="统一代发"     enumId="0005" enumTypeId="BizTp"/>
+    <moqui.basic.Enumeration description="统一查询"     enumId="0006" enumTypeId="BizTp"/>
+    <!--业务种类-->
+    <moqui.basic.EnumerationType description="业务种类" enumTypeId="BizTp1"/>
+    <moqui.basic.Enumeration description="代付业务"     enumId="11" enumTypeId="BizTp1"/>
+    <moqui.basic.Enumeration description="代付状态查询" enumId="12" enumTypeId="BizTp1"/>
+    <moqui.basic.Enumeration description="代收业务"     enumId="21" enumTypeId="BizTp1"/>
+    <moqui.basic.Enumeration description="代收状态查询" enumId="22" enumTypeId="BizTp1"/>
+    <moqui.basic.Enumeration description="代收签约"      enumId="23" enumTypeId="BizTp1"/>
+    <!--证件类型-->
+    <moqui.basic.EnumerationType description="证件类型" enumTypeId="Certcode"/>
+    <moqui.basic.Enumeration description="身份证"          enumId="000" enumTypeId="Certcode"/>
+    <moqui.basic.Enumeration description="护照"           enumId="001" enumTypeId="Certcode"/>
+    <moqui.basic.Enumeration description="军人证"          enumId="002" enumTypeId="Certcode"/>
+    <moqui.basic.Enumeration description="户口簿"          enumId="003" enumTypeId="Certcode"/>
+    <moqui.basic.Enumeration description="武警证"          enumId="004" enumTypeId="Certcode"/>
+    <moqui.basic.Enumeration description="法人营业执照"   enumId="005" enumTypeId="Certcode"/>
+    <moqui.basic.Enumeration description="港澳通行证"     enumId="006" enumTypeId="Certcode"/>
+    <moqui.basic.Enumeration description="台湾通行证"     enumId="007" enumTypeId="Certcode"/>
+    <moqui.basic.Enumeration description="学生证"          enumId="008" enumTypeId="Certcode"/>
+    <moqui.basic.Enumeration description="工作证"          enumId="009" enumTypeId="Certcode"/>
+    <moqui.basic.Enumeration description="工商执照"         enumId="010" enumTypeId="Certcode"/>
+    <moqui.basic.Enumeration description="警官证"          enumId="011" enumTypeId="Certcode"/>
+    <moqui.basic.Enumeration description="事业单位编码"   enumId="012" enumTypeId="Certcode"/>
+    <moqui.basic.Enumeration description="房产证"          enumId="013" enumTypeId="Certcode"/>
+    <moqui.basic.Enumeration description="组织机构编码"    enumId="051" enumTypeId="Certcode"/>
+    <moqui.basic.Enumeration description="其它证件"        enumId="099" enumTypeId="Certcode"/>
+    <!--手续费收取方式-->
+    <moqui.basic.EnumerationType description="手续费收取方式" enumTypeId="FeeChargeMode"/>
+    <moqui.basic.Enumeration description="单笔收取金额"       enumId="FEE_CHARGE_MODE1" enumTypeId="FeeChargeMode"/>
+    <moqui.basic.Enumeration description="单月收取金额"       enumId="FEE_CHARGE_MODE2" enumTypeId="FeeChargeMode"/>
+    <moqui.basic.Enumeration description="百分比"              enumId="FEE_CHARGE_MODE3" enumTypeId="FeeChargeMode"/>
+    <!--收取方式-->
+    <moqui.basic.EnumerationType description="收取方式" enumTypeId="FeeType"/>
+    <moqui.basic.Enumeration description="按金额收取"        enumId="FEE_TYPE1" enumTypeId="FeeType"/>
+    <moqui.basic.Enumeration description="按百分比收取"      enumId="FEE_TYPE2" enumTypeId="FeeType"/>
+    <moqui.basic.Enumeration description="按单笔收取"        enumId="FEE_TYPE3" enumTypeId="FeeType"/>
+    <!--账务方式-->
+    <moqui.basic.EnumerationType description="代付款方式" enumTypeId="AccountingMode1"/>
+    <moqui.basic.Enumeration description="直扣模式"    enumId="DIREC_MODE"          enumTypeId="AccountingMode1"/>
+    <moqui.basic.Enumeration description="冻结模式"         enumId="FREEZE_MODE"        enumTypeId="AccountingMode1"/>
+    <moqui.basic.Enumeration description="透支模式"     enumId="OVERDRAW_MODE"      enumTypeId="AccountingMode1"/>
+    <!--账务方式-->
+    <moqui.basic.EnumerationType description="代收款方式" enumTypeId="AccountingMode2"/>
+    <moqui.basic.Enumeration description="通用模式"      enumId="GENERAL_MODE"  enumTypeId="AccountingMode2"/>
+    <moqui.basic.Enumeration description="扣款模式"      enumId="DEDUCTIONS_MODE"   enumTypeId="AccountingMode2"/>
+    <!--商户签约验证需求-->
+    <moqui.basic.EnumerationType description="商户签约验证需求" enumTypeId="MerchantVerIfysts"/>
+    <moqui.basic.Enumeration description="需验证需签约"           enumId="Y_VERIFIED_Y_SIGN"         enumTypeId="MerchantVerIfysts"/>
+    <moqui.basic.Enumeration description="无需验证需签约"         enumId="N_VERIFIED_Y_SIGN"        enumTypeId="MerchantVerIfysts"/>
+    <moqui.basic.Enumeration description="需验证无需签约"          enumId="Y_VERIFIED_N_SIGN"        enumTypeId="MerchantVerIfysts"/>
+    <moqui.basic.Enumeration description="无需验证无需签约"       enumId="N_VERIFIED_N_SIGN"        enumTypeId="MerchantVerIfysts"/>
+    <!--错账类型-->
+    <moqui.basic.EnumerationType description="错账类型" enumTypeId="CheckType"/>
+    <moqui.basic.Enumeration description="人行多余"         enumId="PB_UNNECESSARY"    enumTypeId="CheckType"/>
+    <moqui.basic.Enumeration description="核心多余"         enumId="BE_UNNECESSARY"    enumTypeId="CheckType"/>
+    <moqui.basic.Enumeration description="差错账务"         enumId="DSPT_CHECK"        enumTypeId="CheckType"/>
+    <!--记账类型-->
+    <moqui.basic.EnumerationType description="记账类型" enumTypeId="AcctType"/>
+    <moqui.basic.Enumeration description="记账"       enumId="ACCT_TRANS"          enumTypeId="AcctType"/>
+    <moqui.basic.Enumeration description="冲正"       enumId="CANCEL_TRANS"        enumTypeId="AcctType"/>
+
+    <!--账户类型-->
+    <moqui.basic.EnumerationType description="账户类型" enumTypeId="AcctTp"/>
+    <moqui.basic.Enumeration description="个人银行借记账户"       enumId="0000001"        enumTypeId="AcctTp"/>
+    <moqui.basic.Enumeration description="个人银行贷记账户"       enumId="0000002"        enumTypeId="AcctTp"/>
+    <moqui.basic.Enumeration description="个人银行准贷记账户"     enumId="0000003"        enumTypeId="AcctTp"/>
+    <moqui.basic.Enumeration description="个人支付账户"           enumId="0000004"        enumTypeId="AcctTp"/>
+    <moqui.basic.Enumeration description="单位支付账户"           enumId="0000005"        enumTypeId="AcctTp"/>
+    <moqui.basic.Enumeration description="对公银行账户"           enumId="0000006"        enumTypeId="AcctTp"/>
+    <moqui.basic.Enumeration description="备付金账户"            enumId="0000007"         enumTypeId="AcctTp"/>
+    <moqui.basic.Enumeration description="存折"                   enumId="0000008"        enumTypeId="AcctTp"/>
+
+    <!--商户版本-->
+    <moqui.basic.EnumerationType description="商户版本" enumTypeId="Version"/>
+    <moqui.basic.Enumeration description="1.0"       enumId="1.0"          enumTypeId="Version"/>
+    <moqui.basic.Enumeration description="2.0"       enumId="2.0"        enumTypeId="Version"/>
+
+    <!--子商户级别-->
+    <moqui.basic.EnumerationType description="子商户级别" enumTypeId="SubMrchntLevel"/>
+    <moqui.basic.Enumeration description="二级"       enumId="SECOND_LEVEL"          enumTypeId="SubMrchntLevel"/>
+    <moqui.basic.Enumeration description="三级"       enumId="THIRD_LEVEL"        enumTypeId="SubMrchntLevel"/>
+
+    <!--匹配规则-->
+    <moqui.basic.EnumerationType description="匹配规则" enumTypeId="MatchType"/>
+    <moqui.basic.Enumeration description="商户状态"       enumId="MATCH_MRC_STATUS"          enumTypeId="MatchType"/>
+    <moqui.basic.Enumeration description="商户时段"       enumId="MATCH_MRC_TIME"        enumTypeId="MatchType"/>
+    <moqui.basic.Enumeration description="商户品种"       enumId="MATCH_MRC_TRX"        enumTypeId="MatchType"/>
+    <moqui.basic.Enumeration description="商户限额"       enumId="MATCH_MRC_QUOTA"        enumTypeId="MatchType"/>
+    <moqui.basic.Enumeration description="通道状态"       enumId="MATCH_CHANNEL_STATUS"        enumTypeId="MatchType"/>
+    <moqui.basic.Enumeration description="通道时段"       enumId="MATCH_CHANNEL_TIME"        enumTypeId="MatchType"/>
+    <moqui.basic.Enumeration description="通道品种"       enumId="MATCH_CHANNEL_TRX"        enumTypeId="MatchType"/>
+    <moqui.basic.Enumeration description="通道限额"       enumId="MATCH_CHANNEL_QUOTA"        enumTypeId="MatchType"/>
+    <moqui.basic.Enumeration description="黑名单"       enumId="MATCH_BLACKLIST"        enumTypeId="MatchType"/>
+    <moqui.basic.Enumeration description="白名单"       enumId="MATCH_WHITE"        enumTypeId="MatchType"/>
+    <moqui.basic.Enumeration description="知识库"       enumId="MATCH_REPOSITORY"        enumTypeId="MatchType"/>
+    <moqui.basic.Enumeration description="手续费"       enumId="MATCH_FEE"        enumTypeId="MatchType"/>
+
+    <!--操作类型-->
+    <moqui.basic.EnumerationType description="操作类型" enumTypeId="OperateType"/>
+    <moqui.basic.Enumeration description="添加"       enumId="CREATE"          enumTypeId="OperateType"/>
+    <moqui.basic.Enumeration description="更新"       enumId="UPDATE"          enumTypeId="OperateType"/>
+
+    <!--操作对象-->
+    <moqui.basic.EnumerationType description="操作对象" enumTypeId="OperateObject"/>
+    <moqui.basic.Enumeration description="商户"       enumId="MRCHNT1"          enumTypeId="OperateObject"/>
+    <moqui.basic.Enumeration description="子商户"       enumId="SUBMRCHNT"          enumTypeId="OperateObject"/>
+    <moqui.basic.Enumeration description="商户可用通道"       enumId="MRCHNT_CHANNEL"          enumTypeId="OperateObject"/>
+    <moqui.basic.Enumeration description="商户账务模式"       enumId="MRCHNT_CORE_ACCOUNTING"          enumTypeId="OperateObject"/>
+    <moqui.basic.Enumeration description="商户清算模式"       enumId="MRCHNT_CORE_CLEAR"          enumTypeId="OperateObject"/>
+    <moqui.basic.Enumeration description="商户手续费"       enumId="MRCHNT_FEE"          enumTypeId="OperateObject"/>
+    <moqui.basic.Enumeration description="商户业务品种"       enumId="MRCHNT_TYPE"          enumTypeId="OperateObject"/>
+    <moqui.basic.Enumeration description="商户限额"       enumId="MRCHNT_QUOTA"          enumTypeId="OperateObject"/>
+    <moqui.basic.Enumeration description="商户动态额度"       enumId="TEMPORARY_ED"          enumTypeId="OperateObject"/>
+    <moqui.basic.Enumeration description="支付通道"       enumId="CHANNEL"          enumTypeId="OperateObject"/>
+    <moqui.basic.Enumeration description="支付通道限额"       enumId="CHANNEL_QUOTA"          enumTypeId="OperateObject"/>
+    <moqui.basic.Enumeration description="支付通道手续费"       enumId="CHANNEL_FEE"          enumTypeId="OperateObject"/>
+    <moqui.basic.Enumeration description="支付通道业务品种"       enumId="CHANNEL_BUSINESS"          enumTypeId="OperateObject"/>
+    <moqui.basic.Enumeration description="路由"       enumId="MRCHNT2"          enumTypeId="OperateObject"/>
+    <moqui.basic.Enumeration description="代付业务路由开关"       enumId="MRCHNT_ROUTE1"          enumTypeId="OperateObject"/>
+    <moqui.basic.Enumeration description="代收业务路由开关"       enumId="MRCHNT_ROUTE2"          enumTypeId="OperateObject"/>
+    <moqui.basic.Enumeration description="黑名单"       enumId="BLACKLIST_TAB"          enumTypeId="OperateObject"/>
+    <moqui.basic.Enumeration description="白名单"       enumId="WHITELIST_TAB"          enumTypeId="OperateObject"/>
+    <moqui.basic.Enumeration description="知识库设置"       enumId="KNOWLEDGE_BASE_SET"          enumTypeId="OperateObject"/>
+
+    <!--状态表数据-->
+
+    <!--一级商户状态-->
+    <moqui.basic.StatusType description="商户状态" statusTypeId="MrchntSt"/>
+    <moqui.basic.StatusItem description="启用"        sequenceNum="1"     statusId="INVOKE"                   statusTypeId="MrchntSt"/>
+    <moqui.basic.StatusItem description="关闭"        sequenceNum="2"     statusId="CLOSE"                    statusTypeId="MrchntSt"/>
+    <moqui.basic.StatusItem description="余额不足"    sequenceNum="3"    statusId="NOT_SUFFICIENT_FUNDS"  statusTypeId="MrchntSt"/>
+    <!--支付通道状态参数表-->
+    <moqui.basic.StatusType description="支付通道状态" statusTypeId="PayStatus"/>
+    <moqui.basic.StatusItem description="处理成功"   sequenceNum="1"  statusId="PAY_STATUS1" statusTypeId="PayStatus"/>
+    <moqui.basic.StatusItem description="已拒绝"     sequenceNum="2"  statusId="PAY_STATUS2" statusTypeId="PayStatus"/>
+    <moqui.basic.StatusItem description="状态未明"   sequenceNum="3"  statusId="PAY_STATUS3" statusTypeId="PayStatus"/>
+    <!--业务渠道状态参数表-->
+    <moqui.basic.StatusType description="业务渠道状态" statusTypeId="BuiStatus"/>
+    <moqui.basic.StatusItem description="处理成功"  sequenceNum="1"   statusId="BUI_STATUS1" statusTypeId="BuiStatus"/>
+    <moqui.basic.StatusItem description="已拒绝"    sequenceNum="2"  statusId="BUI_STATUS2" statusTypeId="BuiStatus"/>
+    <moqui.basic.StatusItem description="处理超时"  sequenceNum="3"   statusId="BUI_STATUS3" statusTypeId="BuiStatus"/>
+
+    <!--对账状态参数表-->
+    <moqui.basic.StatusType description="对账状态" statusTypeId="CheckSt"/>
+    <moqui.basic.StatusItem description="未对账"   sequenceNum="1"  statusId="CHK_RESULT_NONE"     statusTypeId="CheckSt"/>
+    <moqui.basic.StatusItem description="对账中"   sequenceNum="2"  statusId="CHK_RESULT_BEING"    statusTypeId="CheckSt"/>
+    <moqui.basic.StatusItem description="已对账"   sequenceNum="3"  statusId="CHK_RESULT_BEEN"     statusTypeId="CheckSt"/>
+    <!--核心状态参数表-->
+    <moqui.basic.StatusType description="核心状态" statusTypeId="CoreStatus"/>
+    <moqui.basic.StatusItem description="记账成功"   sequenceNum="1"  statusId="ACCT_TRANS_SUCCESS"     statusTypeId="CoreStatus"/>
+    <moqui.basic.StatusItem description="冲正成功"   sequenceNum="2"  statusId="CANCEL_TRANS_SUCCESS"   statusTypeId="CoreStatus"/>
+    <moqui.basic.StatusItem description="记账失败"   sequenceNum="3"  statusId="ACCT_TRANS_FAIL"        statusTypeId="CoreStatus"/>
+    <moqui.basic.StatusItem description="查询不明"   sequenceNum="4"  statusId="FIND_TRANS_UNKNOW"      statusTypeId="CoreStatus"/>
+    <moqui.basic.StatusItem description="已挂账"     sequenceNum="5"  statusId="HOLD_TRANS_BEEN"         statusTypeId="CoreStatus"/>
+    <!--处理状态参数表-->
+    <moqui.basic.StatusType description="处理状态" statusTypeId="TranStas"/>
+    <moqui.basic.StatusItem description="签约中"        sequenceNum="1"  statusId="SIGN_DOING"             statusTypeId="TranStas"/>
+    <moqui.basic.StatusItem description="解约中"        sequenceNum="2"  statusId="TERMINATION_DOING"     statusTypeId="TranStas"/>
+    <moqui.basic.StatusItem description="签约成功"      sequenceNum="3"  statusId="SIGN_SUCCESS"           statusTypeId="TranStas"/>
+    <moqui.basic.StatusItem description="解约成功"      sequenceNum="4"  statusId="TERMINATION_SUCCESS"   statusTypeId="TranStas"/>
+    <moqui.basic.StatusItem description="签约失败"     sequenceNum="5"  statusId="SIGN_FAIL"                statusTypeId="TranStas"/>
+    <moqui.basic.StatusItem description="解约失败"     sequenceNum="6"  statusId="TERMINATION_FAIL"         statusTypeId="TranStas"/>
+    <!--清算状态参数表1-->
+    <moqui.basic.StatusType description="清算状态1" statusTypeId="SettleSt1"/>
+    <moqui.basic.StatusItem description="未清算"       sequenceNum="1"  statusId="SETTLE_NONE"     statusTypeId="SettleSt1"/>
+    <moqui.basic.StatusItem description="已清算"       sequenceNum="2"  statusId="SETTLE_BEEN"     statusTypeId="SettleSt1"/>
+    <!--清算状态参数表2-->
+    <moqui.basic.StatusType description="清算状态2" statusTypeId="SettleSt2"/>
+    <moqui.basic.StatusItem description="补充清算"      sequenceNum="1"  statusId="SETTLE_ADD"    statusTypeId="SettleSt2"/>
+    <moqui.basic.StatusItem description="清算完成"      sequenceNum="2"  statusId="SETTLE_DONE"   statusTypeId="SettleSt2"/>
+    <!--跨行清算平台处理状态-->
+    <moqui.basic.StatusType description="跨行清算平台处理状态" statusTypeId="TxStatuId"/>
+    <moqui.basic.StatusItem description="成功"        sequenceNum="1"  statusId="TX_STATU_SUCCESS"     statusTypeId="TxStatuId"/>
+    <moqui.basic.StatusItem description="交易未明"   sequenceNum="2"  statusId="TX_STATU_UNKNOW"       statusTypeId="TxStatuId"/>
+    <moqui.basic.StatusItem description="失败"        sequenceNum="3"  statusId="TX_STATU_FAIL"        statusTypeId="TxStatuId"/>
+    <moqui.basic.StatusItem description="已对账"       sequenceNum="4"  statusId="TX_STATU_BEEN"      statusTypeId="TxStatuId"/>
+    <moqui.basic.StatusItem description="已受理"       sequenceNum="5"  statusId="TX_STATU_DONE"      statusTypeId="TxStatuId"/>
+
+
+
+
+
+
+    <!--字典表数据-->
+    <!--错账类型参数表-->
+ <!--   <nacs.dict.NacsDictCheckTypeParameter checkType="01" checkTypeDsc="人行多余"/>
+    <nacs.dict.NacsDictCheckTypeParameter checkType="02" checkTypeDsc="核心多余"/>
+    <nacs.dict.NacsDictCheckTypeParameter checkType="03" checkTypeDsc="差错账务"/>
+    &lt;!&ndash;记账类型参数表&ndash;&gt;
+    <nacs.dict.NacsDictAcctTypeParameter acctType="01" acctTypeDsc="记账"/>
+    <nacs.dict.NacsDictAcctTypeParameter acctType="02" acctTypeDsc="冲正"/>-->
+    <!--对账状态参数表-->
+<!--    <nacs.dict.NacsDictCheckStParameter checkSt="01" checkStDsc="未对账"/>
+    <nacs.dict.NacsDictCheckStParameter checkSt="02" checkStDsc="对账中"/>
+    <nacs.dict.NacsDictCheckStParameter checkSt="03" checkStDsc="已对账"/>-->
+    <!--核心状态参数表-->
+    <!--<nacs.dict.NacsDictCoreStatusParameter coreStatus="0" coreStatusDsc="记账成功"/>
+    <nacs.dict.NacsDictCoreStatusParameter coreStatus="1" coreStatusDsc="冲正成功"/>
+    <nacs.dict.NacsDictCoreStatusParameter coreStatus="2" coreStatusDsc="记账失败"/>
+    <nacs.dict.NacsDictCoreStatusParameter coreStatus="3" coreStatusDsc="查询不明"/>
+    <nacs.dict.NacsDictCoreStatusParameter coreStatus="4" coreStatusDsc="已挂账"/>-->
+    <!--处理状态参数表-->
+    <!--<nacs.dict.NacsDictTranStasParameter tranStas="0" tranStasDsc="签约中"/>
+    <nacs.dict.NacsDictTranStasParameter tranStas="1" tranStasDsc="解约中"/>
+    <nacs.dict.NacsDictTranStasParameter tranStas="2" tranStasDsc="签约成功"/>
+    <nacs.dict.NacsDictTranStasParameter tranStas="3" tranStasDsc="解约成功"/>
+    <nacs.dict.NacsDictTranStasParameter tranStas="4" tranStasDsc="签约失败"/>
+    <nacs.dict.NacsDictTranStasParameter tranStas="5" tranStasDsc="解约失败"/>-->
+    <!--清算状态参数表-->
+  <!--  <nacs.dict.NacsDictSettleStParameter settleSt="1" settleStDsc="未清算"/>
+    <nacs.dict.NacsDictSettleStParameter settleSt="2" settleStDsc="已清算"/>
+    <nacs.dict.NacsDictSettleStParameter settleSt="01" settleStDsc="补充清算"/>
+    <nacs.dict.NacsDictSettleStParameter settleSt="02" settleStDsc="清算完成"/>-->
+    <!--跨行清算平台处理状态-->
+    <!--<nacs.dict.NacsDictTxStatuIdParameter txStatuId="01" txStatuIdDsc="成功"/>
+    <nacs.dict.NacsDictTxStatuIdParameter txStatuId="02" txStatuIdDsc="交易未明"/>
+    <nacs.dict.NacsDictTxStatuIdParameter txStatuId="03" txStatuIdDsc="失败"/>
+    <nacs.dict.NacsDictTxStatuIdParameter txStatuId="04" txStatuIdDsc="已对账"/>
+    <nacs.dict.NacsDictTxStatuIdParameter txStatuId="05" txStatuIdDsc="已受理"/>-->
+
+    <!--代收/付款方式-->
+<!--    <nacs.dict.NacsDictHoldModeParameter holdMode="1" holdModeDsc="直接代发模式"/>
+    <nacs.dict.NacsDictHoldModeParameter holdMode="2" holdModeDsc="冻结模式"/>
+    <nacs.dict.NacsDictHoldModeParameter holdMode="3" holdModeDsc="透支额度模式"/>
+    <nacs.dict.NacsDictHoldModeParameter holdMode="01" holdModeDsc="通用模式"/>
+    <nacs.dict.NacsDictHoldModeParameter holdMode="02" holdModeDsc="扣款模式"/>-->
+
+    <!--商户签约验证需求-->
+ <!--   <nacs.dict.NacsDictMerchantVerIfystsParameter merchantVerIfysts="0" merchantVerIfystsDsc="需验证需签约"/>
+    <nacs.dict.NacsDictMerchantVerIfystsParameter merchantVerIfysts="1" merchantVerIfystsDsc="无需验证需签约"/>
+    <nacs.dict.NacsDictMerchantVerIfystsParameter merchantVerIfysts="2" merchantVerIfystsDsc="需验证无需签约"/>
+    <nacs.dict.NacsDictMerchantVerIfystsParameter merchantVerIfysts="3" merchantVerIfystsDsc="无需验证无需签约"/>-->
+
+    <!--手续费收取方式-->
+    <!--<nacs.dict.NacsDictFeeChargeModeParameter feeChargeMode="1" feeChargeModeDsc="单笔收取金额"/>
+    <nacs.dict.NacsDictFeeChargeModeParameter feeChargeMode="2" feeChargeModeDsc="单月收取金额"/>
+    <nacs.dict.NacsDictFeeChargeModeParameter feeChargeMode="3" feeChargeModeDsc="百分比"/>
+    <nacs.dict.NacsDictFeeChargeModeParameter feeChargeMode="01" feeChargeModeDsc="按金额收取"/>
+    <nacs.dict.NacsDictFeeChargeModeParameter feeChargeMode="02" feeChargeModeDsc="按百分比收取"/>
+    <nacs.dict.NacsDictFeeChargeModeParameter feeChargeMode="03" feeChargeModeDsc="按单笔收取"/>-->
+
+<!--    &lt;!&ndash;支付通道状态参数表&ndash;&gt;
+    <nacs.dict.NacsDictPayStatusParameter payStatus="01" payStatusDsc="处理成功"/>
+    <nacs.dict.NacsDictPayStatusParameter payStatus="02" payStatusDsc="已拒绝"/>
+    <nacs.dict.NacsDictPayStatusParameter payStatus="03" payStatusDsc="状态未明"/>
+
+    &lt;!&ndash;业务渠道状态参数表&ndash;&gt;
+    <nacs.dict.NacsDictBuistatusParameter buistatus="01" buistatusDsc="处理成功"/>
+    <nacs.dict.NacsDictBuistatusParameter buistatus="02" buistatusDsc="已拒绝"/>
+    <nacs.dict.NacsDictBuistatusParameter buistatus="03" buistatusDsc="处理超时"/>-->
+    <!--证件类型参数表-->
+   <!-- <nacs.dict.NacsDictCertcodeParameter certCode="00" certCodeDsc="身份证"/>
+    <nacs.dict.NacsDictCertcodeParameter certCode="01" certCodeDsc="护照"/>
+    <nacs.dict.NacsDictCertcodeParameter certCode="02" certCodeDsc="军人证"/>
+    <nacs.dict.NacsDictCertcodeParameter certCode="03" certCodeDsc="户口簿"/>
+    <nacs.dict.NacsDictCertcodeParameter certCode="04" certCodeDsc="武警证"/>
+    <nacs.dict.NacsDictCertcodeParameter certCode="05" certCodeDsc="法人营业执照"/>
+    <nacs.dict.NacsDictCertcodeParameter certCode="06" certCodeDsc="港澳通行证"/>
+    <nacs.dict.NacsDictCertcodeParameter certCode="07" certCodeDsc="台湾通行证"/>
+    <nacs.dict.NacsDictCertcodeParameter certCode="08" certCodeDsc="学生证"/>
+    <nacs.dict.NacsDictCertcodeParameter certCode="09" certCodeDsc="工作证"/>
+    <nacs.dict.NacsDictCertcodeParameter certCode="10" certCodeDsc="工商执照"/>
+    <nacs.dict.NacsDictCertcodeParameter certCode="11" certCodeDsc="警官证"/>
+    <nacs.dict.NacsDictCertcodeParameter certCode="12" certCodeDsc="事业单位编码"/>
+    <nacs.dict.NacsDictCertcodeParameter certCode="13" certCodeDsc="房产证"/>
+    <nacs.dict.NacsDictCertcodeParameter certCode="51" certCodeDsc="组织机构编码"/>
+    <nacs.dict.NacsDictCertcodeParameter certCode="99" certCodeDsc="其它证件"/>-->
+
+    <!--清算周期参数表-->
+<!--    <nacs.dict.NacsDictClearTimeParameter clearTime="1" clearTimeDsc="T+0"/>
+    <nacs.dict.NacsDictClearTimeParameter clearTime="2" clearTimeDsc="T+1"/>
+    <nacs.dict.NacsDictClearTimeParameter clearTime="3" clearTimeDsc="T+2"/>-->
+    <!--一级商户状态-->
+<!--    <nacs.dict.NacsDictFirMerchantStParameter firMerchantStCode="0" firMerchantStName="启用"/>
+    <nacs.dict.NacsDictFirMerchantStParameter firMerchantStCode="1" firMerchantStName="关闭"/>
+    <nacs.dict.NacsDictFirMerchantStParameter firMerchantStCode="2" firMerchantStName="余额不足"/>-->
+    <!--一级商户参数表-->
+ <!--   <nacs.dict.NacsDictFirmerChantParameter firMerchantCode="A10001" firMerchantName="总行手机银行渠道"/>
+    <nacs.dict.NacsDictFirmerChantParameter firMerchantCode="A10002" firMerchantName="总行网银渠道"/>
+    <nacs.dict.NacsDictFirmerChantParameter firMerchantCode="B20001" firMerchantName="网商渠道"/>
+    <nacs.dict.NacsDictFirmerChantParameter firMerchantCode="C30001" firMerchantName="连连渠道"/>
+    <nacs.dict.NacsDictFirmerChantParameter firMerchantCode="D40001" firMerchantName="淘淘谷渠道"/>-->
+    <!--支付通道参数表-->
+ <!--   <nacs.dict.NacsDictChannelParameter channelCode="20001" channelName="银联渠道"/>
+    <nacs.dict.NacsDictChannelParameter channelCode="20002" channelName="翼支付通道"/>
+    <nacs.dict.NacsDictChannelParameter channelCode="20003" channelName="银联商务渠道"/>-->
+
+    <!--业务类型参数表-->
+   <!-- <nacs.dict.NacsDictBussTypeParameter bussType="000501" bussName="代收"/>
+    <nacs.dict.NacsDictBussTypeParameter bussType="000401" bussName="代付"/>-->
+<!--    <nacs.dict.NacsDictBussTypeParameter bussType="0001" bussName="统一账户验证"/>
+    <nacs.dict.NacsDictBussTypeParameter bussType="0002" bussName="统一客户签约"/>
+    <nacs.dict.NacsDictBussTypeParameter bussType="0004" bussName="统一代扣"/>
+    <nacs.dict.NacsDictBussTypeParameter bussType="0005" bussName="统一代发"/>
+    <nacs.dict.NacsDictBussTypeParameter bussType="0006" bussName="统一查询"/>-->
+    <!--<nacs.dict.NacsDictBussTypeParameter bussType="11" bussName="代付业务"/>
+    <nacs.dict.NacsDictBussTypeParameter bussType="12" bussName="代付状态查询"/>
+    <nacs.dict.NacsDictBussTypeParameter bussType="21" bussName="代收业务"/>
+    <nacs.dict.NacsDictBussTypeParameter bussType="22" bussName="代收状态查询"/>
+    <nacs.dict.NacsDictBussTypeParameter bussType="23" bussName="代收签约"/>-->
+
+    <!--zl:测试：商户版本参数表-->
+<!--    <nacs.dict.NacsDictVersionParameter versionCode="1.1" versionDsc="第一版"/>
+    <nacs.dict.NacsDictVersionParameter versionCode="1.2" versionDsc="第二版"/>
+    &lt;!&ndash;zl:测试：账户类型&ndash;&gt;
+    <nap.dict.NapDictAcctTp acctTpCd="00" acctTpNm="个人银行借记账户"/>
+    <nap.dict.NapDictAcctTp acctTpCd="01" acctTpNm="个人银行贷记账户"/>
+    <nap.dict.NapDictAcctTp acctTpCd="02" acctTpNm="个人银行准贷记账户"/>
+    <nap.dict.NapDictAcctTp acctTpCd="03" acctTpNm="个人支付账户"/>
+    <nap.dict.NapDictAcctTp acctTpCd="04" acctTpNm="单位支付账户"/>
+    <nap.dict.NapDictAcctTp acctTpCd="05" acctTpNm="对公银行账户"/>
+    <nap.dict.NapDictAcctTp acctTpCd="06" acctTpNm="备付金账户"/>
+    <nap.dict.NapDictAcctTp acctTpCd="07" acctTpNm="存折"/>-->
+
+
+</entity-facade-xml>

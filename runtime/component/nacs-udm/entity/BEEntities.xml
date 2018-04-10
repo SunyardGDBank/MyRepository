@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+This software is in the public domain under CC0 1.0 Universal plus a
+Grant of Patent License.
+
+To the extent possible under law, the author(s) have dedicated all
+copyright and related and neighboring rights to this software to the
+public domain worldwide. This software is distributed without any
+warranty.
+
+You should have received a copy of the CC0 Public Domain Dedication
+along with this software (see the LICENSE.md file). If not, see
+<http://creativecommons.org/publicdomain/zero/1.0/>.
+-->
+<entities xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:noNamespaceSchemaLocation="http://moqui.org/xsd/entity-definition-2.1.xsd">
+
+    <!-- ========================================================= -->
+    <!-- nacs.be.NacsBePara -->
+
+    <!-- ========================================================= -->
+
+    <!--基本参数表-->
+    <entity entity-name="NacsBePara" package="nacs.be" authorize-skip="true" cache="true">
+        <description>基本参数表</description>
+        <field name="seqId" type="id" not-null="true" is-pk="true">
+            <description>序号</description>
+        </field>
+        <field name="nacsBeParaType" type="text-short" not-null="true">
+            <description>参数类型</description>
+        </field>
+        <field name="nacsBeParaValue" type="text-short" not-null="true">
+            <description>参数值</description>
+        </field>
+        <field name="nacsBeParaDesc" type="text-medium" not-null="true">
+            <description>参数说明</description>
+        </field>
+        <index name="NACS_BE_PARA_INDEX1" unique="true">
+            <index-field name="nacsBeParaType"/>
+        </index>
+    </entity>
+
+
+
+
+</entities>

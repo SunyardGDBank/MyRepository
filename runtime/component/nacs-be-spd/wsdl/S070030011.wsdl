@@ -1,0 +1,65 @@
+<wsdl:definitions xmlns:s="http://esb.spdbbiz.com/services/S070030011" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:soapnc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:tns="http://esb.spdbbiz.com/services/S070030011/wsdl" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" targetNamespace="http://esb.spdbbiz.com/services/S070030011/wsdl">
+<wsdl:types>
+<xsd:schema targetNamespace="http://esb.spdbbiz.com/services/S070030011/wsdl" elementFormDefault="qualified" attributeFormDefault="qualified">
+<xsd:import namespace="http://esb.spdbbiz.com/services/S070030011" schemaLocation="http://10.112.20.145:8080/Publish/WSDLfilePath/S070030011.xsd"/>
+</xsd:schema>
+</wsdl:types>
+<wsdl:message name="ReqHeader">
+<wsdl:part name="ReqHeader" element="s:ReqHeader"></wsdl:part>
+</wsdl:message>
+<wsdl:message name="ReqOthrSysExgCodeQry">
+<wsdl:part name="ReqOthrSysExgCodeQry" element="s:ReqOthrSysExgCodeQry"></wsdl:part>
+</wsdl:message>
+<wsdl:message name="ReqIdvExgQry">
+<wsdl:part name="ReqIdvExgQry" element="s:ReqIdvExgQry"></wsdl:part>
+</wsdl:message>
+<wsdl:message name="RspIdvExgQry">
+<wsdl:part name="RspIdvExgQry" element="s:RspIdvExgQry"></wsdl:part>
+</wsdl:message>
+<wsdl:message name="RspHeader">
+<wsdl:part name="RspHeader" element="s:RspHeader"></wsdl:part>
+</wsdl:message>
+<wsdl:message name="RspOthrSysExgCodeQry">
+<wsdl:part name="RspOthrSysExgCodeQry" element="s:RspOthrSysExgCodeQry"></wsdl:part>
+</wsdl:message>
+<wsdl:portType name="ESBServerPortType">
+<wsdl:operation name="IdvExgQry">
+<wsdl:input message="tns:ReqIdvExgQry"></wsdl:input>
+<wsdl:output message="tns:RspIdvExgQry"></wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="OthrSysExgCodeQry">
+<wsdl:input message="tns:ReqOthrSysExgCodeQry"></wsdl:input>
+<wsdl:output message="tns:RspOthrSysExgCodeQry"></wsdl:output>
+</wsdl:operation>
+</wsdl:portType>
+<wsdl:binding name="ESBServerSoapBinding" type="tns:ESBServerPortType">
+<soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+<wsdl:operation name="IdvExgQry">
+<soap:operation soapAction="urn:/IdvExgQry"/>
+<wsdl:input>
+<soap:header message="tns:ReqHeader" part="ReqHeader" use="literal"></soap:header>
+<soap:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap:header message="tns:RspHeader" part="RspHeader" use="literal"></soap:header>
+<soap:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="OthrSysExgCodeQry">
+<soap:operation soapAction="urn:/OthrSysExgCodeQry"/>
+<wsdl:input>
+<soap:header message="tns:ReqHeader" part="ReqHeader" use="literal"></soap:header>
+<soap:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap:header message="tns:RspHeader" part="RspHeader" use="literal"></soap:header>
+<soap:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+</wsdl:binding>
+<wsdl:service name="S070030011">
+<wsdl:port name="ESBServerSoapEndpoint" binding="tns:ESBServerSoapBinding">
+<soap:address location="http://esb.spdbbiz.com:7701/services/S070030011"/>
+</wsdl:port>
+</wsdl:service>
+</wsdl:definitions>

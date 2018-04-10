@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+This software is in the public domain under CC0 1.0 Universal plus a
+Grant of Patent License.
+
+To the extent possible under law, the author(s) have dedicated all
+copyright and related and neighboring rights to this software to the
+public domain worldwide. This software is distributed without any
+warranty.
+
+You should have received a copy of the CC0 Public Domain Dedication
+along with this software (see the LICENSE.md file). If not, see
+<http://creativecommons.org/publicdomain/zero/1.0/>.
+-->
+<!--状态查询-->
+<services xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns=""
+          xsi:noNamespaceSchemaLocation="http://moqui.org/xsd/service-definition-2.1.xsd">
+
+    <!--状态查询服务-->
+    <service verb="nacs" noun="P0006" type="inline" validate="false" authenticate="false">
+
+        <in-parameters>
+            <parameter name="parameter" />
+        </in-parameters>
+        <out-parameters>
+        </out-parameters>
+        <actions>
+
+            <log level="info" message="开始状态查询服务#############################################"/>
+            <log level="info" message="服务具体参数值:${parameter}"/>
+            <!-- 当天日期-->
+            <!--<set field="workDate"-->
+                 <!--from="new java.text.SimpleDateFormat('yyyyMMdd').parse(new Date().format('yyyyMMdd'))"/>-->
+
+
+            <!-- 查询基本参数表：获取交易批次号aaa-->
+            <!--<entity-find entity-name="nacs.trx.TxItemChannel" list="txItemChannelList"/>
+                <econdition field-name="txStatuId" value="02"/>
+
+            <transaction>
+            <entity-update-by-condition entity-name="nacs.trx.TxItem">
+                <econdition field-name="cpspTxId" from="cpspTxId"/>
+                <set-field field-name="payStatus" from="payStatus"/>
+            </entity-update-by-condition>
+        </transaction>
+            <transaction>
+            <entity-update-by-condition entity-name="nacs.trx.TxItemChannel">
+                <econdition field-name="cpspTxId" from="cpspTxId"/>
+                <set-field field-name="payStatus" from="payStatus"/>
+            </entity-update-by-condition>
+        </transaction>bbb-->
+
+           <!--&lt;!&ndash; <iterate list="nacsBeParaList" entry="nacsBePara">-->
+                <!--<if condition="nacsBePara.seqId == '100008'">-->
+                    <!--<set field="SGN_PAY_BATCH_ID" from="nacsBePara?.nacsBeParaValue"/>-->
+                <!--</if>-->
+                <!--<if condition="nacsBePara.seqId == '100009'">-->
+                    <!--<set field="NACS_PAY_BATCH_ID" from="nacsBePara?.nacsBeParaValue"/>-->
+                <!--</if>-->
+                <!--<if condition="nacsBePara.seqId == '100010'">-->
+                    <!--<set field="NACS_REFUND_BATCH_ID" from="nacsBePara?.nacsBeParaValue"/>-->
+                <!--</if>-->
+            <!--</iterate>&ndash;&gt;-->
+
+
+            <!--&lt;!&ndash; 前一天日期&ndash;&gt;-->
+            <!--<script><![CDATA[-->
+            <!--Calendar cal = Calendar.getInstance();-->
+            <!--cal.add(Calendar.DAY_OF_MONTH, -1);-->
+            <!--Date yesDate = new java.text.SimpleDateFormat("yyyyMMdd").parse(cal.format("yyyyMMdd"))-->
+            <!--]]></script>-->
+
+
+            <!--&lt;!&ndash; 查询当天日期的垫付资金表数据&ndash;&gt;-->
+            <!--<entity-find entity-name="nacs.trx.NacsAdvanceFunds" list="nacsAdvanceFundsList">-->
+                <!--<econdition field-name="workDate" from="workDate"/>-->
+            <!--</entity-find>-->
+
+
+            <!--&lt;!&ndash;查询协议支付视图&ndash;&gt;-->
+            <!--<entity-find entity-name="nacs.chk.NacsSgnPayAdvanceFundsSummaryView" list="nacsSgnPayList">-->
+                <!--&lt;!&ndash;交易批次号：开始批次号——结束批次号&ndash;&gt;-->
+                <!--<econdition field-name="batchId" operator="greater-equals" value="B${new Date(new Date().getTime()-1000*24*60*60).format('yyyyMMdd')}${SGN_PAY_BATCH_ID.split('-')[0]}"/>-->
+                <!--<econdition field-name="batchId" operator="less-equals" value="B${new Date(new Date().getTime()-1000*24*60*60).format('yyyyMMdd')}${SGN_PAY_BATCH_ID.split('-')[1]}"/>-->
+            <!--</entity-find>-->
+            <!--&lt;!&ndash;若协议支付中有需要的数据&ndash;&gt;-->
+            <!--<if condition="nacsSgnPayList">-->
+                <!--<set field="sgnPayAdvanceFundsSum" value="0" type="BigDecimal"/>-->
+                <!--&lt;!&ndash;则累计协议支付垫付资金总额&ndash;&gt;-->
+                <!--<iterate list="nacsSgnPayList" entry="nacsSgnPayEntry">-->
+                    <!--<set field="sgnPayAdvanceFundsSum" from="sgnPayAdvanceFundsSum+nacsSgnPayEntry.sgnPayAdvanceFunds"/>-->
+                <!--</iterate>-->
+                <!--&lt;!&ndash;若无，则设置为0&ndash;&gt;-->
+                <!--<else>-->
+                    <!--<set field="sgnPayAdvanceFundsSum" value="0" type="BigDecimal"/>-->
+                <!--</else>-->
+            <!--</if>-->
+
+             <!--&lt;!&ndash;查询退款视图&ndash;&gt;-->
+            <!--<entity-find entity-name="nacs.chk.NacsRefundAdvanceFundsSummaryView" list="nacsRefundList">-->
+                <!--&lt;!&ndash;交易批次号：开始批次号——结束批次号&ndash;&gt;-->
+                <!--<econdition field-name="batchId" operator="greater-equals" value="B${new Date(new Date().getTime()-1000*24*60*60).format('yyyyMMdd')}${NACS_REFUND_BATCH_ID.split('-')[0]}"/>-->
+                <!--<econdition field-name="batchId" operator="less-equals" value="B${new Date(new Date().getTime()-1000*24*60*60).format('yyyyMMdd')}${NACS_REFUND_BATCH_ID.split('-')[1]}"/>-->
+            <!--</entity-find>-->
+            <!--&lt;!&ndash;若退款中有需要的数据&ndash;&gt;-->
+            <!--<if condition="nacsRefundList">-->
+                <!--<set field="refundAdvanceFundsSum" value="0" type="BigDecimal"/>-->
+                <!--&lt;!&ndash;则累计退款垫付资金总额&ndash;&gt;-->
+                <!--<iterate list="nacsRefundList" entry="nacsRefundEntry">-->
+                    <!--<set field="refundAdvanceFundsSum" from="refundAdvanceFundsSum+nacsRefundEntry.refundAdvanceFunds"/>-->
+                <!--</iterate>-->
+                <!--&lt;!&ndash;若无，则设置为0&ndash;&gt;-->
+                <!--<else>-->
+                    <!--<set field="refundAdvanceFundsSum" value="0" type="BigDecimal"/>-->
+                <!--</else>-->
+            <!--</if>-->
+
+             <!--&lt;!&ndash;查询付款视图&ndash;&gt;-->
+            <!--<entity-find entity-name="nacs.chk.NacsPayAdvanceFundsSummaryView" list="nacsPayList">-->
+                <!--&lt;!&ndash;交易批次号：开始批次号——结束批次号&ndash;&gt;-->
+                <!--<econdition field-name="batchId" operator="greater-equals" value="B${new Date(new Date().getTime()-1000*24*60*60).format('yyyyMMdd')}${NACS_PAY_BATCH_ID.split('-')[0]}"/>-->
+                <!--<econdition field-name="batchId" operator="less-equals" value="B${new Date(new Date().getTime()-1000*24*60*60).format('yyyyMMdd')}${NACS_PAY_BATCH_ID.split('-')[1]}"/>-->
+            <!--</entity-find>-->
+
+            <!--&lt;!&ndash;若付款中有需要的数据&ndash;&gt;-->
+            <!--<if condition="nacsPayList">-->
+                <!--<set field="payAdvanceFundsSum" value="0" type="BigDecimal"/>-->
+                <!--&lt;!&ndash;则累计付款垫付资金总额&ndash;&gt;-->
+                <!--<iterate list="nacsPayList" entry="nacsPayEntry">-->
+                    <!--<set field="payAdvanceFundsSum" from="payAdvanceFundsSum+nacsPayEntry.payAdvanceFunds"/>-->
+                <!--</iterate>-->
+                <!--&lt;!&ndash;若无，则设置为0&ndash;&gt;-->
+                <!--<else>-->
+                    <!--<set field="payAdvanceFundsSum" value="0" type="BigDecimal"/>-->
+                <!--</else>-->
+            <!--</if>-->
+
+
+            <!--&lt;!&ndash;总垫付资金：各个交易的垫付资金总额相加&ndash;&gt;-->
+            <!--<set field="sum" value="${sgnPayAdvanceFundsSum+payAdvanceFundsSum+refundAdvanceFundsSum}"/>-->
+
+            <!--&lt;!&ndash;若垫付资金表没有当天的记录，则创建一条新的记录&ndash;&gt;-->
+            <!--<if condition="!nacsAdvanceFundsList">-->
+                <!--<entity-make-value entity-name="nacs.trx.NacsAdvanceFunds" value-field="nacsAdvanceFunds"/>-->
+                <!--<entity-set value-field="nacsAdvanceFunds"-->
+                            <!--map="[workDate:workDate,sgnPayAdvanceFunds:sgnPayAdvanceFundsSum,-->
+                            <!--refundAdvanceFunds:refundAdvanceFundsSum,payAdvanceFunds:payAdvanceFundsSum,-->
+                            <!--sumAdvanceFunds:sum]"/>-->
+                <!--<entity-create value-field="nacsAdvanceFunds"/>-->
+
+                <!--&lt;!&ndash;若垫付资金表已经有当天的记录，则先删除当天的记录，再创建&ndash;&gt;-->
+                <!--<else>-->
+                    <!--<entity-delete-by-condition entity-name="nacs.trx.NacsAdvanceFunds">-->
+                        <!--<econdition field-name="workDate" from="workDate"/>-->
+                    <!--</entity-delete-by-condition>-->
+                    <!--<entity-make-value entity-name="nacs.trx.NacsAdvanceFunds" value-field="nacsAdvanceFunds"/>-->
+                    <!--<entity-set value-field="nacsAdvanceFunds"-->
+                                <!--map="[workDate:workDate,sgnPayAdvanceFunds:sgnPayAdvanceFundsSum,-->
+                            <!--refundAdvanceFunds:refundAdvanceFundsSum,payAdvanceFunds:payAdvanceFundsSum,-->
+                            <!--sumAdvanceFunds:sum]"/>-->
+                    <!--<entity-create value-field="nacsAdvanceFunds"/>-->
+                <!--</else>-->
+            <!--</if>-->
+
+
+            <log level="info" message="结束状态查询服务##########################################"/>
+
+            <service-call name="nacs.channel.unionpayimpl.UnionPayService.send#UnionPay" in-map="context" out-map="context"/>
+
+            <log level="info" message="是否进入##########################################"/>
+        </actions>
+    </service>
+
+
+    <!--<service verb="send" noun="UnionPay" type="java" method="UnionPayService"-->
+             <!--validate="false" authenticate="false"-->
+             <!--location="com.sunyard.unionpay.UnionPayService.UnionPayService">-->
+        <!--<actions>-->
+            <!--<log level="info" message="进入"/>-->
+        <!--</actions>-->
+    <!--</service>-->
+</services>

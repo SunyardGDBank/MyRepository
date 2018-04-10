@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<services xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns=""
+          xsi:noNamespaceSchemaLocation="http://moqui.org/xsd/service-definition-2.1.xsd">
+
+    <!--发送支付通道接口服务-->
+    <service verb="send" noun="Channel"  type="interface">
+        <in-parameters>
+            <parameter name="payeeAcctno"/><!--收款账号-->
+            <parameter name="payeeAcctName"/><!--收款户名-->
+            <parameter name="payerAcctno"/><!--付款账号-->
+            <parameter name="payerAcctName"/><!--付款户名-->
+            <parameter name="accountType"/><!--账号类型  对公-0  对私-1-->
+            <parameter name="currencyCode"/><!--货币类型 人民币-156-->
+            <parameter name="trxAmt"/><!--交易金额-->
+            <parameter name="useRemark"/><!--摘要-->
+            <parameter name="remark1"/><!--保留字段域-->
+            <parameter name="remark2"/><!--保留字段域-->
+            <parameter name="remark3"/><!--保留字段域-->
+            <parameter name="buiTxId"/><!--业务渠道流水号-->
+            <parameter name="companyNo"/><!--接入商户编号-->
+            <parameter name="subMrchntNo"/><!--子商户编号-->
+            <parameter name="trxCtgy"/><!--交易码 0004-代付 0005-代收-->
+            <parameter name="reqDate"/><!--商户交易请求日期-->
+            <parameter name="reqTime"/><!--商户交易请求时间-->
+            <parameter name="workDate"/><!--平台工作日期-->
+            <parameter name="workTime"/><!--平台工作时间-->
+            <parameter name="version"/><!--版本号-->
+        </in-parameters>
+        <out-parameters>
+            <parameter name="payeeAcctno"/><!--收款账号-->
+            <parameter name="payeeAcctName"/><!--收款户名-->
+            <parameter name="payerAcctno"/><!--付款账号-->
+            <parameter name="payerAcctName"/><!--付款户名-->
+            <parameter name="currencyCode"/><!--交易币种 人民币-156-->
+            <parameter name="trxAmt"/><!--交易金额-->
+            <parameter name="useRemark"/><!--摘要-->
+            <parameter name="buiTxId"/><!--业务渠道流水号-->
+            <parameter name="nacsTxId"/><!--跨行清算平台流水号-->
+            <parameter name="companyNo"/><!--接入商户编号-->
+            <parameter name="subMrchntNo"/><!--子商户标编号-->
+            <parameter name="trxCtgy"/><!--交易码 0004-代付 0005-代收-->
+            <parameter name="reqDate"/><!--商户请求日期-->
+            <parameter name="reqTime"/><!--商户请求时间-->
+            <parameter name="version"/><!--版本号-->
+            <parameter name="txStatuId"/><!--交易结果状态-->
+            <parameter name="txStatuDsc"/><!--交易结果描述-->
+        </out-parameters>
+    </service>
+
+</services>

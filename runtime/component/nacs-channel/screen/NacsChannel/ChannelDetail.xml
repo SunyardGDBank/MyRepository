@@ -1,0 +1,550 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<screen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="http://moqui.org/xsd/xml-screen-2.1.xsd"
+        default-menu-title="支付通道明细" default-menu-include="false">
+    <!--支付通道明细-->
+    <parameter name="channelNo"/>
+    <parameter name="channelNm"/>
+    <parameter name="channelSeqId"/>
+
+
+    <!--支付通道限额管理-->
+    <transition name="updateChannelQuota">
+        <service-call name="update#nacs.channel.ChannelQuota"/>
+        <default-response url="."/>
+    </transition>
+    <transition name="createChannelQuota">
+        <service-call name="nacs.channel.admin.NacsChannelService.create#ChannelQuota" />
+        <default-response url="."/>
+    </transition>
+
+    <!--支付通道手续费管理-->
+    <transition name="createNacsChannelFee">
+        <service-call name="nacs.channel.admin.NacsChannelService.create#ChannelFee"/>
+        <default-response url="."/>
+    </transition>
+    <transition name="updateNacsChannelFee">
+        <service-call name="nacs.channel.admin.NacsChannelService.update#ChannelFee"/>
+        <default-response url="."/>
+    </transition>
+
+    <!--支付通道业务品种管理-->
+    <transition name="createChannelBusiness">
+        <service-call name="nacs.channel.admin.NacsChannelService.create#ChannelBusiness"/>
+        <default-response url="."/>
+    </transition>
+    <transition name="updateChannelBusiness">
+        <service-call name="update#nacs.channel.ChannelBusiness"/>
+        <default-response url="."/>
+    </transition>
+
+
+    <!--<transition-include name="showDisable" location="component://nacs-admin/servics/nacs/admin/mm.xml"/>-->
+    <!--<transition name="showDisable">
+         <service-call name="nacs.admin.LinkageService.get#FeeType" />
+         <default-response type="none"/>
+    </transition>-->
+    <!--根据交易类别来获取业务种类-->
+    <transition name="getBizTpList">
+        <service-call name="nacs.channel.admin.NacsChannelService.get#BizList" web-send-json-response="resultList"/>
+        <default-response type="none"/>
+    </transition>
+
+    <actions>
+
+        <!--支付通道限额管理-->
+        <entity-find entity-name="nacs.channel.ChannelQuota" list="channelQuotaList">
+            <econdition field-name="channelSeqId" from="channelSeqId"/>
+        </entity-find>
+        <entity-find entity-name="moqui.basic.Enumeration" list="BussTypeList">
+            <econdition field-name="enumTypeId" value="TrxCtgy"/>
+        </entity-find>
+        <entity-find entity-name="ChannelView" list="ChannelList"/>
+
+        <!--支付通道手续费管理-->
+        <entity-find entity-name="nacs.channel.ChannelFee" list="channelFeeList">
+            <econdition field-name="channelSeqId" from="channelSeqId"/>
+        </entity-find>
+        <entity-find entity-name="moqui.basic.Enumeration" list="bussTypeParameterList">
+            <econdition field-name="enumTypeId" value="TrxCtgy"/>
+        </entity-find>
+        <entity-find entity-name="moqui.basic.Enumeration" list="feeChargeModeParameterList">
+            <econdition field-name="enumTypeId" value="FeeChargeMode"/>
+        </entity-find>
+        <set field="pageSize" value="20"/>
+        <!--支付通道业务品种管理-->
+        <entity-find entity-name="nacs.channel.ChannelBusiness" list="channelBusinessList">
+            <search-form-inputs/>
+            <econdition field-name="channelSeqId" from="channelSeqId"/>
+        </entity-find>
+        <entity-find entity-name="ChannelView" list="NacsDictChannelParameterList"/>
+
+        <entity-find entity-name="moqui.basic.Enumeration" list="NacsDictBussTypeParameterList1">
+            <econdition field-name="enumTypeId" value="TrxCtgy"/>
+        </entity-find>
+        <entity-find entity-name="moqui.basic.Enumeration" list="NacsDictBussTypeParameterList2">
+            <econdition field-name="enumTypeId" value="BizTp"/>
+        </entity-find>
+        <entity-find entity-name="moqui.basic.Enumeration" list="SupportFlgList">
+            <econdition field-name="enumTypeId" value="SupportFlg"/>
+            <order-by field-name="enumId"/>
+        </entity-find>
+        <log level="info" message="channelSeqId====${channelSeqId}"/>
+    </actions>
+
+    <widgets>
+        <!--页面顶部显示的信息-->
+        <form-single name="UserGroupForm" map="chList">
+            <field name="channelNo"><default-field title="支付通道编号"><display/></default-field></field>
+            <field name="channelNm"><default-field title="支付通道名称"><display/></default-field></field>
+            <field-layout>
+                <field-row><field-ref name="channelNo"/><field-ref name="channelNm"/></field-row>
+            </field-layout>
+        </form-single>
+
+        <container-row>
+            <!--支付通道限额信息-->
+            <row-col>
+                <container-box>
+                    <box-header>
+                        <label text="支付通道限额" type="h5"/>
+                    </box-header>
+                    <box-toolbar>
+                        <container-dialog id="createChannelQuotaDialog" button-text="添加" width="860">
+                            <form-single name="CreateChannelQuota" transition="createChannelQuota">
+                                <!-- <field name="seqId" hide="true"/>-->
+
+                                <field name="channelNo">
+                                    <default-field title="通道编号">
+                                        <display/>
+                                    </default-field>
+                                </field>
+                                <field name="channelNm">
+                                    <default-field title="通道名称">
+                                        <display/>
+                                    </default-field>
+                                </field>
+                                <field name="channelSeqId" from="channelSeqId">
+                                    <default-field>
+                                        <hidden/>
+                                    </default-field>
+                                </field>
+                                <field name="trxCtgy">
+                                    <default-field title="交易类别">
+                                        <drop-down allow-empty="true">
+                                            <list-options list="BussTypeList" key="${enumId}" text="${description}" />
+                                        </drop-down>
+                                    </default-field>
+                                </field>
+                                <field name="singletranLimit" ><default-field title="单笔交易限额">
+                                    <text-line size="40"/>
+                                </default-field></field>
+                                <field name="singlTodayLimit"><default-field title="当日累计最大限额">
+                                    <text-line size="40"/>
+                                </default-field></field>
+                                <field name="singlTodaySum"><default-field title="当日累计最大笔数">
+                                    <text-line size="40"/>
+                                </default-field>
+                                </field>
+                                <field name="submitButton">
+                                    <default-field title="Add">
+                                        <submit icon="glyphicon glyphicon-plus"/>
+                                    </default-field>
+                                </field>
+                            </form-single>
+                        </container-dialog>
+                    </box-toolbar>
+                    <box-body>
+                        <form-list name="ChannelQuotaList" list="channelQuotaList" transition="updateChannelQuota">
+                            <field name="seqId">
+                                <default-field title="序号">
+                                    <hidden/>
+                                </default-field>
+                            </field>
+                            <field name="channelNo">
+                                <default-field title="通道编号">
+                                    <hidden/>
+                                </default-field>
+                            </field>
+                            <field name="channelNm">
+                                <default-field title="通道名称">
+                                    <hidden/>
+                                </default-field>
+                            </field>
+                            <field name="channelSeqId" from="channelSeqId">
+                                <default-field>
+                                    <hidden/>
+                                </default-field>
+                            </field>
+                            <field name="trxCtgy">
+                                <default-field title="交易类别">
+                                    <display-entity entity-name="moqui.basic.Enumeration"
+                                                    key-field-name="enumId" text="${description}"/>
+                                </default-field>
+                            </field>
+                            <field name="singletranLimit" align="right">
+                                <default-field title="单笔交易限额" >
+                                    <text-line size="20" />
+                                </default-field>
+                            </field>
+                            <field name="singlTodayLimit" align="right">
+                                <default-field title="当日累计最大限额" >
+                                    <text-line size="20"/>
+                                </default-field>
+                            </field>
+                            <field name="singlTodaySum" align="right">
+                                <default-field title="当日累计最大笔数">
+                                    <text-line size="20" />
+                                </default-field>
+                            </field>
+                            <!--更新按钮-->
+                            <field name="submitButton">
+                                <default-field title="Update">
+                                    <submit icon="glyphicon glyphicon-edit"/>
+                                </default-field>
+                            </field>
+
+                        </form-list>
+                    </box-body>
+                </container-box>
+            </row-col>
+        </container-row>
+        <container-row>
+            <!--支付通道手续费-->
+            <row-col>
+                <container-box>
+                    <box-header>
+                        <label text="支付通道手续费" type="h5"/>
+                    </box-header>
+                    <box-toolbar>
+                        <container-dialog id="CreateNacsChannelFeeDialog" button-text="添加">
+                            <form-single name="CreateNacsChannelFee" transition="createNacsChannelFee">
+                               <!-- <auto-fields-entity entity-name="nacs.channel.ChannelFee"  field-type="edit">
+                                    <exclude field-name="remarks1"/>
+                                    <exclude field-name="remarks2"/>
+                                    <exclude field-name="remarks3"/>
+                                    <exclude field-name="remarks4"/>
+                                    <exclude field-name="remarks5"/>
+                                    <exclude field-name="channelSeqId"/>
+                                </auto-fields-entity>-->
+                                <field name="channelNo"><default-field title="通道编号">
+                                    <display/>
+                                </default-field></field>
+                                <field name="channelNm"><default-field title="通道名称">
+                                    <display/>
+                                </default-field></field>
+                                <field name="trxCtgy">
+                                    <default-field title="交易类别">
+                                        <drop-down allow-empty="true">
+                                            <list-options list="bussTypeParameterList" text="${description}"/>
+                                        </drop-down>
+                                    </default-field>
+                                </field>
+                                <field name="feeType">
+                                    <default-field title="收取方式">
+                                        <drop-down allow-empty="true">
+                                            <list-options list="feeChargeModeParameterList" text="${description}" key="${enumId}"/>
+                                        </drop-down>
+                                    </default-field>
+                                </field>
+                               <!--<field name="mm">
+                                    <default-field title="mmm">
+                                        <display dynamic-transition="showDisable">
+                                            <depends-on field="feeType"/></display>
+                                    </default-field>
+                                </field>-->
+                                <field name="beginAmt">
+                                    <default-field title="金额上限">
+                                        <text-line size="35"/>
+                                    </default-field>
+                                </field>
+                                <field name="endAmt">
+                                    <default-field title="金额下限">
+                                        <text-line size="35"/>
+                                    </default-field>
+                                </field>
+                                <field name="percentage">
+                                    <default-field title="百分比">
+                                        <text-line size="35"/>
+                                    </default-field>
+                                </field>
+                                <field name="amt">
+                                    <default-field title="收取金额">
+                                        <text-line size="35"/>
+                                    </default-field>
+                                </field>
+                                <field name="seqId" hide="true"/>
+                                <field name="channelSeqId" from="channelSeqId">
+                                    <default-field>
+                                        <hidden/>
+                                    </default-field>
+                                </field>
+                                <field name="submitButton">
+                                    <default-field title="Add">
+                                        <submit icon="glyphicon glyphicon-plus"/>
+                                    </default-field>
+                                </field>
+                            </form-single>
+                        </container-dialog>
+                    </box-toolbar>
+                    <box-body>
+                        <form-list name="ListNacsChannelFee" list="channelFeeList"
+                                   transition="updateNacsChannelFee">
+                            <auto-fields-entity entity-name="nacs.channel.ChannelFee"  field-type="edit">
+                                <exclude field-name="remarks1"/>
+                                <exclude field-name="remarks2"/>
+                                <exclude field-name="remarks3"/>
+                                <exclude field-name="remarks4"/>
+                                <exclude field-name="remarks5"/>
+                                <exclude field-name="channelSeqId"/>
+                            </auto-fields-entity>
+                            <field name="channelSeqId" from="channelSeqId">
+                                <default-field>
+                                    <hidden/>
+                                </default-field>
+                            </field>
+                            <field name="seqId">
+                                <default-field title="序号">
+                                    <hidden/>
+                                </default-field>
+                            </field>
+                            <field name="channelNo">
+                                <default-field title="通道编号">
+                                    <hidden/>
+                                </default-field>
+                            </field>
+                            <field name="channelNm">
+                                <default-field title="通道名称">
+                                    <hidden/>
+                                </default-field>
+                            </field>
+                            <field name="trxCtgy">
+                                <default-field title="交易类别">
+                                    <display-entity entity-name="moqui.basic.Enumeration"
+                                                    key-field-name="enumId" text="${description}"/>
+                                </default-field>
+                            </field>
+                            <field name="feeType">
+                                <default-field title="收取方式">
+                                    <drop-down allow-empty="true">
+                                        <list-options list="feeChargeModeParameterList" key="${enumId}" text="${description}"/>
+                                    </drop-down>
+                                </default-field>
+                            </field>
+                            <field name="beginAmt" align="right">
+                                <default-field title="金额上限">
+                                    <text-line size="10"/>
+                                </default-field>
+                            </field>
+                            <field name="endAmt" align="right">
+                                <default-field title="金额下限">
+                                    <text-line size="10"/>
+                                </default-field>
+                            </field>
+                            <field name="percentage" align="right">
+                                <default-field title="百分比">
+                                    <text-line size="10"/>
+                                </default-field>
+                            </field>
+                            <field name="amt" align="right">
+                                <default-field title="收取金额">
+                                    <text-line size="10"/>
+                                </default-field>
+                            </field>
+                            <!--更新按钮-->
+                            <field name="submitButton">
+                                <default-field title="更新">
+                                    <submit icon="glyphicon glyphicon-edit"/>
+                                </default-field>
+                            </field>
+                        </form-list>
+                    </box-body>
+                </container-box>
+            </row-col>
+        </container-row>
+        <container-row>
+            <!--支付通道业务品种-->
+            <row-col>
+                <container-box>
+                    <box-header><label text="支付通道业务品种" type="h5"/></box-header>
+                    <box-toolbar>
+                        <container-dialog id="CreateChannelBusinessDialog" button-text="添加">
+                            <form-single name="CreateChannelBusiness" transition="createChannelBusiness">
+                                <!--<auto-fields-entity entity-name="nacs.channel.ChannelBusiness"  field-type="edit">
+                                    <exclude field-name="remarks1"/>
+                                    <exclude field-name="remarks2"/>
+                                    <exclude field-name="remarks3"/>
+                                    <exclude field-name="remarks4"/>
+                                    <exclude field-name="remarks5"/>
+                                    <exclude field-name="channelSeqId"/>
+                                </auto-fields-entity>-->
+                                <field name="channelSeqId" from="channelSeqId">
+                                    <default-field>
+                                        <hidden/>
+                                    </default-field>
+                                </field>
+                                <field name="seqId" hide="true"/>
+                                <!--通道编号-->
+                                <field name="channelNo">
+                                    <default-field title="通道编号">
+                                        <display/>
+                                    </default-field>
+                                </field>
+                                <field name="channelNm">
+                                    <default-field title="通道名称">
+                                        <display/>
+                                    </default-field>
+                                </field>
+                                <!--支持业务种类-->
+                                <field name="trxCtgy">
+                                    <default-field title="交易类别">
+                                        <!--下拉选-->
+                                        <drop-down allow-empty="true">
+                                            <list-options list="NacsDictBussTypeParameterList1" key="${enumId}" text="${description}"/>
+                                        </drop-down>
+                                    </default-field>
+                                </field>
+                                <!--业务品种-->
+                                <field name="bizTp">
+                                    <default-field title="业务品种">
+                                        <!--下拉选-->
+                                        <drop-down allow-empty="true">
+                                            <dynamic-options transition="getBizTpList" value-field="enumId" label-field="label">
+                                                <depends-on field="trxCtgy"/></dynamic-options>
+                                           <!-- <list-options list="NacsDictBussTypeParameterList2" key="${enumId}" text="${description}"/>-->
+                                        </drop-down>
+                                    </default-field>
+                                </field>
+                                <!--支持标志-->
+                                <field name="supportFlg">
+                                    <default-field title="支持标志">
+                                        <!--下拉选-->
+                                        <drop-down allow-empty="true">
+                                            <list-options list="SupportFlgList" key="${enumId}" text="${description}"/>
+                                        </drop-down>
+                                    </default-field>
+                                </field>
+                                <!--确定按钮-->
+                                <field name="submitButton">
+                                    <default-field title="Add">
+                                        <submit icon="glyphicon glyphicon-plus"/>
+                                    </default-field>
+                                </field>
+                            </form-single>
+                        </container-dialog>
+                    </box-toolbar>
+                    <box-body>
+                        <form-list name="ListChannelBusiness" list="channelBusinessList"
+                                   transition="updateChannelBusiness">
+                            <auto-fields-entity entity-name="nacs.channel.ChannelBusiness"  field-type="edit">
+                                <exclude field-name="remarks1"/>
+                                <exclude field-name="remarks2"/>
+                                <exclude field-name="remarks3"/>
+                                <exclude field-name="remarks4"/>
+                                <exclude field-name="remarks5"/>
+                                <exclude field-name="channelSeqId"/>
+                            </auto-fields-entity>
+                            <field name="channelSeqId" from="channelSeqId">
+                                <default-field>
+                                    <hidden/>
+                                </default-field>
+                            </field>
+                            <!--主页面中所查询出来的数据-->
+                            <field name="seqId">
+                                <default-field title="序号">
+                                    <hidden/>
+                                </default-field>
+                            </field>
+                            <!--通道编号-->
+                            <field name="channelNo">
+                                <default-field title="通道编号">
+                                    <hidden/>
+                                </default-field>
+                            </field>
+                            <!--通道名称-->
+                            <field name="channelNm">
+                                <default-field title="通道名称">
+                                    <hidden/>
+                                </default-field>
+                            </field>
+                            <!--支持业务种类-->
+                            <field name="trxCtgy">
+                                <default-field title="交易类别">
+                                    <display-entity entity-name="moqui.basic.Enumeration" key-field-name="enumId"
+                                                    text="${description}"/>
+                                </default-field>
+                            </field>
+                            <!--业务品种-->
+                            <field name="bizTp">
+                                <default-field title="业务品种">
+                                    <display-entity entity-name="moqui.basic.Enumeration" key-field-name="enumId"
+                                                    text="${description}"/>
+                                </default-field>
+                            </field>
+                            <!--支持标志-->
+                            <field name="supportFlg">
+                                <default-field title="支持标志">
+                                    <drop-down allow-empty="true">
+                                        <list-options list="SupportFlgList" text="${description}"/>
+                                    </drop-down>
+                                </default-field>
+                            </field>
+                            <!--更新按钮-->
+                            <field name="submitButton">
+                                <default-field title="Update">
+                                    <submit icon="glyphicon glyphicon-edit"/>
+                                </default-field>
+                            </field>
+                        </form-list>
+                    </box-body>
+                </container-box>
+            </row-col>
+        </container-row>
+
+        <render-mode>
+            <text><![CDATA[
+<script>
+  $(function () {
+    function onlyShow( a,b,c) {
+        a.each(function (i, v) {
+            var that = $(this);
+            $(b).each(function (j, k) {
+                if (i == k){
+                    that.hide().find('input').removeAttr("required");
+                }
+            });
+            $(c).each(function (l, m) {
+                if(i == m){
+                    that.show().find('input').attr("required", "required");
+                }
+            })
+        })
+    }
+    var a = $("#CreateNacsChannelFee_feeType").parent().parent().siblings(".form-group");
+    onlyShow(a,[5],[3,4,6]);//初始化
+    $("#CreateNacsChannelFee_feeType").on("change", function (){
+
+        a.each(function (i, v) {
+            if(i >=3 && i <= 7 ){
+                $(this).find('input').val("");
+            }
+        })
+        if($(this).val() === "FEE_CHARGE_MODE1"){
+            onlyShow(a,[5],[3,4,6]);
+        }
+        if($(this).val() === "FEE_CHARGE_MODE2"){
+            onlyShow(a,[3,4,5],[6]);
+        }
+        if($(this).val() === "FEE_CHARGE_MODE3"){
+            onlyShow(a,[6],[3,4,5]);
+        }
+    })
+})
+</script>
+]]>
+            </text>
+        </render-mode>
+
+
+    </widgets>
+</screen>

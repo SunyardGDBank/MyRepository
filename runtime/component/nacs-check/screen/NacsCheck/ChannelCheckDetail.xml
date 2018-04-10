@@ -1,0 +1,238 @@
+<screen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="http://moqui.org/xsd/xml-screen-2.1.xsd"
+        default-menu-title="通道对账明细" default-menu-include="false">
+    <!--业务渠道错账信息-->
+    <parameter name="trxCtgy"/>
+    <parameter name="channelSeqId"/>
+    <parameter name="checkDate"/>
+    <parameter name="errorFlg"/>
+
+    <actions>
+        <entity-find entity-name="nacs.chk.CheckChannelError" list="CheckChannelErrorList">
+            <econdition field-name="trxCtgy" from="trxCtgy"/>
+            <econdition field-name="workDate" from="checkDate"/>
+            <econdition field-name="channelSeqId" from="channelSeqId"/>
+            <order-by field-name="nacsTxId"/>
+        </entity-find>
+    </actions>
+
+    <widgets>
+        <form-single name="UserGroupForm" map="chCheckList">
+
+            <field name="channelNo" from="channelSeqId"><default-field title="通道编号"><display-entity entity-name="nacs.channel.Channel" key-field-name="seqId" text="${channelNo}"/></default-field></field>
+            <field name="channelNm" from="channelSeqId"><default-field title="通道名称"><display-entity entity-name="nacs.channel.Channel" key-field-name="seqId" text="${channelNm}"/></default-field></field>
+            <field name="checkDate"><default-field title="对账日期"><display/></default-field></field>
+            <field name="errorFlg"><default-field title="对账结果"><display-entity entity-name="moqui.basic.Enumeration" key-field-name="enumId" text="${description}"/></default-field></field>
+
+            <field-layout>
+                <field-row-sm col-sm="3"><field-ref name="channelNo"/><field-ref name="channelNm"/><field-ref name="checkDate"/><field-ref name="errorFlg"/></field-row-sm>
+            </field-layout>
+        </form-single>
+        <form-list name="CheckClientError" list="CheckChannelErrorList">
+            <field name="nacsTxId" align="center">
+                <header-field show-order-by="true"/>
+                <default-field title="平台流水号">
+                    <display/>
+                </default-field>
+            </field>
+            <field name="buiTxId" align="center">
+                <header-field show-order-by="true"/>
+                <default-field title="业务渠道流水号">
+                    <display/>
+                </default-field>
+            </field>
+            <field name="payTxId" align="center">
+                <header-field show-order-by="true"/>
+                <default-field title="支付通道流水号">
+                    <display/>
+                </default-field>
+            </field>
+            <field name="orderId" align="center">
+                <header-field show-order-by="true"/>
+                <default-field title="订单号">
+                    <display/>
+                </default-field>
+            </field>
+            <field name="trxCtgy" align="center">
+                <header-field show-order-by="true"/>
+                <default-field title="交易类别">
+                    <display-entity entity-name="moqui.basic.Enumeration" key-field-name="enumId" text="${description}"/>
+                </default-field>
+            </field>
+            <field name="checkSt" align="center">
+                <header-field show-order-by="true"/>
+                <default-field title="对账状态">
+                    <display-entity entity-name="moqui.basic.StatusItem" key-field-name="statusId" text="${description}"/>
+                </default-field>
+            </field>
+            <field name="checkType" align="center">
+                <header-field show-order-by="true"/>
+                <default-field title="错账类型">
+                    <display-entity entity-name="moqui.basic.Enumeration" key-field-name="enumId" text="${description}"/>
+                </default-field>
+            </field>
+            <field name="txStatuId" align="center">
+                <header-field show-order-by="true"/>
+                <default-field title="跨行清算平台处理状态">
+                    <display-entity entity-name="moqui.basic.StatusItem" key-field-name="statusId" text="${description}"/>
+                </default-field>
+            </field>
+            <field name="workDate" align="center">
+                <header-field show-order-by="true"/>
+                <default-field title="工作日期">
+                    <display/>
+                </default-field>
+            </field>
+            <field name="mrchntSeqId" align="center">
+                <header-field show-order-by="true"/>
+                <default-field title="商户编号">
+                    <display-entity entity-name="nacs.mrchnt.Mrchnt" key-field-name="seqId" text="${mrchntNo}"/>
+                </default-field>
+            </field>
+            <field name="mrchntSeqId2" from="mrchntSeqId" align="center">
+                <header-field show-order-by="true"/>
+                <default-field title="商户名称">
+                    <display-entity entity-name="nacs.mrchnt.Mrchnt" key-field-name="seqId" text="${mrchntNm}"/>
+                </default-field>
+            </field>
+            <field name="subMrchntNo" align="center">
+                <header-field show-order-by="true"/>
+                <default-field title="子商户编号">
+                    <display/>
+                </default-field>
+            </field>
+            <field name="subMrchntNm" align="center">
+                <header-field show-order-by="true"/>
+                <default-field title="子商户名称">
+                    <display/>
+                </default-field>
+            </field>
+            <field name="channelSeqId" align="center">
+                <header-field show-order-by="true"/>
+                <default-field title="支付通道编号">
+                    <display-entity entity-name="nacs.channel.Channel" key-field-name="seqId" text="${channelNo}"/>
+                </default-field>
+            </field>
+            <field name="channelSeqId2" from="channelSeqId" align="center">
+                <header-field show-order-by="true"/>
+                <default-field title="支付通道名称">
+                    <display-entity entity-name="nacs.channel.Channel" key-field-name="seqId" text="${channelNm}"/>
+                </default-field>
+            </field>
+            <field name="reqTime" align="center">
+                <header-field show-order-by="true"/>
+                <default-field title="请求时间">
+                    <display/>
+                </default-field>
+            </field>
+            <field name="custCode" align="center">
+                <header-field show-order-by="true"/>
+                <default-field title="客户编号">
+                    <display/>
+                </default-field>
+            </field>
+            <field name="extOrderSeq" align="center">
+                <header-field show-order-by="true"/>
+                <default-field title="外部系统订单号">
+                    <display/>
+                </default-field>
+            </field>
+            <field name="currencyCode" align="center">
+                <header-field show-order-by="true"/>
+                <default-field title="币种">
+                    <display/>
+                </default-field>
+            </field>
+            <field name="trsSummary" align="center">
+                <header-field show-order-by="true"/>
+                <default-field title="交易摘要">
+                    <display/>
+                </default-field>
+            </field>
+            <field name="trsMemo" align="center">
+                <header-field show-order-by="true"/>
+                <default-field title="交易备注">
+                    <display/>
+                </default-field>
+            </field>
+            <field name="amount" align="right">
+                <header-field show-order-by="true"/>
+                <default-field title="交易金额">
+                    <display/>
+                </default-field>
+            </field>
+            <field name="payerAccount" align="center">
+                <header-field show-order-by="true"/>
+                <default-field title="付款人账户信息">
+                    <display/>
+                </default-field>
+            </field>
+            <field name="payeeAccount" align="center">
+                <header-field show-order-by="true"/>
+                <default-field title="收款人企业账户信息">
+                    <display/>
+                </default-field>
+            </field>
+            <field name="button" align="center">
+                <default-field title="">
+                    <link url="" text="调账"/>
+                </default-field>
+            </field>
+
+            <!--布局-->
+            <form-list-column>
+                <field-ref name="nacsTxId"/>
+            </form-list-column>
+            <form-list-column>
+                <field-ref name="buiTxId"/>
+                <field-ref name="payTxId"/>
+            </form-list-column>
+            <form-list-column>
+                <field-ref name="orderId"/>
+                <field-ref name="trxCtgy"/>
+            </form-list-column>
+            <form-list-column>
+                <field-ref name="checkSt"/>
+                <field-ref name="checkType"/>
+            </form-list-column>
+            <form-list-column>
+                <field-ref name="txStatuId"/>
+                <field-ref name="workDate"/>
+            </form-list-column>
+            <form-list-column>
+                <field-ref name="mrchntSeqId"/>
+                <field-ref name="mrchntSeqId2"/>
+            </form-list-column>
+            <form-list-column>
+                <field-ref name="channelSeqId"/>
+                <field-ref name="channelSeqId2"/>
+            </form-list-column>
+            <form-list-column>
+                <field-ref name="subMrchntNo"/>
+                <field-ref name="subMrchntNm"/>
+            </form-list-column>
+            <form-list-column>
+                <field-ref name="reqTime"/>
+                <field-ref name="custCode"/>
+            </form-list-column>
+            <form-list-column>
+                <field-ref name="extOrderSeq"/>
+                <field-ref name="currencyCode"/>
+            </form-list-column>
+            <form-list-column>
+                <field-ref name="trsSummary"/>
+                <field-ref name="trsMemo"/>
+            </form-list-column>
+            <form-list-column>
+                <field-ref name="amount"/>
+            </form-list-column>
+            <form-list-column>
+                <field-ref name="payerAccount"/>
+                <field-ref name="payeeAccount"/>
+            </form-list-column>
+            <form-list-column>
+                <field-ref name="button"/>
+            </form-list-column>
+        </form-list>
+    </widgets>
+</screen>

@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="Gradle: org.apache.ant:ant-antlr:1.9.4">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/framework/lib/ant-antlr-1.9.4.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

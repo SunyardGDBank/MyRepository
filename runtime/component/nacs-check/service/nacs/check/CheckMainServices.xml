@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+This software is in the public domain under CC0 1.0 Universal plus a 
+Grant of Patent License.
+
+To the extent possible under law, the author(s) have dedicated all
+copyright and related and neighboring rights to this software to the
+public domain worldwide. This software is distributed without any
+warranty.
+
+You should have received a copy of the CC0 Public Domain Dedication
+along with this software (see the LICENSE.md file). If not, see
+<http://creativecommons.org/publicdomain/zero/1.0/>.
+-->
+<!--对账主服务-->
+<services xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns=""
+          xsi:noNamespaceSchemaLocation="http://moqui.org/xsd/service-definition-2.1.xsd">
+
+    <!--行内对账主服务-->
+    <service verb="check" noun="ChkBeFile" type="inline" validate="false" authenticate="false">
+        <in-parameters>
+        </in-parameters>
+        <out-parameters>
+        </out-parameters>
+        <actions>
+            <!--首先查询通道信息表中的通道编号-->
+            <log level="info" message="========行内对账开始========"/>
+            <entity-find entity-name="nacs.channel.Channel" list="Channel"/>
+            <!--设置开关-->
+            <set field="flg" value="true" type="Boolean"/>
+            <!-- 判断通道对账是否完成 -->
+            <!--<iterate list="Channel" entry="ChannelEntry">-->
+                <!--<entity-make-value entity-name="nacs.chk.CheckChannel" value-field="CheckChannel"/>-->
+                <!--<entity-find entity-name="nacs.chk.CheckChannel" list="CheckChannelList" >-->
+                    <!--<econdition field-name="checkDate" value="${new Date().format('yyyy-MM-dd')}"/>-->
+                    <!--<econdition field-name="channelNo" from="ChannelEntry.channelNo"/>-->
+                    <!--<econditions combine="or">-->
+                            <!--<econdition field-name="channelSt" value="CHK_RESULT_NONE "/>&lt;!&ndash;未对账&ndash;&gt;-->
+                            <!--<econdition field-name="channelSt" value="CHK_RESULT_BEING"/>&lt;!&ndash;对账中&ndash;&gt;-->
+                    <!--</econditions>-->
+                <!--</entity-find>-->
+                <!--<if condition="CheckChannelList">-->
+                    <!--<log message="================通道对账有未成功的!=========" level="debug"/>-->
+                    <!--<set field="flg" value="flase" type="Boolean"/>-->
+                    <!--<break/>-->
+                <!--</if>-->
+            <!--</iterate>-->
+
+            <if condition="flg">
+                <log message="============通道对账全成功开始行内对账============="/>
+                <!--调用行内对账接口-->
+                <log message="============调核心对账============="/>
+                <!--<service-call name="nacs.be.CutToBeService.cut#Be"/>-->
+                <!--<service-call name="nacs.CheckServices.get#DynamicBatchId" out-map="context"/>-->
+                <service-call name="nacs.be.SignToBeService.sign#Be"/>
+                <!--<set field="checkFileName" value="${bblujing.substring(bblujing.lastIndexOf('/')+1)}"/>-->
+                <set field="checkFileName" value="pufahexin.txt"/>
+                <set field="localFile" value="${'/home/nacs/'+checkFileName}"/>
+                <!--<set field="localFile" value="${'/home/nacs/NacsCheckFile/BeFile/'+checkFileName}"/>-->
+                <log message="===去核心取对账文件==="/>
+                <service-call name="nacs.check.DownloadServices.download#ChkBeFile" in-map="[hostNo:2,localFile:localFile,remoteFile:remoteFile]" out-map="context" transaction="force-new"/>
+                <log message="===核心对账文件落地成功===" level="info"/>
+                <!--持久化对账文件-->
+                <set field="fileName" from="localFile"/>
+                <service-call name="nacs.check.RegisterServices.register#ChkCoreFile" in-map="[fileName:fileName]" out-map="context" transaction="force-new"/>
+
+            </if>
+
+        </actions>
+    </service>
+
+
+    <!--清算主服务-->
+    <service verb="clear" noun="ChkClearFile" type="inline" validate="false" authenticate="false">
+    <in-parameters>
+    </in-parameters>
+    <out-parameters>
+    </out-parameters>
+    <actions>
+
+        <!--查询成功的交易-->
+        <entity-find entity-name="nacs.trx.TxItem" list="TxItem">
+            <econdition field-name="settleDate" from="workDate"/>
+            <econdition field-name="txStatuId" value="11"/>
+        </entity-find>
+        <!--登记清算信息表-->
+        <entity-make-value entity-name="nacs.clear.ClearChannel" value-field="ClearChannel"/>
+        <entity-sequenced-id-primary-dynamic value-field="ClearChannel"/>
+        <set field="settleDate" from="settleDate"/>
+        <entity-set value-field="" map=""/>
+
+    </actions>
+    </service>
+
+</services>

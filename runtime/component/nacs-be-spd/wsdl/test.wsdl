@@ -1,0 +1,34 @@
+<wsdl:definitions xmlns:apachesoap="http://xml.apache.org/xml-soap" xmlns:impl="http://cpc-hzfhwg.spdb.com:10100/QryAreaService" xmlns:intf="http://cpc-hzfhwg.spdb.com:10100/QryAreaService" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:wsdlsoap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://cpc-hzfhwg.spdb.com:10100/QryAreaService">
+<wsdl:message name="ExecuteResponse">
+<wsdl:part name="errorNo" type="xsd:string"></wsdl:part>
+<wsdl:part name="errorInfo" type="xsd:string"></wsdl:part>
+<wsdl:part name="hostSerialNo" type="xsd:string"></wsdl:part>
+<wsdl:part name="resultList" type="xsd:string"></wsdl:part>
+</wsdl:message>
+<wsdl:message name="ExecuteRequest">
+<wsdl:part name="tranCode" type="xsd:string"></wsdl:part>
+</wsdl:message>
+<wsdl:portType name="QryAreaService">
+<wsdl:operation name="Execute" parameterOrder="tranCode">
+<wsdl:input message="impl:ExecuteRequest" name="ExecuteRequest"></wsdl:input>
+<wsdl:output message="impl:ExecuteResponse" name="ExecuteResponse"></wsdl:output>
+</wsdl:operation>
+</wsdl:portType>
+<wsdl:binding name="QryAreaServiceSoapBinding" type="impl:QryAreaService">
+<wsdlsoap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
+<wsdl:operation name="Execute">
+<wsdlsoap:operation soapAction=""/>
+<wsdl:input name="ExecuteRequest">
+<wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://cpc-hzfhwg.spdb.com:10100/QryAreaService" use="encoded"/>
+</wsdl:input>
+<wsdl:output name="ExecuteResponse">
+<wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://cpc-hzfhwg.spdb.com:10100/QryAreaService" use="encoded"/>
+</wsdl:output>
+</wsdl:operation>
+</wsdl:binding>
+<wsdl:service name="QryAreaService">
+<wsdl:port binding="impl:QryAreaServiceSoapBinding" name="QryAreaService">
+<wsdlsoap:address location="http://10.37.0.58:10100/QryAreaService"/>
+</wsdl:port>
+</wsdl:service>
+</wsdl:definitions>

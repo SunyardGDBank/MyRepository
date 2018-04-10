@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+This software is in the public domain under CC0 1.0 Universal plus a 
+Grant of Patent License.
+
+To the extent possible under law, the author(s) have dedicated all
+copyright and related and neighboring rights to this software to the
+public domain worldwide. This software is distributed without any
+warranty.
+
+You should have received a copy of the CC0 Public Domain Dedication
+along with this software (see the LICENSE.md file). If not, see
+<http://creativecommons.org/publicdomain/zero/1.0/>.
+-->
+<screen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://moqui.org/xsd/xml-screen-2.1.xsd"
+        default-menu-title="清算管理" menu-image="glyphicon glyphicon-usd" menu-image-type="icon" default-menu-index="7">
+
+    <subscreens always-use-full-path="true" default-item="ChannelClearList">
+        <subscreens-item name="ChannelClearList" location="component://nacs-clear/screen/NacsClear/ChannelClearList.xml"
+                         menu-index="1"/>
+        <subscreens-item name="ClientClearList" location="component://nacs-clear/screen/NacsClear/ClientClearList.xml"
+                         menu-index="2"/>
+    </subscreens>
+    <widgets>
+        <subscreens-panel id="ClearPanel" type="tab"/>
+    </widgets>
+</screen>

@@ -1,0 +1,50 @@
+/*
+ * This software is in the public domain under CC0 1.0 Universal plus a
+ * Grant of Patent License.
+ *
+ * To the extent possible under law, the author(s) have dedicated all
+ * copyright and related and neighboring rights to this software to the
+ * public domain worldwide. This software is distributed without any
+ * warranty.
+ *
+ * You should have received a copy of the CC0 Public Domain Dedication
+ * along with this software (see the LICENSE.md file). If not, see
+ * <http://creativecommons.org/publicdomain/zero/1.0/>.
+ */
+
+apply plugin: 'groovy'
+sourceCompatibility = '1.8'
+
+version = '1.0.0'
+def jarBaseName='nap-usl'
+def thisModuleLibDir = projectDir.absolutePath + '/lib'
+def thisArchiveJarName = jarBaseName + "-" + version + ".jar"
+
+
+apply plugin: 'com.github.ben-manes.versions'
+buildscript {
+    repositories { mavenLocal() }
+    dependencies { classpath 'com.github.ben-manes:gradle-versions-plugin:0.13.0' }
+}
+repositories {
+    flatDir {
+        dirs thisModuleLibDir, projectDir.parentFile.parentFile.absolutePath + '/lib', projectDir.parentFile.parentFile.parentFile.absolutePath + '/framework/lib'
+    }
+    mavenLocal()
+}
+dependencies {
+    compile project(':framework')
+    compile fileTree(dir: thisModuleLibDir ,includes: ['*.jar'])
+}
+
+check.dependsOn.remove(test)
+task cleanNapUslJar(type: Delete) {
+    delete thisModuleLibDir + '/' + thisArchiveJarName
+}
+clean.dependsOn cleanNapUslJar
+
+jar {
+    destinationDir = file(thisModuleLibDir)
+    archiveName = thisArchiveJarName
+}
+jar.dependsOn cleanNapUslJar

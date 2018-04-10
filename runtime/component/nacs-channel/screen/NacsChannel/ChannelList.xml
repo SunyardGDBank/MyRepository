@@ -1,0 +1,153 @@
+<screen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="http://moqui.org/xsd/xml-screen-2.1.xsd"
+        default-menu-title="支付通道列表" default-menu-index="1" >
+    <!--支付通道管理-->
+    <transition name="updateChannel">
+        <service-call name="nacs.channel.admin.NacsChannelService.update#Channel"/>
+        <default-response url="."/>
+    </transition>
+    <transition name="createChannel">
+        <service-call name="nacs.channel.admin.NacsChannelService.create#Channel"/>
+        <default-response url="."/>
+    </transition>
+
+    <actions>
+        <entity-find entity-name="nacs.channel.Channel" list="channelList">
+            <search-form-inputs/>
+            <order-by field-name="channelNo"/>
+        </entity-find>
+
+        <entity-find entity-name="moqui.basic.Enumeration" list="OpnFlgList">
+            <econdition field-name="enumTypeId" value="OpnFlg"/>
+        </entity-find>
+
+        <entity-find entity-name="moqui.basic.Enumeration" list="VerifiedFlgList">
+            <econdition field-name="enumTypeId" value="VerifiedFlg"/>
+            <order-by field-name="enumId"/>
+        </entity-find>
+
+    </actions>
+
+    <widgets>
+        <container-dialog id="createChannelDialog" button-text="添加" width="860">
+            <form-single name="CreateChannel" transition="createChannel">
+                <auto-fields-entity entity-name="nacs.channel.Channel" field-type="edit">
+                    <exclude field-name="remarks1"/>
+                    <exclude field-name="remarks2"/>
+                    <exclude field-name="remarks3"/>
+                    <exclude field-name="remarks4"/>
+                    <exclude field-name="remarks5"/>
+                </auto-fields-entity>
+                <field name="seqId" hide="true"/>
+                <field name="channelNo">
+                    <default-field title="通道编号">
+                    </default-field>
+                </field>
+                <field name="channelNm">
+                    <default-field title="通道名称">
+                    </default-field>
+                </field>
+                <field name="channelStatus">
+                    <default-field title="通道状态" >
+                        <drop-down allow-empty="true">
+                            <list-options list="OpnFlgList" key="${enumId}" text="${description}"/>
+                        </drop-down>
+                    </default-field>
+                </field>
+                <field name="channelBegin" >
+                    <default-field title="通道运行开启时间">
+                        <date-time type="date" format="HH:mm" default-value="00:00"/>
+                    </default-field>
+                </field>
+                <field name="channelEnd">
+                    <default-field title="通道运行关闭时间">
+                        <date-time type="date" format="HH:mm" default-value="00:00"/>
+                    </default-field>
+                </field>
+                <field name="signCheckFlag">
+                    <default-field title="签约验证标志">
+                        <drop-down allow-empty="true">
+                            <list-options list="VerifiedFlgList" key="${enumId}" text="${description}"/>
+                        </drop-down>
+                    </default-field>
+                </field>
+                <!--确定按钮-->
+                <field name="submitButton">
+                    <default-field title="Add">
+                        <submit icon="glyphicon glyphicon-plus"/>
+                    </default-field>
+                </field>
+            </form-single>
+        </container-dialog>
+
+
+        <form-list name="ChannelList" list="channelList" transition="updateChannel">
+
+            <auto-fields-entity entity-name="nacs.channel.Channel" field-type="edit">
+                <exclude field-name="remarks1"/>
+                <exclude field-name="remarks2"/>
+                <exclude field-name="remarks3"/>
+                <exclude field-name="remarks4"/>
+                <exclude field-name="remarks5"/>
+            </auto-fields-entity>
+            <field name="seqId" >
+                <default-field title="序号">
+                    <hidden/>
+                </default-field>
+            </field>
+            <field name="channelSeqId" from="seqId">
+                <default-field>
+                    <hidden/>
+                </default-field>
+            </field>
+            <field name="channelNo" >
+                <default-field title="通道编号" >
+                    <link url="../ChannelDetail" link-type="anchor"  text="${channelNo}"/>
+                </default-field>
+            </field>
+
+            <field name="channelNm">
+                <default-field title="通道名称">
+                    <text-line size="18"/>
+                </default-field>
+            </field>
+            <field name="channelStatus">
+                <default-field title="通道状态">
+                    <drop-down>
+                        <list-options list="OpnFlgList" key="${enumId}" text="${description}"/>
+                    </drop-down>
+                </default-field>
+            </field>
+            <field name="channelBegin">
+
+                <default-field title="通道运行开启时间">
+                    <date-time type="date" format="HH:mm"/>
+                </default-field>
+            </field>
+            <field name="channelEnd">
+
+                <default-field title="通道运行关闭时间">
+                    <date-time type="date" format="HH:mm"/>
+                </default-field>
+            </field>
+            <field name="signCheckFlag">
+
+                <default-field title="签约验证标志">
+                    <drop-down>
+                        <list-options list="VerifiedFlgList" key="${enumId}" text="${description}"/>
+                    </drop-down>
+                </default-field>
+            </field>
+
+            <!--更新按钮-->
+            <field name="submitButton">
+                <default-field title="Update">
+                    <submit icon="glyphicon glyphicon-edit"/>
+                </default-field>
+            </field>
+
+
+        </form-list>
+
+    </widgets>
+</screen>

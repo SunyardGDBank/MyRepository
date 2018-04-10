@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<services xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns=""
+          xsi:noNamespaceSchemaLocation="http://moqui.org/xsd/service-definition-2.1.xsd">
+
+    <!-- 发送行内核心接口服务 -->
+    <service verb="send" noun="Be"  type="interface">
+        <in-parameters>
+            <!--核心记账接口入参-->
+
+        </in-parameters>
+        <out-parameters>
+            <!--核心记账接口出参-->
+
+        </out-parameters>
+    </service>
+
+</services>

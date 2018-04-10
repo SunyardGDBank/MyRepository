@@ -1,0 +1,247 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<x:schema attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://esb.spdbbiz.com/services/S070030011" xmlns:s="http://esb.spdbbiz.com/services/S070030011" xmlns:d="http://esb.spdbbiz.com/metadata" xmlns:x="http://www.w3.org/2001/XMLSchema">
+<x:import schemaLocation="http://10.112.20.145:8080/Publish/WSDLfilePath/SoapHeader.xsd" namespace="http://esb.spdbbiz.com/metadata"/>
+<x:element type="d:ReqHeaderType" name="ReqHeader"/>
+<x:element type="d:RspHeaderType" name="RspHeader"/>
+<x:complexType name="ReqSvcHeaderType">
+<x:sequence>
+<x:element minOccurs="1" ref="s:TranDate"/>
+<x:element minOccurs="1" ref="s:TranTime"/>
+<x:element minOccurs="1" ref="s:TranTellerNo"/>
+<x:element minOccurs="1" ref="s:TranSeqNo"/>
+<x:element minOccurs="1" ref="s:ConsumerId"/>
+<x:element minOccurs="0" ref="s:GlobalSeqNo"/>
+<x:element minOccurs="0" ref="s:SourceSysId"/>
+<x:element minOccurs="0" ref="s:BranchId"/>
+<x:element minOccurs="0" ref="s:TerminalCode"/>
+<x:element minOccurs="0" ref="s:CityCode"/>
+<x:element minOccurs="0" ref="s:AuthrTellerNo"/>
+<x:element minOccurs="0" ref="s:AuthrPwd"/>
+<x:element minOccurs="0" ref="s:AuthrCardFlag"/>
+<x:element minOccurs="0" ref="s:AuthrCardNo"/>
+<x:element minOccurs="0" ref="s:LangCode"/>
+<x:element minOccurs="0" ref="s:TranCode"/>
+<x:element minOccurs="0" ref="s:PIN"/>
+<x:element minOccurs="0" ref="s:KeyVersionNo"/>
+<x:element minOccurs="0" ref="s:SysOffset1"/>
+<x:element minOccurs="0" ref="s:SysOffset2"/>
+<x:element minOccurs="0" ref="s:TargetAdr"/>
+<x:element minOccurs="0" ref="s:SourceAdr"/>
+<x:element minOccurs="0" ref="s:MsgEndFlag"/>
+<x:element minOccurs="0" ref="s:MsgSeqNo"/>
+<x:element minOccurs="0" ref="s:SubTranCode"/>
+<x:element minOccurs="0" ref="s:TranMode"/>
+<x:element minOccurs="0" ref="s:TranSerialNo"/>
+</x:sequence>
+</x:complexType>
+<x:element type="x:string" name="TranDate"/>
+<x:element type="x:string" name="TranTime"/>
+<x:element type="x:string" name="TranTellerNo"/>
+<x:element type="x:string" name="TranSeqNo"/>
+<x:element type="x:string" name="ConsumerId"/>
+<x:element type="x:string" name="GlobalSeqNo"/>
+<x:element type="x:string" name="SourceSysId"/>
+<x:element type="x:string" name="BranchId"/>
+<x:element type="x:string" name="TerminalCode"/>
+<x:element type="x:string" name="CityCode"/>
+<x:element type="x:string" name="AuthrTellerNo"/>
+<x:element type="x:string" name="AuthrPwd"/>
+<x:element type="x:string" name="AuthrCardFlag"/>
+<x:element type="x:string" name="AuthrCardNo"/>
+<x:element type="x:string" name="LangCode"/>
+<x:element type="x:string" name="TranCode"/>
+<x:element type="x:string" name="PIN"/>
+<x:element type="x:string" name="KeyVersionNo"/>
+<x:element type="x:string" name="SysOffset1"/>
+<x:element type="x:string" name="SysOffset2"/>
+<x:element type="x:string" name="TargetAdr"/>
+<x:element type="x:string" name="SourceAdr"/>
+<x:element type="x:string" name="MsgEndFlag"/>
+<x:element type="x:string" name="MsgSeqNo"/>
+<x:element type="x:string" name="SubTranCode"/>
+<x:element type="x:string" name="TranMode"/>
+<x:element type="x:string" name="TranSerialNo"/>
+<x:complexType name="RspSvcHeaderType">
+<x:sequence>
+<x:element minOccurs="1" ref="s:TranDate"/>
+<x:element minOccurs="1" ref="s:TranTime"/>
+<x:element minOccurs="1" ref="s:BackendSeqNo"/>
+<x:element minOccurs="1" ref="s:BackendSysId"/>
+<x:element minOccurs="1" ref="s:ReturnCode"/>
+<x:element minOccurs="1" ref="s:ReturnMsg"/>
+<x:element minOccurs="0" ref="s:GlobalSeqNo"/>
+<x:element minOccurs="0" ref="s:LangCode"/>
+<x:element minOccurs="0" ref="s:TranCode"/>
+<x:element minOccurs="0" ref="s:PIN"/>
+<x:element minOccurs="0" ref="s:KeyVersionNo"/>
+<x:element minOccurs="0" ref="s:TargetAdr"/>
+<x:element minOccurs="0" ref="s:SourceAdr"/>
+<x:element minOccurs="0" ref="s:MsgEndFlag"/>
+<x:element minOccurs="0" ref="s:MsgSeqNo"/>
+<x:element minOccurs="0" ref="s:LinkTranCode"/>
+<x:element minOccurs="0" ref="s:TranSerialNo"/>
+<x:element type="s:SubSvcRetInfoType" name="SubSvcRetInfo" minOccurs="0" maxOccurs="unbounded"/>
+</x:sequence>
+</x:complexType>
+<x:element type="x:string" name="BackendSeqNo"/>
+<x:element type="x:string" name="BackendSysId"/>
+<x:element type="x:string" name="ReturnCode"/>
+<x:element type="x:string" name="ReturnMsg"/>
+<x:element type="x:string" name="LinkTranCode"/>
+<x:complexType name="SubSvcRetInfoType">
+<x:sequence>
+<x:element minOccurs="0" ref="s:SubSvcSysId"/>
+<x:element minOccurs="0" ref="s:SubSvcId"/>
+<x:element minOccurs="0" ref="s:SubSvcRetCode"/>
+<x:element minOccurs="0" ref="s:SubSvcRetMsg"/>
+<x:element minOccurs="0" ref="s:RsrvContent"/>
+</x:sequence>
+</x:complexType>
+<x:element type="x:string" name="SubSvcSysId"/>
+<x:element type="x:string" name="SubSvcId"/>
+<x:element type="x:string" name="SubSvcRetCode"/>
+<x:element type="x:string" name="SubSvcRetMsg"/>
+<x:element type="x:string" name="RsrvContent"/>
+<x:element type="s:ReqIdvExgQryType" name="ReqIdvExgQry"/>
+<x:complexType name="ReqIdvExgQryType">
+<x:sequence>
+<x:element type="s:ReqSvcHeaderType" name="ReqSvcHeader"/>
+<x:element name="SvcBody" minOccurs="0">
+<x:complexType>
+<x:sequence>
+<x:element minOccurs="1" ref="s:StartNum1"/>
+<x:element minOccurs="1" ref="s:QueryNum1"/>
+<x:element minOccurs="0" ref="s:AplChannel"/>
+<x:element minOccurs="1" ref="s:BussType"/>
+<x:element minOccurs="1" ref="s:TranStatus"/>
+<x:element minOccurs="1" ref="s:ClientNo"/>
+<x:element minOccurs="0" ref="s:PrpsCtfType"/>
+<x:element minOccurs="0" ref="s:PrpsCtfId"/>
+<x:element minOccurs="1" ref="s:StartDate"/>
+<x:element minOccurs="1" ref="s:EndDate"/>
+</x:sequence>
+</x:complexType>
+</x:element>
+</x:sequence>
+</x:complexType>
+<x:element type="x:int" name="StartNum1"/>
+<x:element type="x:int" name="QueryNum1"/>
+<x:element type="x:string" name="AplChannel"/>
+<x:element type="x:string" name="BussType"/>
+<x:element type="x:string" name="TranStatus"/>
+<x:element type="x:string" name="ClientNo"/>
+<x:element type="x:string" name="PrpsCtfType"/>
+<x:element type="x:string" name="PrpsCtfId"/>
+<x:element type="x:string" name="StartDate"/>
+<x:element type="x:string" name="EndDate"/>
+<x:element type="s:RspIdvExgQryType" name="RspIdvExgQry"/>
+<x:complexType name="RspIdvExgQryType">
+<x:sequence>
+<x:element type="s:RspSvcHeaderType" name="RspSvcHeader"/>
+<x:element name="SvcBody" minOccurs="0">
+<x:complexType>
+<x:sequence>
+<x:element minOccurs="0" ref="s:TotalNum1"/>
+<x:element minOccurs="0" ref="s:CountryCode"/>
+<x:element minOccurs="0" ref="s:PropoerName"/>
+<x:element minOccurs="0" ref="s:ContactAdr"/>
+<x:element minOccurs="0" ref="s:CtfType"/>
+<x:element minOccurs="0" ref="s:CtfId"/>
+<x:element minOccurs="0" ref="s:AplNum"/>
+<x:element type="s:ExgInfoType" name="ExgInfo" minOccurs="0" maxOccurs="unbounded"/>
+</x:sequence>
+</x:complexType>
+</x:element>
+</x:sequence>
+</x:complexType>
+<x:element type="x:int" name="TotalNum1"/>
+<x:element type="x:string" name="CountryCode"/>
+<x:element type="x:string" name="PropoerName"/>
+<x:element type="x:string" name="ContactAdr"/>
+<x:element type="x:string" name="CtfType"/>
+<x:element type="x:string" name="CtfId"/>
+<x:element type="x:int" name="AplNum"/>
+<x:complexType name="ExgInfoType">
+<x:sequence>
+<x:element minOccurs="0" ref="s:ApplyNo"/>
+<x:element minOccurs="0" ref="s:TranDate1"/>
+<x:element minOccurs="0" ref="s:BussType"/>
+<x:element minOccurs="0" ref="s:AcctNo"/>
+<x:element minOccurs="0" ref="s:ExecExgRt"/>
+<x:element minOccurs="0" ref="s:BuyCcy"/>
+<x:element minOccurs="0" ref="s:SellCcy"/>
+<x:element minOccurs="0" ref="s:BuyAmt"/>
+<x:element minOccurs="0" ref="s:SellAmt"/>
+<x:element minOccurs="0" ref="s:CashRateFlag"/>
+<x:element minOccurs="0" ref="s:AplChannel"/>
+<x:element minOccurs="0" ref="s:Abstract"/>
+<x:element minOccurs="0" ref="s:RecordStatus"/>
+<x:element minOccurs="0" ref="s:FailRsnDsc"/>
+<x:element minOccurs="0" ref="s:XfundPrjCd"/>
+<x:element minOccurs="0" ref="s:BussId"/>
+</x:sequence>
+</x:complexType>
+<x:element type="x:string" name="ApplyNo"/>
+<x:element type="x:string" name="TranDate1"/>
+<x:element type="x:string" name="AcctNo"/>
+<x:element type="x:decimal" name="ExecExgRt"/>
+<x:element type="x:string" name="BuyCcy"/>
+<x:element type="x:string" name="SellCcy"/>
+<x:element type="x:decimal" name="BuyAmt"/>
+<x:element type="x:decimal" name="SellAmt"/>
+<x:element type="x:string" name="CashRateFlag"/>
+<x:element type="x:string" name="Abstract"/>
+<x:element type="x:string" name="RecordStatus"/>
+<x:element type="x:string" name="FailRsnDsc"/>
+<x:element type="x:string" name="XfundPrjCd"/>
+<x:element type="x:string" name="BussId"/>
+<x:element type="s:ReqOthrSysExgCodeQryType" name="ReqOthrSysExgCodeQry"/>
+<x:complexType name="ReqOthrSysExgCodeQryType">
+<x:sequence>
+<x:element type="s:ReqSvcHeaderType" name="ReqSvcHeader"/>
+<x:element name="SvcBody" minOccurs="0">
+<x:complexType>
+<x:sequence>
+<x:element minOccurs="0" ref="s:BussType"/>
+<x:element minOccurs="0" ref="s:IsFlag"/>
+<x:element minOccurs="0" ref="s:XfundPrjCd"/>
+<x:element minOccurs="0" ref="s:StatCgy"/>
+<x:element minOccurs="0" ref="s:StartNum2"/>
+<x:element minOccurs="0" ref="s:QueryNum2"/>
+</x:sequence>
+</x:complexType>
+</x:element>
+</x:sequence>
+</x:complexType>
+<x:element type="x:string" name="IsFlag"/>
+<x:element type="x:string" name="StatCgy"/>
+<x:element type="x:string" name="StartNum2"/>
+<x:element type="x:string" name="QueryNum2"/>
+<x:element type="s:RspOthrSysExgCodeQryType" name="RspOthrSysExgCodeQry"/>
+<x:complexType name="RspOthrSysExgCodeQryType">
+<x:sequence>
+<x:element type="s:RspSvcHeaderType" name="RspSvcHeader"/>
+<x:element name="SvcBody" minOccurs="0">
+<x:complexType>
+<x:sequence>
+<x:element minOccurs="0" ref="s:SvcStatus"/>
+<x:element type="s:OthrSysExgCodeInfoType" name="OthrSysExgCodeInfo" minOccurs="0" maxOccurs="unbounded"/>
+</x:sequence>
+</x:complexType>
+</x:element>
+</x:sequence>
+</x:complexType>
+<x:element type="x:string" name="SvcStatus"/>
+<x:complexType name="OthrSysExgCodeInfoType">
+<x:sequence>
+<x:element minOccurs="0" ref="s:BussType"/>
+<x:element minOccurs="0" ref="s:XfundPrjCd"/>
+<x:element minOccurs="0" ref="s:StatCgy"/>
+<x:element minOccurs="0" ref="s:XfundPrjNm"/>
+<x:element minOccurs="0" ref="s:InstName"/>
+<x:element minOccurs="0" ref="s:RecordStatus"/>
+</x:sequence>
+</x:complexType>
+<x:element type="x:string" name="XfundPrjNm"/>
+<x:element type="x:string" name="InstName"/>
+</x:schema>

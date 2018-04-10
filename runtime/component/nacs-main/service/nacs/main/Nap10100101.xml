@@ -1,0 +1,474 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+This software is in the public domain under CC0 1.0 Universal plus a
+Grant of Patent License.
+
+To the extent possible under law, the author(s) have dedicated all
+copyright and related and neighboring rights to this software to the
+public domain worldwide. This software is distributed without any
+warranty.
+
+You should have received a copy of the CC0 Public Domain Dedication
+along with this software (see the LICENSE.md file). If not, see
+<http://creativecommons.org/publicdomain/zero/1.0/>.
+-->
+<services xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns=""
+          xsi:noNamespaceSchemaLocation="http://moqui.org/xsd/service-definition-2.1.xsd">
+
+
+    <service verb="nacs" noun="UnionPayService" type="java" method="toBeAccount"
+             validate="false" authenticate="false"
+             location="com.sunyard.unionpay.UnionPayService">
+        <in-parameters>
+        </in-parameters>
+        <out-parameters>
+            <parameter name="RetCode"/>
+            <parameter name="jiaoyils"/>
+            <parameter name="jiaoyirq"/>
+        </out-parameters>
+        <actions>
+        </actions>
+    </service>
+
+
+    <service verb="nacs" noun="T101001010201" type="inline" validate="false" authenticate="false">
+        <in-parameters></in-parameters>
+        <out-parameters>
+            <parameter name="msgTp"/>
+            <parameter name="bizStsCd"/>
+            <parameter name="bizStsDesc"/>
+            <parameter name="sysRtnCd"/>
+            <parameter name="sysRtnDesc"/>
+            <parameter name="sysRtnTm"/>
+            <parameter name="sgnNo"/>
+            <parameter name="sgnAcctLvl"/>
+        </out-parameters>
+        <actions>
+            <set field="msgTp" value="epcc.102.001.01"/>
+            <log level="info" message="处理开始，预置返回交易码:${msgTp}"/>
+            <set field="sysRtnCd" value="00000000"/>
+            <set field="sysRtnDesc" value="受理"/>
+            <set field="sysRtnTm" value="${new Date().format('yyyy-MM-dd\'T\'HH:mm:ss')} "
+                 type="String"/><!--系统返回时间-->
+            <set field="workDate" from="trxId[0..3]+'-'+trxId[4..5]+'-'+trxId[6..7]"/>
+            <log level="info" message="根据交易流水获取交易日期:${workDate}" />
+            <set field="idTp" from="iDTp"/>
+            <set field="idNo" from="iDNo"/>
+             <!--判断格式-->
+            <if condition="idTp == '01'">
+                <!--判断身份证格式-->
+                <log level="info" message="对身份证号码进行格式判断:${idNo}"/>
+                <if condition="idNo ==~ /(^\d{15}$)|(^\d{17}(\d|X|x)$)/">
+                    <else>
+                        <set field="bizStsCd" value="PB511020"/>
+                        <set field="bizStsDesc" value="签约人证件号格式有误"/>
+                        <log level="info" message="身份证号码格式有误"/>
+                        <return error="false"/>
+                    </else>
+                </if>
+                <log level="info" message="身份证号码格式判断正确"/>
+            </if>
+
+            <!--判断账户名称非法字符-->
+            <log level="info" message="对户名特殊字符进行判断:${sgnAcctNm}"/>
+            <if condition="sgnAcctNm =~ /[。，\/,\s&amp;&apos;&quot;&gt;&lt;|%#^-]+/">
+                <set field="bizStsCd" value="PB511018"/>
+                <set field="bizStsDesc" value="签约人账户名称格式有误"/>
+                <log level="info" message="签约人户名不符合规范"/>
+                <return error="false"/>
+            </if>
+            <log level="info" message="签约人户名格式判断正确"/>
+
+            <log level="info" message="签约账户长度进行检查:${sgnAcctId}"/>
+            <if condition="sgnAcctId?.length()>34">
+                <set field="bizStsCd" value="PB511001"/>
+                <set field="bizStsDesc" value="账户长度超限"/>
+                <log level="info" message="检查失败：签约账户长度过长"/>
+                <return error="false"/>
+            </if>
+            <log level="info" message="签约人账户长度检查正确"/>
+            <log level="info" message="签约人账户的格式进行检查:${sgnAcctId}"/>
+            <if condition="sgnAcctId==~/(^\d{1,34}$)/"><then>
+            </then><else>
+                <set field="bizStsCd" value="PB511001"/>
+                <set field="bizStsDesc" value="账号存在非法字符"/>
+                <log level="info" message="检查失败：签约人账户存在非法字符"/>
+                <return error="false"/>
+            </else></if>
+            <log level="info" message="签约人账户格式检查正确"/>
+
+            <log level="info" message="签约人账户类型判断:${sgnAcctTp}"/>
+            <if condition="sgnAcctTp=='00'">
+                <set field="xykFlg" value="0"/><!--借记卡-->
+                <log level="info" message="签约人账户类型为借记卡"/>
+                <else-if condition="sgnAcctTp=='01'">
+                    <set field="xykFlg" value="1"/><!--信用卡-->
+                    <log level="info" message="签约人账户类型为信用卡"/>
+                    <else>
+                        <set field="bizStsCd" value="PB511004"/>
+                        <set field="bizStsDesc" value="签约人账户为签约行不支持协议支付的账户"/>
+                        <log level="info" message="签约人账户类型非信用卡或借记卡，系统不支持"/>
+                        <return error="false"/>
+                    </else>
+                </else-if>
+            </if>
+            <log level="info" message="签约人账户类型检查正确"/>
+
+            <log level="info" message="检查签约人证件类型:${idTp}"/>
+            <if condition="idTp == '14' || idTp=='99'">
+                <set field="bizStsCd" value="PB511022"/>
+                <set field="bizStsDesc" value="签约人账户证件类型不支持"/>
+                <log level="info" message="行内不支持该证件类型"/>
+                <return error="false"/>
+            </if>
+            <log level="info" message="签约人证件类型检查正确"/>
+            <set field="Impl" value="unionpayimpl"/>
+            <service-call name="nacs.be.${Impl}.NacsToChannelService.send#Channel" in-map="[trxId:trxId,mobNo:mobNo,sgnAcctId:sgnAcctId]" out-map="context"/>
+
+            <!--检查黑白名单规则-->
+            <log level="info" message="查询支付机构${instgId}的开关标志"/>
+            <entity-find entity-name="NapPayOrg" list="findBizOpnFlg">
+                <econdition field-name="instgId" from="instgId"/>
+                <econditions combine="or">
+                    <econdition field-name="trxCtgy" from="trxCtgy"/>
+                    <econdition field-name="trxCtgy" value="0100"/>
+                </econditions>
+            </entity-find>
+            <if condition="!findBizOpnFlg">
+                <set field="bizStsCd" value="PB500018"/>
+                <set field="bizStsDesc" value="支付机构无权发起的交易类型"/>
+                <log level="info" message="行内没有维护该支付机构的相关信息，不能支持该交易"/>
+                <return error="false"/>
+            </if>
+            <log level="info" message="支付机构${instgId}的开关:${findBizOpnFlg[0].bizOpnFlgEnumId}"/>
+            <if condition="findBizOpnFlg &amp;&amp;findBizOpnFlg[0].bizOpnFlgEnumId=='ENABLED'">
+                <log level="info" message="对账户${sgnAcctId}是否存在受限名单中进行检查"/>
+                <service-call name="nap.GeneralServices.check#BlackList"
+                              in-map="[oriInstgId:instgId,trxCtgy:trxCtgy,sgnAcctId:sgnAcctId]" out-map="context"/>
+                <log level="info" message="受限名单检查结果:${blackListRuleFlag}"/>
+
+                <if condition="blackListRuleFlag=='EXIT'"><!--在受限名单中-->
+                    <set field="bizStsCd" value="PB511012"/>
+                    <set field="bizStsDesc" value="签约人账户为银行黑名单账户或因风控原因拒绝签约"/>
+                    <log level="info" message="该帐号在系统的受限名单中，不支持该交易"/>
+                    <return error="false"/>
+                </if>
+                <log level="info" message="该帐号不在受限名单中，允许正常交易"/>
+            </if>
+            <if condition="findBizOpnFlg &amp;&amp;findBizOpnFlg[0].bizOpnFlgEnumId=='DISABLED'">
+                <log level="info" message="对账户${sgnAcctId}是否存在白名单中进行检查"/>
+                <service-call name="nap.GeneralServices.check#WhiteList"
+                              in-map="[oriInstgId:instgId,trxCtgy:trxCtgy,sgnAcctId:sgnAcctId]" out-map="context"/>
+                <log level="info" message="白名单检查结果:${whiteListRuleFlag}"/>
+                <if condition="whiteListRuleFlag!='EXIT'">
+                    <set field="bizStsCd" value="PB511012"/>
+                    <set field="bizStsDesc" value="签约人账户为银行黑名单账户或因风控原因拒绝签约"/>
+                    <log level="info" message="该帐号不在系统的白名单中，不支持该交易"/>
+                    <return error="false"/>
+                </if>
+                <log level="info" message="该帐号在系统的白名单中，允许正常交易"/>
+            </if>
+
+            <entity-make-value entity-name="nap.be.BeReqSeq" value-field="makeReqSeq"/>  <!-- 从上下文取对应的值，创建对象-->
+            <entity-sequenced-id-primary-dynamic value-field="makeReqSeq"/>
+            <set field="reqSeq" from="makeReqSeq.reqSeq"/>
+            <set field="isValidateSuccessFlag" value="0"/>
+
+            <!--核心五要素验证-->
+            <if condition="xykFlg=='0'"><!--借记卡-->
+                <log level="info" message="查询借记卡账户${sgnAcctId}信息进行验证"/>
+                <service-call name="nap.be.NapBEServices.validate#Account" in-map="context" out-map="context"/>
+                <log level="info" message="信息验证结果:${isValidateSuccessFlag}"/>
+                <if condition="isValidateSuccessFlag!='0'">
+                    <log level="info" message="账户信息验证失败"/>
+                    <return error="false"/>
+                </if>
+                <else><!--信用卡-->
+                    <log level="info" message="查询信用卡账户${sgnAcctId}信息进行验证"/>
+                    <service-call name="nap.be.NapBEServices.query#AccountXyk" in-map="[sgnAcctId:sgnAcctId,trxId:trxId,mobNo:mobNo,sgnAcctNm:sgnAcctNm,idNo:idNo,idTp:idTp,sgnAcctTp:sgnAcctTp]" out-map="context"/>
+                    <log level="info" message="信息验证结果:${isValidateSuccessFlag}"/>
+                    <if condition="isValidateSuccessFlag!='0'">
+                        <log level="info" message="账户信息验证失败"/>
+                        <return error="false"/>
+                    </if>
+                    <log level="info" message="查询信用卡${}的卡片状态，进行验证"/>
+                    <service-call name="nap.be.NapBEServices.query#XykCardState" in-map="[sgnAcctId:sgnAcctId]" out-map="context"/>
+                    <log level="info" message="卡片状态验证结果:${isQueryXykCardStateFlg}"/>
+                    <if condition="isQueryXykCardStateFlg!='0'">
+                        <log level="info" message="信用卡账户状态异常"/>
+                        <!--<set field="sgnStatusId" value="01"/>-->
+                        <return/>
+                    </if>
+                </else>
+            </if>
+            <log level="info" message="验证行内户名、状态、证件类型、证件号正确"/>
+
+            <if condition="xykFlg=='0'">
+                <log level="info" message="借记卡开始验证手机号:${mobNo}"/>
+                <service-call name="nap.be.NapBEServices.validate#Mobile" in-map="[trxId:trxId,mobNo:mobNo,sgnAcctId:sgnAcctId]" out-map="context"/>
+                <log level="info" message="手机号验证结果:${mobNoSuccessFlg}"/>
+                <if condition="mobNoSuccessFlg!='0'">
+                    <log level="info" message="手机号验证失败"/>
+                    <!--set field="sgnStatusId" value="01"/>-->
+                    <return/>
+                </if>
+                <log level="info" message="借记卡手机号验证成功"/>
+            </if>
+            <log level="info" message="开始生成验证码"/>
+            <!--生成6为随机数字作为验证授权信息-->
+            <script>
+                def authMsg1 = (Math.random()*9+1)*100000 as int
+            </script>
+            <log level="info" message="生产验证码成功:${authMsg1}"/>
+            <set field="bizStsCd" value="00000000" type="String"/><!--业务返回码-->
+            <set field="bizStsDesc" value="验证成功" type="String"/><!--业务返回说明-->
+            <set field="authMsg" from="authMsg1" type="Integer"/><!--身份验证授权信息-->
+            <!--<set field="authMsg" value="123456"/>-->
+            <set field="sgnStatusId" value="00" type="String"/><!--验证成功00-成功 01-失败-->
+            <set field="sgnAcctLvl" from="sgnAcctLvl"/><!--签约人银行账户等级-->
+            <set field="lastUpdatedStamp" value="${new Date().format('yyyy-MM-dd HH:mm:ss')}"/>
+            <!--是否重复验证   根据支付账户所属机构标识与签约人银行账户编号查找-->
+            <log level="info" message="检查是否有存在相同的临时签约信息"/>
+            <entity-find entity-name="nap.sgn.NapAuth" list="napAuth">
+                <econdition field-name="instgId" from="instgId"/>
+                <econdition field-name="sgnAcctId" from="sgnAcctId"/>
+                <econdition field-name="sgnAcctIssrId" from="sgnAcctIssrId"/>
+                <econdition field-name="idTp" from="idTp"/>
+                <econdition field-name="idNo" from="idNo"/>
+                 <econdition field-name="mobNo" from="mobNo"/>
+            </entity-find>
+            <if condition="!napAuth"><then> <!--没有重复验证去登记验证表-->
+                <!--添加临时签约表-->
+                <log level="info" message="不存在，登记到临时签约表记录"/>
+                <entity-make-value entity-name="nap.sgn.NapAuth" value-field="napAuth"/>
+                <entity-sequenced-id-primary-dynamic value-field="napAuth"/>
+                <entity-set value-field="napAuth" include="all"/>
+                <entity-create value-field="napAuth"/>
+            </then><else>
+                <log level="trace" message="已存在，更新临时签约信息"/>
+                <entity-set value-field="napAuth[0]" map="[authMsg:authMsg,trxId:trxId,
+                            sgnStatusId:sgnStatusId, sysRtnCd:sysRtnCd,
+                            sysRtnDesc:sysRtnDesc, sysRtnTm:sysRtnTm,
+                            bizStsCd:bizStsCd, bizStsDesc:bizStsDesc,sgnAcctLvl:sgnAcctLvl,lastUpdatedStamp:lastUpdatedStamp ]"/>
+                <entity-update value-field="napAuth[0]"/>
+            </else></if>
+            <log level="info" message="临时签约信息处理完成"/>
+            <!--发送短信-->
+            <log level="info" message="准备向客户${mobNo}发送短信验证码:${authMsg1}"/>
+            <service-call name="nap.be.NapBEServices.send#SMS"  out-map="context" in-map="[sgnAcctId:sgnAcctId,instgId:instgId,mobNo:mobNo,authMsg:authMsg1]"/>
+            <log level="info" message="短信验证码发送的结果:${isSendSMSSuccessFlag}"/>
+            <if condition="isSendSMSSuccessFlag!='0'">
+                <set field="bizStsCd" value="PB511016"/><!--业务返回码-->
+                <set field="bizStsDesc" value="签约行的身份验证授权信息下发失败"/><!--业务返回说明-->
+                <log level="info" message="发送短信验证码失败"/>
+                <return/>
+            </if>
+            <log level="info" message="发送短信验证码成功"/>
+            <log level="trace" message="身份验证服务调用结束"/>
+        </actions>
+    </service>
+
+    <service verb="nacs" noun="T101001010202" type="inline" validate="false" authenticate="false">
+        <in-parameters></in-parameters>
+        <out-parameters>
+            <parameter name="msgTp"/>
+            <parameter name="bizStsCd"/>
+            <parameter name="bizStsDesc"/>
+            <parameter name="sysRtnCd" default-value="00000000"/>
+            <parameter name="sysRtnDesc" default-value="已受理"/>
+            <parameter name="sysRtnTm" default-value="${new Date().format('yyyy-MM-dd\'T\'HH:mm:ss')}" type="String"/>
+            <parameter name="sgnNo"/>
+            <parameter name="sgnAcctLvl"/>
+        </out-parameters>
+        <actions>
+            <log level="trace" message="签约处理开始"/>
+            <set field="sysRtnCd" value="00000000"/>
+            <set field="sysRtnDesc" value="受理"/>
+            <set field="sysRtnTm" value="${new Date().format('yyyy-MM-dd\'T\'HH:mm:ss')}" type="String"/>
+
+            <set field="msgTp" value="epcc.102.001.01"/>
+            <log level="info" message="处理开始，预置返回交易码:${msgTp}"/>
+            <set field="workDate" from="trxId[0..3]+'-'+trxId[4..5]+'-'+trxId[6..7]"/>
+            <log level="info" message="根据交易流水获取交易日期:${workDate}" />
+            <set field="idTp" from="iDTp"/>
+            <set field="idNo" from="iDNo "/>
+
+            <log level="info" message="根据签约流水${trxId}检查临时签约信息"/>
+            <entity-find entity-name="nap.sgn.NapAuth" list="napAuthList">
+                <econdition field-name="trxId" from="trxId"/>
+            </entity-find>
+            <if condition="!napAuthList">
+                <log level="info" message="签约流水与身份认证流水不符"/>
+                <!--没有验证信息或验证信息错误,请重新验证-->
+                <set field="bizStsCd" value="PB511027"/><!--业务返回码-->
+                <set field="bizStsDesc" value="签约流水与身份认证流水不符"/><!--业务返回说明-->
+                <return error="false"/>
+            </if>
+            <log level="info" message="比较身份认证的证件类型${napAuthList[0].idTp}与签约的证件类型${idTp}"/>
+            <if condition="napAuthList[0].idTp!=idTp">
+                <log level="trace" message="证件类型不符"/>
+                <set field="bizStsCd" value="PB511021"/><!--业务返回码-->
+                <set field="bizStsDesc" value="证件类型不符"/><!--业务返回说明-->
+                <return error="false"/>
+            </if>
+            <log level="info" message="证件类型比较一致"/>
+            <log level="info" message="比较身份认证的户名[${napAuthList[0].sgnAcctNm}]与签约的户名[${sgnAcctNm}]"/>
+            <if condition="napAuthList[0].sgnAcctNm!=sgnAcctNm">
+                <log level="trace" message="户名不匹配"/>
+                <set field="bizStsCd" value="PB511017"/><!--业务返回码-->
+                <set field="bizStsDesc" value="户名不匹配"/><!--业务返回说明-->
+                <return error="false"/>
+            </if>
+            <log level="info" message="户名比较一致"/>
+            <log level="info" message="比较身份认证的账户${napAuthList[0].sgnAcctId}与签约的帐号${sgnAcctId}"/>
+            <if condition="napAuthList[0].sgnAcctId!=sgnAcctId">
+                <log level="trace" message="账号不匹配"/>
+                <set field="bizStsCd" value="PB511002"/><!--业务返回码-->
+                <set field="bizStsDesc" value="账号不匹配"/><!--业务返回说明-->
+                <return error="false"/>
+            </if>
+            <log level="info" message="账户比较一致"/>
+            <log level="info" message="比较身份认证的证件号${napAuthList[0].idNo}与签约的证件号${idNo}"/>
+            <if condition="napAuthList[0].idNo!=idNo">
+                <log level="trace" message="证件号不匹配"/>
+                <set field="bizStsCd" value="PB511019"/><!--业务返回码-->
+                <set field="bizStsDesc" value="证件号不匹配"/><!--业务返回说明-->
+                <return error="false"/>
+            </if>
+            <log level="info" message="证件号比较一致"/>
+            <log level="info" message="比较身份认证的手机号${napAuthList[0].mobNo}与签约的手机号${mobNo}"/>
+            <if condition="napAuthList[0].mobNo!=mobNo">
+                <log level="trace" message="手机号不匹配"/>
+                <set field="bizStsCd" value="PB511013"/><!--业务返回码-->
+                <set field="bizStsDesc" value="手机号不匹配"/><!--业务返回说明-->
+                <return error="false"/>
+            </if>
+            <log level="info" message="手机号比较一致"/>
+            <log level="info" message="比较身份认证的验证码${napAuthList[0].authMsg}与签约的验证码${authMsg}"/>
+            <if condition="napAuthList[0].authMsg!=authMsg">
+                <log level="trace" message="验证码不匹配"/>
+                <!--没有验证信息或验证信息错误,请重新验证-->
+                <set field="bizStsCd" value="PB511027"/><!--业务返回码-->
+                <set field="bizStsDesc" value="验证码不匹配"/><!--业务返回说明-->
+                <return error="false"/>
+            </if>
+            <log level="info" message="验证码比较一致"/>
+
+            <set field="lastUpdatedStamp_long" from="napAuthList[0].lastUpdatedStamp.getTime()"/>
+            <set field="currentTime" from="new Date().getTime()"/>
+            <set field="diffMilliseconds" from="currentTime-lastUpdatedStamp_long"/>
+
+            <log level="info" message="查询验证码超时配置信息"/>
+            <entity-find entity-name="NapBePara" list="napBeParaList">
+                <econdition field-name="napBeParaType" value="AUTHMSG_TIMEOUT"/>
+            </entity-find>
+            <set field="anthmsgTimeout" from="napBeParaList[0]?.napBeParaValue" type="Long"/>
+            <set field="anthmsgTimeoutL" from="anthmsgTimeout*1000" type="Long"/>
+            <log level="info" message="验证码超时时间:${anthmsgTimeout}"/>
+
+            <if condition="diffMilliseconds>anthmsgTimeoutL">
+                <log level="trace" message="验证超时"/>
+                <!--验证超时-->
+                <set field="bizStsCd" value="PB511028"/><!--业务返回码-->
+                <set field="bizStsDesc" value="动态验证码已超过有效时间"/><!--业务返回说明-->
+                <set field="sgnAcctLvl" from="napAuthList[0].sgnAcctLvl"/><!--业务返回说明-->
+                <return error="false"/>
+            </if>
+            <log level="info" message="验证码正确"/>
+            <!--默认额度-->
+            <log level="info" message="查询支付机构${instgId}的默认额度信息"/>
+            <entity-find entity-name="NapPayLimit" list="findNapPayLimit">
+                <econdition field-name="instgId" from="instgId"/>
+            </entity-find>
+            <if condition="!findNapPayLimit">
+                <log level="info" message="未设置该机构的额度信息"/>
+                <!--未维护支付机构表-->
+                <set field="bizStsCd" value="PB511099"/><!--业务返回码-->
+                <set field="sgnStatusId" value="01"/>
+                <set field="bizStsDesc" value="除以上原因外的其他签约失败"/><!--业务返回说明-->
+                <set field="sgnAcctLvl" from="napAuthList[0].sgnAcctLvl"/>
+                <return/>
+            </if>
+            <log level="info" message="单笔交易限额:${findNapPayLimit[0]?.perLimitAmt}"/>
+            <log level="info" message="日累计交易限额:${findNapPayLimit[0]?.dayLimitAmt}"/>
+            <log level="info" message="月累计交易限额:${findNapPayLimit[0]?.monthLimitAmt}"/>
+            <log level="info" message="年累计交易限额:${findNapPayLimit[0]?.yearLimitAmt}"/>
+            <log level="info" message="生成协议号"/>
+            <set field="sgnNo" from="sgnAcctId[5..11]+instgId+sgnAcctId[12..15]"/><!--卡号6-12位+支付机构号+卡号13-16位-->
+            <log level="info" message="生成协议号完成:${sgnNo}"/>
+            <log level="info" message="对该账户在此机构已存在的且签约成功的信息进行自动解约"/>
+            <entity-update-by-condition entity-name="nap.sgn.NapSgn">
+                <econdition field-name="instgId" from="instgId"/>
+                <econdition field-name="sgnNo" from="sgnNo"/>
+                <econdition field-name="sgnStatusId" value="00"/>
+                <set-field field-name="sgnStatusId" value="01"/>
+                <set-field field-name="bizStsDesc" value="解约成功"/>
+            </entity-update-by-condition>
+            <log level="info" message="自动解约完成"/>
+            <entity-find entity-name="nap.sgn.NapSgn" list="napSgnList">
+                <econdition field-name="instgId" from="instgId"/>
+                <econdition field-name="sgnNo" from="sgnNo"/>
+                <order-by field-name="-lastUpdatedStamp"/>
+            </entity-find>
+            <if condition="napSgnList">
+                <set field="sYear" from="napSgnList[0].lastUpdatedStamp.format('yyyy')"/>
+                <set field="sMoth" from="napSgnList[0].lastUpdatedStamp.format('MM')"/>
+                <set field="sDay" from="napSgnList[0].lastUpdatedStamp.format('dd')"/>
+                <set field="curYear" from="new Date().format('yyyy')"/>
+                <set field="curMoth" from="new Date().format('MM')"/>
+                <set field="curDay" from="new Date().format('dd')"/>
+                <if condition="sYear==curYear">
+                    <then>
+                        <set field="yearUsedAmt" from="napSgnList[0].yearUsedAmt" type="BigDecimal"/>
+                        <if condition="sMoth==curMoth">
+                            <then>
+                                <set field="monthUsedAmt" from="napSgnList[0].monthUsedAmt" type="BigDecimal"/>
+                                <if condition="sDay==curDay">
+                                    <then>
+                                        <set field="dayUsedAmt" from="napSgnList[0].dayUsedAmt" type="BigDecimal"/>
+                                    </then>
+                                    <else>
+                                        <set field="dayUsedAmt" value="0" type="BigDecimal"/>
+                                    </else>
+                                </if>
+                            </then>
+                            <else>
+                                <set field="monthUsedAmt" value="0" type="BigDecimal"/>
+                                <set field="dayUsedAmt" value="0" type="BigDecimal"/>
+                            </else>
+                        </if>
+                    </then>
+                    <else>
+                        <set field="yearUsedAmt" value="0" type="BigDecimal"/>
+                        <set field="monthUsedAmt" value="0" type="BigDecimal"/>
+                        <set field="dayUsedAmt" value="0" type="BigDecimal"/>
+                    </else>
+                </if>
+            </if>
+
+            <!--未超时登记信息返回人行-->
+            <set field="bizStsCd" value="00000000"/><!--业务返回码-->
+            <set field="sgnStatusId" value="00"/>
+            <set field="bizStsDesc" value="签约成功"/><!--业务返回说明-->
+            <set field="sgnAcctLvl" from="napAuthList[0]?.sgnAcctLvl"/>
+            <set field="perLimitAmt" from="findNapPayLimit[0]?.perLimitAmt"/>
+            <set field="dayLimitAmt" from="findNapPayLimit[0]?.dayLimitAmt"/>
+            <set field="monthLimitAmt" from="findNapPayLimit[0]?.monthLimitAmt"/>
+            <set field="yearLimitAmt" from="findNapPayLimit[0]?.yearLimitAmt"/>
+            <log level="trace" message="findNapPayLimit:${findNapPayLimit}"/>
+            <log level="info" message="登记协议信息"/>
+            <entity-make-value entity-name="nap.sgn.NapSgn" value-field="napSgn"/>
+            <entity-sequenced-id-primary-dynamic value-field="napSgn"/>
+            <entity-set value-field="napSgn" include="all"/>
+           <!-- <entity-set value-field="napSgn" map="sgnNo:sgnNo,issrId:issrId,trxCtgy:trxCtgy,trxId:trxId,trxDtTm:trxDtTm,instgAcct:instgAcct,
+                         sgnStatusId:sgnStatusId, sysRtnCd:sysRtnCd,workDate:workDate,sgnStatusId:sgnStatusId,sgnAcctIssrId:sgnAcctIssrId,
+                         sysRtnDesc:sysRtnDesc, sysRtnTm:sysRtnTm,sgnAcctTp:sgnAcctTp,sgnAcctId:sgnAcctId,sgnAcctNm:sgnAcctNm,idTp:idTp,idNo:idNo,mobNo:mobNo,authMsg:authMsg,instgId:instgId,
+                         bizStsCd:bizStsCd, bizStsDesc:bizStsDesc,sgnAcctLvl:sgnAcctLvl,perLimitAmt:findNapPayLimit[0].perLimitAmt,dayLimitAmt:findNapPayLimit[0].dayLimitAmt,monthLimitAmt:findNapPayLimit[0].monthLimitAmt,yearLimitAmt:findNapPayLimit[0].yearLimitAmt ]"/>-->
+            <entity-create value-field="napSgn"/>
+            <log level="info" message="登记协议信息完成"/>
+
+            <!--使身份授权信息失效-->
+            <entity-delete value-field="napAuthList[0]"/>
+        </actions>
+    </service>
+</services>
