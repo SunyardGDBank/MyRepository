@@ -102,8 +102,8 @@
             </field-layout>
         </form-single>
 
-        <container-row>
-            <!--支付通道限额信息-->
+       <!-- <container-row>
+            &lt;!&ndash;支付通道限额信息&ndash;&gt;
             <row-col>
                 <container-box>
                     <box-header>
@@ -112,7 +112,7 @@
                     <box-toolbar>
                         <container-dialog id="createChannelQuotaDialog" button-text="添加" width="860">
                             <form-single name="CreateChannelQuota" transition="createChannelQuota">
-                                <!-- <field name="seqId" hide="true"/>-->
+                                &lt;!&ndash; <field name="seqId" hide="true"/>&ndash;&gt;
 
                                 <field name="channelNo">
                                     <default-field title="通道编号">
@@ -197,7 +197,7 @@
                                     <text-line size="20" />
                                 </default-field>
                             </field>
-                            <!--更新按钮-->
+                            &lt;!&ndash;更新按钮&ndash;&gt;
                             <field name="submitButton">
                                 <default-field title="Update">
                                     <submit icon="glyphicon glyphicon-edit"/>
@@ -210,7 +210,7 @@
             </row-col>
         </container-row>
         <container-row>
-            <!--支付通道手续费-->
+            &lt;!&ndash;支付通道手续费&ndash;&gt;
             <row-col>
                 <container-box>
                     <box-header>
@@ -219,14 +219,14 @@
                     <box-toolbar>
                         <container-dialog id="CreateNacsChannelFeeDialog" button-text="添加">
                             <form-single name="CreateNacsChannelFee" transition="createNacsChannelFee">
-                               <!-- <auto-fields-entity entity-name="nacs.channel.ChannelFee"  field-type="edit">
+                               &lt;!&ndash; <auto-fields-entity entity-name="nacs.channel.ChannelFee"  field-type="edit">
                                     <exclude field-name="remarks1"/>
                                     <exclude field-name="remarks2"/>
                                     <exclude field-name="remarks3"/>
                                     <exclude field-name="remarks4"/>
                                     <exclude field-name="remarks5"/>
                                     <exclude field-name="channelSeqId"/>
-                                </auto-fields-entity>-->
+                                </auto-fields-entity>&ndash;&gt;
                                 <field name="channelNo"><default-field title="通道编号">
                                     <display/>
                                 </default-field></field>
@@ -247,12 +247,12 @@
                                         </drop-down>
                                     </default-field>
                                 </field>
-                               <!--<field name="mm">
+                               &lt;!&ndash;<field name="mm">
                                     <default-field title="mmm">
                                         <display dynamic-transition="showDisable">
                                             <depends-on field="feeType"/></display>
                                     </default-field>
-                                </field>-->
+                                </field>&ndash;&gt;
                                 <field name="beginAmt">
                                     <default-field title="金额上限">
                                         <text-line size="35"/>
@@ -351,7 +351,7 @@
                                     <text-line size="10"/>
                                 </default-field>
                             </field>
-                            <!--更新按钮-->
+                            &lt;!&ndash;更新按钮&ndash;&gt;
                             <field name="submitButton">
                                 <default-field title="更新">
                                     <submit icon="glyphicon glyphicon-edit"/>
@@ -361,7 +361,7 @@
                     </box-body>
                 </container-box>
             </row-col>
-        </container-row>
+        </container-row>-->
         <container-row>
             <!--支付通道业务品种-->
             <row-col>

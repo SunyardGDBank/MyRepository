@@ -11,9 +11,12 @@
             <parameter name="channelNo" required="true"/>
             <parameter name="channelNm" required="true"/>
             <parameter name="channelStatus" required="true"/>
-            <parameter name="channelBegin" required="true"/>
+            <!--<parameter name="channelBegin" required="true"/>
             <parameter name="channelEnd" required="true"/>
-            <parameter name="signCheckFlag" required="true"/>
+            <parameter name="signCheckFlag" required="true"/>-->
+            <parameter name="feeType" required="true"/>
+            <parameter name="percentage" />
+            <parameter name="amt" />
         </in-parameters>
         <actions>
             <entity-find entity-name="nacs.channel.Channel" list="channelSeqList">
@@ -23,6 +26,22 @@
                 <if condition="channelSeqList[0].channelNo==channelNo">
                     <log level="info" message="该支付通道已存在，不能增加！"/>
                     <return error="true" message="该支付通道已存在，不能增加！"/>
+                </if>
+            </if>
+            <if condition="feeType=='FEE_CHARGE_MODE1'">
+                <if condition="!amt">
+                    <return error="false" message="单笔收取金额的方式，收取金额不能为空"/>
+                </if>
+                <if condition="percentage">
+                    <return error="false" message="单笔收取金额的方式百分比应该为空"/>
+                </if>
+            </if>
+            <if condition="feeType=='FEE_CHARGE_MODE3'">
+                <if condition="!percentage">
+                    <return error="false" message="百分比收取的方式，百分比不能为空"/>
+                </if>
+                <if condition="amt">
+                    <return error="false" message="百分比收取的方式收取金额应该为空"/>
                 </if>
             </if>
             <service-call name="create#nacs.channel.Channel" in-map="context"/>
@@ -126,11 +145,30 @@
             <parameter name="channelNm" required="true"/>
             <!--<parameter name="channelNo" required="true"/>-->
             <parameter name="channelStatus" required="true"/>
-            <parameter name="channelBegin" required="true"/>
+            <!--<parameter name="channelBegin" required="true"/>
             <parameter name="channelEnd" required="true"/>
-            <parameter name="signCheckFlag" required="true"/>
+            <parameter name="signCheckFlag" required="true"/>-->
+            <parameter name="feeType" required="true"/>
+            <parameter name="percentage" />
+            <parameter name="amt" />
         </in-parameters>
         <actions>
+            <if condition="feeType=='FEE_CHARGE_MODE1'">
+                <if condition="!amt">
+                    <return error="false" message="单笔收取金额的方式，收取金额不能为空"/>
+                </if>
+                <if condition="percentage">
+                    <return error="false" message="单笔收取金额的方式百分比应该为空"/>
+                </if>
+            </if>
+            <if condition="feeType=='FEE_CHARGE_MODE3'">
+                <if condition="!percentage">
+                    <return error="false" message="百分比收取的方式，百分比不能为空"/>
+                </if>
+                <if condition="amt">
+                    <return error="false" message="百分比收取的方式收取金额应该为空"/>
+                </if>
+            </if>
             <service-call name="update#nacs.channel.Channel" in-map="context"/>
         </actions>
     </service>

@@ -26,6 +26,15 @@
             <order-by field-name="enumId"/>
         </entity-find>
 
+        <entity-find entity-name="nacs.channel.ChannelFee" list="channelFeeList">
+            <econdition field-name="channelSeqId" from="channelSeqId"/>
+        </entity-find>
+        <entity-find entity-name="moqui.basic.Enumeration" list="bussTypeParameterList">
+            <econdition field-name="enumTypeId" value="TrxCtgy"/>
+        </entity-find>
+        <entity-find entity-name="moqui.basic.Enumeration" list="feeChargeModeParameterList">
+            <econdition field-name="enumTypeId" value="FeeChargeMode"/>
+        </entity-find>
     </actions>
 
     <widgets>
@@ -54,7 +63,7 @@
                         </drop-down>
                     </default-field>
                 </field>
-                <field name="channelBegin" >
+                <!--<field name="channelBegin" >
                     <default-field title="通道运行开启时间">
                         <date-time type="date" format="HH:mm" default-value="00:00"/>
                     </default-field>
@@ -69,6 +78,23 @@
                         <drop-down allow-empty="true">
                             <list-options list="VerifiedFlgList" key="${enumId}" text="${description}"/>
                         </drop-down>
+                    </default-field>
+                </field>-->
+                <field name="feeType">
+                    <default-field title="收取方式">
+                        <drop-down allow-empty="true">
+                            <list-options list="feeChargeModeParameterList" key="${enumId}" text="${description}"/>
+                        </drop-down>
+                    </default-field>
+                </field>
+                <field name="percentage" align="right">
+                    <default-field title="百分比">
+                        <text-line size="10"/>
+                    </default-field>
+                </field>
+                <field name="amt" align="right">
+                    <default-field title="收取金额">
+                        <text-line size="10"/>
                     </default-field>
                 </field>
                 <!--确定按钮-->
@@ -118,7 +144,7 @@
                     </drop-down>
                 </default-field>
             </field>
-            <field name="channelBegin">
+            <!--<field name="channelBegin">
 
                 <default-field title="通道运行开启时间">
                     <date-time type="date" format="HH:mm"/>
@@ -136,6 +162,23 @@
                     <drop-down>
                         <list-options list="VerifiedFlgList" key="${enumId}" text="${description}"/>
                     </drop-down>
+                </default-field>
+            </field>-->
+            <field name="feeType">
+                <default-field title="收取方式">
+                    <drop-down allow-empty="true">
+                        <list-options list="feeChargeModeParameterList" key="${enumId}" text="${description}"/>
+                    </drop-down>
+                </default-field>
+            </field>
+            <field name="percentage" align="right">
+                <default-field title="百分比">
+                    <text-line size="10"/>
+                </default-field>
+            </field>
+            <field name="amt" align="right">
+                <default-field title="收取金额">
+                    <text-line size="10"/>
                 </default-field>
             </field>
 

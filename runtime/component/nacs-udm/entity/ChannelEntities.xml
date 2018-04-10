@@ -39,7 +39,7 @@ along with this software (see the LICENSE.md file). If not, see
         <field name="channelStatus" type="id" not-null="true" enable-audit-log="true">
             <description>渠道状态(ENABLED-开启,DISABLED-关闭)</description>
         </field>
-        <field name="channelBegin" type="id" not-null="true" enable-audit-log="true">
+       <!-- <field name="channelBegin" type="id" not-null="true" enable-audit-log="true">
             <description>渠道运行开启时间</description>
         </field>
         <field name="channelEnd" type="id" not-null="true" enable-audit-log="true">
@@ -47,6 +47,18 @@ along with this software (see the LICENSE.md file). If not, see
         </field>
         <field name="signCheckFlag" type="id" not-null="true" enable-audit-log="true">
             <description>签约验证标志(VERIFIED-验证,NON-VERIFIED-不验证)</description>
+        </field>
+        <field name="trxCtgy" type="id" not-null="true" enable-audit-log="true">
+            <description>交易类别(000401-代付,000501-代收)</description>
+        </field>-->
+        <field name="feeType" type="id" not-null="true" enable-audit-log="true">
+            <description>收取方式(FEE_TYPE1-按金额收取,FEE_TYPE2-按百分比收取,FEE_TYPE3-按单笔收取)</description>
+        </field>
+        <field name="percentage" type="number-integer" enable-audit-log="true">
+            <description>百分比</description>
+        </field>
+        <field name="amt" type="currency-amount" enable-audit-log="true">
+            <description>收取金额</description>
         </field>
         <field name="remarks1" type="id-long">
             <description>备注1</description>
@@ -66,9 +78,9 @@ along with this software (see the LICENSE.md file). If not, see
         <relationship type="one-nofk" related="moqui.basic.Enumeration" title="OpnFlg">
             <key-map field-name="channelStatus"/>
         </relationship>
-        <relationship type="one-nofk" related="moqui.basic.Enumeration" title="VerifiedFlg">
+        <!--<relationship type="one-nofk" related="moqui.basic.Enumeration" title="VerifiedFlg">
             <key-map field-name="signCheckFlag"/>
-        </relationship>
+        </relationship>-->
         <index name="NACS_CHANNEL_SEQ_INDEX1" unique="true">
             <index-field name="channelNo"/>
         </index>
