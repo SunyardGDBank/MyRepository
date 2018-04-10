@@ -21,6 +21,8 @@
             <econdition field-name="enumTypeId" value="OpnFlg"/>
         </entity-find>
 
+        <!--git测试-->
+
         <entity-find entity-name="moqui.basic.Enumeration" list="VerifiedFlgList">
             <econdition field-name="enumTypeId" value="VerifiedFlg"/>
             <order-by field-name="enumId"/>
