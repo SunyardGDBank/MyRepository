@@ -2,6 +2,7 @@
         xsi:noNamespaceSchemaLocation="http://moqui.org/xsd/xml-screen-2.1.xsd"
         default-menu-title="统一交易流水" default-menu-index="1" >
     <!--统一交易流水查询统计-->
+
     <parameter name="workDate_from"/>
     <transition name="findTxItem">
         <default-response url="."/>
@@ -172,19 +173,19 @@
                 </field>
 
                 <!--子商户编号-->
-                <field name="subMrchntNo">
+                <!--<field name="subMrchntNo">
                     <default-field title="子商户编号">
                         <drop-down allow-empty="true">
                             <list-options list="subMrchntList" key="${subMrchntNo}" text="${subMrchntNo} - ${subMrchntNm}"/>
                         </drop-down>
                     </default-field>
-                </field>
+                </field>-->
 
                 <!--支付通道编号-->
                 <field name="channelSeqId">
                     <default-field title="支付通道编号">
                         <drop-down allow-empty="true">
-                            <entity-options key="${seqId}" text="${channelNo} - ${channelNm}">
+                            <entity-options key="${seqId}" text="${channelNo}-${channelNm}">
                                 <entity-find entity-name="nacs.channel.Channel"/>
                             </entity-options>
                         </drop-down>
@@ -317,7 +318,7 @@
                     </field-row>
                     <field-row>
                         <field-ref name="mrchntSeqId"/>
-                        <field-ref name="subMrchntNo"/>
+                        <!--<field-ref name="subMrchntNo"/>-->
                     </field-row>
                     <field-row>
                         <field-ref name="channelSeqId"/>
@@ -521,17 +522,17 @@
                 </default-field>
             </field>
 
-            <!--商户编号-->
+            <!--商户名称-->
             <field name="mrchntSeqId" align="center">
                 <header-field show-order-by="true">
                     <drop-down allow-empty="true">
-                        <entity-options key="${seqId}" text="${mrchntNo} - ${mrchntNm}">
+                        <entity-options key="${seqId}" text="${mrchntNo}">
                                <entity-find entity-name="nacs.mrchnt.Mrchnt"/>
                         </entity-options>
                     </drop-down>
                 </header-field>
-                <default-field title="商户编号">
-                    <display-entity entity-name="nacs.mrchnt.Mrchnt" key-field-name="seqId" text="${mrchntNo} - ${mrchntNm}"/>
+                <default-field title="商户名称">
+                    <display-entity entity-name="nacs.mrchnt.Mrchnt" key-field-name="seqId" text="${mrchntNm}"/>
                 </default-field>
             </field>
 
@@ -549,7 +550,7 @@
             <!--</field>-->
 
             <!--子商户编号-->
-            <field name="subMrchntNo" align="center">
+            <!--<field name="subMrchntNo" align="center">
                 <header-field show-order-by="true">
                     <drop-down allow-empty="true">
                         <list-options list="subMrchntList" key="${subMrchntNo}" text="${subMrchntNo} - ${subMrchntNm}"/>
@@ -558,7 +559,7 @@
                 <default-field title="子商户编号">
                     <display-entity entity-name="nacs.channel" key-field-name="subMrchntNo" text="${subMrchntNo} - ${subMrchntNm}"/>
                 </default-field>
-            </field>
+            </field>-->
 
             <!--子商户名称-->
             <!--<field name="subMrchntNm" align="center">-->
@@ -573,17 +574,17 @@
                 <!--</default-field>-->
             <!--</field>-->
 
-            <!--支付通道编号-->
+            <!--支付通道名称-->
             <field name="channelSeqId" align="center">
                 <header-field show-order-by="true">
                     <drop-down allow-empty="true">
-                        <entity-options key="${seqId}" text="${channelNo} - ${channelNm}">
+                        <entity-options key="${channelNo}" text="${channelNo}">
                             <entity-find entity-name="nacs.channel.Channel"/>
                         </entity-options>
                     </drop-down>
                 </header-field>
-                <default-field title="支付通道编号">
-                    <display-entity entity-name="nacs.channel.Channel" key-field-name="seqId" text="${channelNo} - ${channelNm}"/>
+                <default-field title="支付通道名称">
+                    <display-entity entity-name="nacs.channel.Channel" key-field-name="channelNo" text="${channelNm}"/>
                 </default-field>
             </field>
 
@@ -595,10 +596,10 @@
                         <!--<list-options list="channelViewList" key="${channelNm}" text="${channelNm}"/>-->
                     <!--</drop-down>-->
                 <!--</header-field>-->
-                <!--<default-field title="支付通道名称">-->
-                    <!--<display/>-->
-                <!--</default-field>-->
-            <!--</field>-->
+            <!--<default-field title="支付通道名称">
+                <display-entity entity-name="nacs.channel.Channel" key-field-name="channelNo" text="${channelNm}"/>
+            </default-field>
+            </field>-->
 
             <!--处理状态-->
             <field name="tranStas" align="center">
@@ -939,30 +940,30 @@
                             </field>
 
                             <!--子商户编号-->
-                            <field name="subMrchntNo">
+                            <!--<field name="subMrchntNo">
                                 <default-field title="子商户编号">
                                     <display/>
                                 </default-field>
-                            </field>
+                            </field>-->
 
                             <!--子商户名称-->
-                            <field name="subMrchntNm">
+                            <!--<field name="subMrchntNm">
                                 <default-field title="子商户名称">
                                     <display/>
                                 </default-field>
-                            </field>
+                            </field>-->
 
                             <!--支付通道编号-->
                             <field name="channelNo" from="channelSeqId">
                                 <default-field title="支付通道编号">
-                                    <display-entity entity-name="nacs.channel.Channel" key-field-name="seqId" text="${channelNo}"/>
+                                    <display-entity entity-name="nacs.channel.Channel" key-field-name="channelNo" text="${channelNo}"/>
                                 </default-field>
                             </field>
 
                             <!--支付通道名称-->
                             <field name="channelNm" from="channelSeqId">
                                 <default-field title="支付通道名称">
-                                    <display-entity entity-name="nacs.channel.Channel" key-field-name="seqId" text="${channelNm}"/>
+                                    <display-entity entity-name="nacs.channel.Channel" key-field-name="channelNo" text="${channelNm}"/>
                                 </default-field>
                             </field>
 
@@ -1281,8 +1282,8 @@
                                 <field-row-sm col-sm="3">
 
 
-                                    <field-ref name="subMrchntNo"/>
-                                    <field-ref name="subMrchntNm"/>
+                                    <!--<field-ref name="subMrchntNo"/>
+                                    <field-ref name="subMrchntNm"/>-->
                                     <field-ref name="channelNo"/>
                                     <field-ref name="channelNm"/>
                                 </field-row-sm>

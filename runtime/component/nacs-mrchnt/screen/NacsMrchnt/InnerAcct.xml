@@ -1,0 +1,84 @@
+<screen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="http://moqui.org/xsd/xml-screen-2.1.xsd"
+        default-menu-title="内部户管理" default-menu-index="4" >
+    <!--内部户管理-->
+    <transition name="updateInnerAcct">
+        <service-call name="nacs.mrchnt.admin.NacsMrchntService.update#InnerAcct"/>
+        <default-response url="."/>
+    </transition>
+    <transition name="createInnerAcct">
+        <service-call name="nacs.mrchnt.admin.NacsMrchntService.create#InnerAcct"/>
+        <default-response url="."/>
+    </transition>
+
+    <actions>
+        <entity-find entity-name="nacs.channel.Channel" list="channelList">
+            <search-form-inputs/>
+            <order-by field-name="channelNo"/>
+        </entity-find>
+
+    </actions>
+
+    <widgets>
+        <container-dialog id="createInnerAcctDialog" button-text="添加" width="860">
+            <form-single name="CreateInnerAcct" transition="createInnerAcct">
+                <auto-fields-entity entity-name="nacs.channel.InnerAcct" field-type="edit">
+                    <exclude field-name="remarks1"/>
+                    <exclude field-name="remarks2"/>
+                    <exclude field-name="remarks3"/>
+                </auto-fields-entity>
+                <field name="innerAcctKey">
+                    <default-field title="内部户参数">
+                    </default-field>
+                </field>
+                <field name="innerAcctNo">
+                    <default-field title="内部户账号">
+                    </default-field>
+                </field>
+                <field name="innerAcctNm">
+                    <default-field title="内部户账号描述" >
+                    </default-field>
+                </field>
+
+                <!--确定按钮-->
+                <field name="submitButton">
+                    <default-field title="Add">
+                        <submit icon="glyphicon glyphicon-plus"/>
+                    </default-field>
+                </field>
+            </form-single>
+        </container-dialog>
+
+
+        <form-list name="InnerAcctList" list="innerAcctlList" transition="updateInnerAcct">
+
+            <auto-fields-entity entity-name="nacs.channel.InnerAcct" field-type="edit">
+                <exclude field-name="remarks1"/>
+                <exclude field-name="remarks2"/>
+                <exclude field-name="remarks3"/>
+            </auto-fields-entity>
+            <field name="innerAcctKey" >
+                <default-field title="内部户参数">
+                </default-field>
+            </field>
+            <field name="innerAcctNo">
+                <default-field title="内部户账号">
+                </default-field>
+            </field>
+            <field name="innerAcctNm">
+                <default-field title="内部户账号描述" >
+                </default-field>
+            </field>
+
+            <!--更新按钮-->
+            <field name="submitButton">
+                <default-field title="Update">
+                    <submit icon="glyphicon glyphicon-edit"/>
+                </default-field>
+            </field>
+
+
+        </form-list>
+
+    </widgets>
+</screen>
