@@ -38,12 +38,6 @@ along with this software (see the LICENSE.md file). If not, see
         <field name="firMerchantSt" type="id" enable-audit-log="true">
             <description>一级商户状态(INVOKE-启用 CLOSE-关闭 NOT_SUFFICIENT_FUNDS-余额不足)</description>
         </field>
-        <field name="deleteFlag" type="id" enable-audit-log="true">
-            <description>删除标识(0-未删除 1-删除)</description>
-        </field>
-        <field name="secMerchantFlag" type="id">
-            <description>二级商户标志(ENABLED-有 DISABLED-无)</description>
-        </field>
         <field name="merchantBeginTime" type="time" enable-audit-log="true">
             <description>商户运行开启时间</description>
         </field>
