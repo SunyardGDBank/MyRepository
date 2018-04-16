@@ -1,0 +1,486 @@
+<screen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="http://moqui.org/xsd/xml-screen-2.1.xsd"
+        default-menu-title="商户列表" default-menu-index="1" >
+    <!--一级商户管理-->
+
+    <transition name="findNacsMrchnt">
+        <default-response url="."/>
+    </transition>
+    <transition name="createNacsMrchnt">
+        <service-call name="nacs.mrchnt.admin.NacsMrchntService.create#Mrchnt"/>
+        <default-response url="."/>
+    </transition>
+    <transition name="updateNacsMrchnt">
+        <service-call name="nacs.mrchnt.admin.NacsMrchntService.update#Mrchnt" in-map="context"/>
+        <default-response url="."/>
+    </transition>
+    <actions>
+        <entity-find entity-name="nacs.mrchnt.Mrchnt" list="mrchntList">
+            <search-form-inputs/>
+        </entity-find>
+        <entity-find entity-name="moqui.basic.Enumeration" list="mrchntFlagList">
+            <econdition field-name="enumTypeId" value="OpnFlg"/>
+        </entity-find>
+        <entity-find entity-name="moqui.basic.Enumeration" list="subMrchntFlagList">
+            <econdition field-name="enumTypeId" value="OpnFlg"/>
+        </entity-find>
+        <entity-find entity-name="moqui.basic.Enumeration" list="mrchntVerIfystsList">
+            <econdition field-name="enumTypeId" value="MerchantVerIfysts"/>
+        </entity-find>
+        <entity-find entity-name="moqui.basic.Enumeration" list="versionList">
+            <econdition field-name="enumTypeId" value="Version"/>
+        </entity-find>
+        <entity-find entity-name="nacs.mrchnt.MrchntView" list="mrchntViewList"/>
+    </actions>
+    <widgets>
+        <!--添加按钮的弹窗页面-->
+        <container-dialog id="CreateNacsMrchntDialog" button-text="添加" width="1000">
+            <form-single name="CreateNacsMrchnt" transition="createNacsMrchnt">
+                <auto-fields-entity entity-name="nacs.mrchnt.Mrchnt"  field-type="edit">
+                    <exclude field-name="zdFrozenLimit"/>
+                    <exclude field-name="addFrozenLimit"/>
+                    <exclude field-name="mrchntSt"/>
+                    <exclude field-name="matchingWeight"/>
+                    <exclude field-name="mrchntBeginTime"/>
+                    <exclude field-name="mrchntEndTime"/>
+                    <exclude field-name="whitoutHoldMode"/>
+                    <exclude field-name="behalfHoldMode"/>
+                    <exclude field-name="frozenLimit"/>
+                    <exclude field-name="overdraftLimit"/>
+                    <exclude field-name="remarks1"/>
+                    <exclude field-name="remarks2"/>
+                    <exclude field-name="remarks3"/>
+                </auto-fields-entity>
+                <field name="mrchntNo">
+                    <default-field title="商户编号"/>
+                </field>
+                <field name="mrchntNm">
+                    <default-field title="商户名称"/>
+                </field>
+                <field name="mrchntFlag" >
+                    <default-field title="商户启用标志">
+                        <hidden/>
+                    </default-field>
+                </field>
+                <field name="subMrchntFlag">
+                    <default-field title="子商户标志">
+                        <drop-down allow-empty="true">
+                            <list-options list="subMrchntFlagList" text="${description}"/>
+                        </drop-down>
+                    </default-field>
+                </field>
+                <field name="managerInstiCode">
+                    <default-field title="客户机构行号"/>
+                </field>
+                <field name="managerInstiName">
+                    <default-field title="客户机构名称"/>
+                </field>
+                <field name="version">
+                    <default-field title="协议版本">
+                        <drop-down allow-empty="true">
+                            <list-options list="versionList" text="${description}"/>
+                        </drop-down>
+                    </default-field>
+                </field>
+                <field name="marginFormation">
+                    <default-field title="保证金账户信息"/>
+                </field>
+                <field name="marginAmt">
+                    <default-field title="保证金金额"/>
+                </field>
+                <field name="clearAccountMsg">
+                    <default-field title="清算账户"/>
+                </field>
+                <field name="clearAccountName">
+                    <default-field title="清算账户名称"/>
+                </field>
+                <field name="behalfAccount">
+                    <default-field title="代发内部户">
+                    </default-field>
+                </field>
+                <field name="whitoutAccount">
+                    <default-field title="代扣内部户"/>
+                </field>
+                <field name="viDate">
+                    <default-field title="有效期">
+                        <date-time type="date"/>
+                    </default-field>
+                </field>
+                <field name="mrchntVerIfysts">
+                    <default-field title="商户签约验证需求">
+                        <drop-down allow-empty="true">
+                            <list-options list="mrchntVerIfystsList" text="${description}"/>
+                        </drop-down>
+                    </default-field>
+                </field>
+                <field name="submitButton">
+                    <default-field title="Add">
+                        <submit icon="glyphicon glyphicon-plus"/>
+                    </default-field>
+                </field>
+
+                <!--布局-->
+                <field-layout>
+                    <field-row>
+                        <field-ref name="mrchntNo"/>
+                        <field-ref name="mrchntNm"/>
+                    </field-row>
+                    <field-row>
+                        <field-ref name="mrchntVerIfysts"/>
+                        <field-ref name="subMrchntFlag"/>
+                    </field-row>
+                    <field-row>
+                        <field-ref name="managerInstiCode"/>
+                        <field-ref name="managerInstiName"/>
+                    </field-row>
+                    <field-row>
+                        <field-ref name="clearAccountMsg"/>
+                        <field-ref name="clearAccountName"/>
+                    </field-row>
+                    <field-row>
+                        <field-ref name="behalfAccount"/>
+                        <field-ref name="whitoutAccount"/>
+                    </field-row>
+                    <field-row>
+                        <field-ref name="viDate"/>
+                        <field-ref name="marginAmt"/>
+                    </field-row>
+                    <field-row>
+                        <field-ref name="marginFormation"/>
+                        <field-ref name="version"/>
+                    </field-row>
+                    <field-row>
+                        <field-ref name="submitButton"/>
+                    </field-row>
+                </field-layout>
+            </form-single>
+
+        </container-dialog>
+        <!--查找按钮的弹窗页面-->
+        <container-dialog id="FindNacsMrchntDialog" button-text="查找" width="1000">
+            <form-single name="FindNacsMrchnt" transition="findNacsMrchnt">
+                <field name="mrchntNo">
+                    <default-field title="商户编号">
+                        <drop-down allow-empty="true">
+                            <list-options list="mrchntViewList" key="${mrchntNo}" text="${mrchntNm}"/>
+                        </drop-down>
+                    </default-field>
+                </field>
+                <field name="mrchntFlag">
+                    <default-field title="商户启用标志">
+                        <drop-down allow-empty="true">
+                            <list-options list="mrchntFlagList" text="${description}"/>
+                        </drop-down>
+                    </default-field>
+                </field>
+                <field name="subMrchntFlag">
+                    <default-field title="子商户标志">
+                        <drop-down allow-empty="true">
+                            <list-options list="subMrchntFlagList" text="${description}"/>
+                        </drop-down>
+                    </default-field>
+                </field>
+                <field name="managerInstiCode">
+                    <default-field title="客户机构行号">
+                        <text-find hide-options="true"/>
+                    </default-field>
+                </field>
+                <field name="managerInstiName">
+                    <default-field title="客户机构名称">
+                        <text-find hide-options="true"/>
+                    </default-field>
+                </field>
+                <field name="version">
+                    <default-field title="协议版本">
+                        <drop-down allow-empty="true">
+                            <list-options list="versionList" text="${description}"/>
+                        </drop-down>
+                    </default-field>
+                </field>
+                <field name="marginFormation">
+                    <default-field title="保证金账户信息">
+                        <text-find hide-options="true"/>
+                    </default-field>
+                </field>
+                <field name="marginAmt">
+                    <default-field title="保证金金额">
+                        <range-find/>
+                    </default-field>
+                </field>
+                <field name="clearAccountMsg">
+                    <default-field title="清算账户">
+                        <text-find hide-options="true"/>
+                    </default-field>
+                </field>
+                <field name="clearAccountName">
+                    <default-field title="清算账户名称">
+                        <text-find hide-options="true"/>
+                    </default-field>
+                </field>
+                <field name="behalfAccount">
+                    <default-field title="代发内部户">
+                        <text-find hide-options="true"/>
+                    </default-field>
+                </field>
+                <field name="whitoutAccount">
+                    <default-field title="代扣内部户">
+                        <text-find hide-options="true"/>
+                    </default-field>
+                </field>
+                <field name="viDate">
+                    <default-field title="有效期">
+                        <date-find type="date"/>
+                    </default-field>
+                </field>
+                <field name="mrchntVerIfysts">
+                    <default-field title="商户签约验证需求">
+                        <drop-down allow-empty="true">
+                            <list-options list="mrchntVerIfystsList" text="${description}"/>
+                        </drop-down>
+                    </default-field>
+                </field>
+                <!--查找按钮-->
+                <field name="searchButton">
+                    <default-field title="Find"><submit icon="glyphicon glyphicon-search"/></default-field>
+                </field>
+
+                <!--布局-->
+                <field-layout>
+                    <field-row>
+                        <field-ref name="mrchntNo"/>
+                        <field-ref name="mrchntVerIfysts"/>
+                    </field-row>
+                    <field-row>
+                        <field-ref name="mrchntFlag"/>
+                        <field-ref name="subMrchntFlag"/>
+                    </field-row>
+                    <field-row>
+                        <field-ref name="managerInstiCode"/>
+                        <field-ref name="managerInstiName"/>
+                    </field-row>
+                    <field-row>
+                        <field-ref name="clearAccountMsg"/>
+                        <field-ref name="clearAccountName"/>
+                    </field-row>
+                    <field-row>
+                        <field-ref name="behalfAccount"/>
+                        <field-ref name="whitoutAccount"/>
+                    </field-row>
+                    <field-row>
+                        <field-ref name="viDate"/>
+                        <field-ref name="marginAmt"/>
+                    </field-row>
+                    <field-row>
+                        <field-ref name="marginFormation"/>
+                        <field-ref name="version"/>
+                    </field-row>
+                    <field-row>
+                        <field-ref name="searchButton"/>
+                    </field-row>
+                </field-layout>
+            </form-single>
+
+        </container-dialog>
+        <form-list name="ListNacsMrchnt" list="mrchntList">
+            <field name="seqId">
+                <default-field title="序号">
+                    <hidden/>
+                </default-field>
+            </field>
+            <field name="mrchntSeqId" from="seqId">
+                <default-field>
+                    <hidden/>
+                </default-field>
+            </field>
+            <field name="mrchntNo">
+                <default-field title="商户编号">
+                    <link url="../MrchntDetail" link-type="anchor" text="${mrchntNo}"/>
+                </default-field>
+            </field>
+            <field name="mrchntNm">
+                <default-field title="商户名称">
+                    <display/>
+                </default-field>
+            </field>
+            <field name="version">
+                <default-field title="协议版本">
+                    <display/>
+                </default-field>
+            </field>
+            <field name="mrchntFlag">
+                <default-field title="商户启用标志">
+                    <display-entity entity-name="moqui.basic.Enumeration" key-field-name="enumId"
+                                    text="${description}"/>
+                </default-field>
+            </field>
+            <field name="subMrchntFlag">
+                <default-field title="子商户启用标志">
+                    <display-entity entity-name="moqui.basic.Enumeration" key-field-name="enumId"
+                                    text="${description}"/>
+                </default-field>
+            </field>
+            <field name="managerInstiName">
+                <default-field title="客户机构名称">
+                    <display/>
+                </default-field>
+            </field>
+            <field name="clearAccountName">
+                <default-field title="清算账户名称">
+                    <display/>
+                </default-field>
+            </field>
+            <!--详情按钮-->
+            <field name="submitButton">
+                <default-field title="">
+                    <container-dialog id="UpdateNacsMrchntDialog" button-text="详情" width="900">
+                        <form-single name="UpdateNacsMrchnt" transition="updateNacsMrchnt">
+                            <auto-fields-entity entity-name="nacs.mrchnt.Mrchnt"  field-type="edit">
+                                <exclude field-name="zdFrozenLimit"/>
+                                <exclude field-name="addFrozenLimit"/>
+                                <exclude field-name="mrchntSt"/>
+                                <exclude field-name="matchingWeight"/>
+                                <exclude field-name="merchantBeginTime"/>
+                                <exclude field-name="merchantEndTime"/>
+                                <exclude field-name="whitoutHoldMode"/>
+                                <exclude field-name="behalfHoldMode"/>
+                                <exclude field-name="frozenLimit"/>
+                                <exclude field-name="overdraftLimit"/>
+                                <exclude field-name="remarks1"/>
+                                <exclude field-name="remarks2"/>
+                                <exclude field-name="remarks3"/>
+                                <exclude field-name="lastUpdatedStamp"/>
+                            </auto-fields-entity>
+                            <field name="seqId">
+                                <default-field title="序号">
+                                    <hidden/>
+                                </default-field>
+                            </field>
+                            <field name="mrchntNo">
+                                <default-field title="商户编号">
+                                    <display/>
+                                </default-field>
+                            </field>
+                            <field name="mrchntNm">
+                                <default-field title="商户名称">
+                                    <display/>
+                                </default-field>
+                            </field>
+                            <field name="mrchntFlag">
+                                <default-field title="商户启用标志">
+                                    <!--<display-entity entity-name="moqui.basic.Enumeration" key-field-name="enumId"-->
+                                    <!--text="${description}"/>-->
+                                    <drop-down>
+                                        <list-options list="mrchntFlagList" text="${description}"/>
+                                    </drop-down>
+                                </default-field>
+                            </field>
+                            <field name="subMrchntFlag">
+                                <default-field title="子商户启用标志">
+                                    <drop-down>
+                                        <list-options list="subMrchntFlagList" text="${description}"/>
+                                    </drop-down>
+                                </default-field>
+                            </field>
+                            <field name="managerInstiCode">
+                                <default-field title="客户机构行号"/>
+                            </field>
+                            <field name="managerInstiName">
+                                <default-field title="客户机构名称"/>
+                            </field>
+                            <field name="version">
+                                <default-field title="协议版本">
+                                    <drop-down>
+                                        <list-options list="versionList" text="${description}"/>
+                                    </drop-down>
+                                </default-field>
+                            </field>
+                            <field name="marginFormation">
+                                <default-field title="保证金账户信息"/>
+                            </field>
+                            <field name="marginAmt">
+                                <default-field title="保证金金额"/>
+                            </field>
+                            <field name="clearAccountMsg">
+                                <default-field title="清算账户"/>
+                            </field>
+                            <field name="clearAccountName">
+                                <default-field title="清算账户名称"/>
+                            </field>
+                            <field name="behalfAccount">
+                                <default-field title="代发内部户"/>
+                            </field>
+                            <field name="whitoutAccount">
+                                <default-field title="代扣内部户"/>
+                            </field>
+                            <field name="viDate">
+                                <default-field title="有效期">
+                                    <date-time type="date"/>
+                                </default-field>
+                            </field>
+                            <field name="mrchntVerIfysts">
+                                <default-field title="商户签约验证需求">
+                                    <drop-down>
+                                        <list-options list="mrchntVerIfystsList" text="${description}"/>
+                                    </drop-down>
+                                </default-field>
+                            </field>
+                            <field name="butten">
+                                <default-field title="">
+                                    <submit text="更新" icon="glyphicon glyphicon-edit"/>
+                                </default-field>
+                            </field>
+
+                            <!--&lt;!&ndash;删除按钮&ndash;&gt;-->
+                            <!--<field name="deleteLink">-->
+                            <!--<conditional-field condition="mrchntFlag == 'NORMAL'" title=" ">-->
+                            <!--<link url="deleteNacsMrchnt" text="注销" />-->
+                            <!--</conditional-field>-->
+                            <!--</field>-->
+
+                            <!--布局-->
+                            <field-layout>
+                                <!--<field-row>-->
+                                <!--<field-ref name="seqId"/>-->
+                                <!--</field-row>-->
+                                <field-row>
+                                    <field-ref name="mrchntNo"/>
+                                    <field-ref name="mrchntNm"/>
+                                </field-row>
+                                <field-row>
+                                    <field-ref name="mrchntFlag"/>
+                                    <field-ref name="subMrchntFlag"/>
+                                </field-row>
+                                <field-row>
+                                    <field-ref name="managerInstiCode"/>
+                                    <field-ref name="managerInstiName"/>
+                                </field-row>
+                                <field-row>
+                                    <field-ref name="clearAccountMsg"/>
+                                    <field-ref name="clearAccountName"/>
+                                </field-row>
+                                <field-row>
+                                    <field-ref name="behalfAccount"/>
+                                    <field-ref name="whitoutAccount"/>
+                                </field-row>
+                                <field-row>
+                                    <field-ref name="viDate"/>
+                                    <field-ref name="marginAmt"/>
+                                </field-row>
+                                <field-row>
+                                    <field-ref name="mrchntVerIfysts"/>
+                                    <field-ref name="marginFormation"/>
+                                </field-row>
+                                <field-row>
+                                    <field-ref name="version"/>
+                                </field-row>
+                                <field-row>
+                                    <field-ref name="butten"/>
+                                </field-row>
+                            </field-layout>
+                        </form-single>
+                    </container-dialog>
+                </default-field>
+            </field>
+        </form-list>
+    </widgets>
+</screen>
