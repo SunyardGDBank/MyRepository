@@ -37,6 +37,8 @@ along with this software (see the LICENSE.md file). If not, see
                          menu-index="4"/>
         <subscreens-item name="MrchntTypeDetail" location="component://nacs-mrchnt/screen/NacsMrchnt/MrchntTypeDetail.xml"
                          menu-include="false"/>
+        <subscreens-item name="InnerAcct" location="component://nacs-mrchnt/screen/NacsMrchnt/InnerAcct.xml"
+                         menu-index="2"/>
     </subscreens>
     <widgets>
         <subscreens-panel id="MrchntPanel" type="popup"/>
