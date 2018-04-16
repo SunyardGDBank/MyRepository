@@ -1,0 +1,213 @@
+<screen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="http://moqui.org/xsd/xml-screen-2.1.xsd"
+        default-menu-title="商户渠道管理" default-menu-index="1" menu-image="glyphicon glyphicon-road" menu-image-type="icon">
+    <!--一级商户管理-->
+
+    <transition name="findNacsMrchntChannel">
+        <default-response url="."/>
+    </transition>
+    <transition name="createNacsMrchntChannel">
+        <service-call name="nacs.mrchnt.admin.NacsMrchntService.create#MrchntChannel"/>
+        <default-response url="."/>
+
+    </transition>
+
+    <!--<transition name="updateNacsMrchntChannel">
+        <service-call name="nacs.mrchnt.admin.NacsMrchntChannelService.update#MrchntChannel" in-map="context"/>
+        <default-response url="."/>
+    </transition>-->
+    <transition name="deleteNacsMrchntChannel">
+        <service-call name="nacs.mrchnt.admin.NacsMrchntService.delete#MrchntChannel" in-map="context"/>
+        <default-response url="."/>
+    </transition>
+    <transition name="getfirMerchantName">
+        <service-call name="nacs.mrchnt.admin.NacsMrchntService.get#firMerchantName" web-send-json-response="resultList"/>
+        <default-response type="none"/>
+    </transition>
+
+    <actions>
+        <entity-find entity-name="nacs.channel.Channel" list="channelList">
+            <search-form-inputs/>
+        </entity-find>
+        <entity-find entity-name="nacs.mrchnt.Mrchnt" list="mrchntList">
+            <search-form-inputs/>
+        </entity-find>
+        <entity-find entity-name="nacs.mrchnt.MrchntChannel" list="mrchntChannelList">
+            <search-form-inputs/>
+        </entity-find>
+        <log level="info" message="####MrchntChannelList:${mrchntChannelList}######"/>
+        <entity-find entity-name="moqui.basic.Enumeration" list="channelFlgList">
+            <econdition field-name="enumTypeId" value="ChannelFlg"/>
+        </entity-find>
+        <!--<entity-find entity-name="nacs.mrchnt.MrchntChannelView" list="mrchntViewList"/>-->
+    </actions>
+
+    <widgets>
+        <!--添加按钮的弹窗页面-->
+        <container-dialog id="CreateNacsMrchntChannelDialog" button-text="添加" width="1000">
+            <form-single name="CreateNacsMrchntChannel" transition="createNacsMrchntChannel">
+                <auto-fields-entity entity-name="nacs.mrchnt.MrchntChannel"  field-type="edit">
+                    <exclude field-name="remarks1"/>
+                    <exclude field-name="remarks2"/>
+                    <exclude field-name="remarks3"/>
+                </auto-fields-entity>
+                <field name="firMerchantCode">
+                    <default-field title="一级商户编号"/>
+                </field>
+                <field name="firMerchantName">
+                    <default-field title="一级商户名称">
+                        <drop-down>
+                            <dynamic-options transition="getfirMerchantName" value-field="firMerchantName" label-field="label">
+                                <depends-on field="firMerchantCode"/>
+                            </dynamic-options>
+                        </drop-down>
+                    </default-field>
+                </field>
+                <field name="channelFlg" >
+                    <default-field title="渠道优先级">
+                        <drop-down>
+                            <list-options list="channelFlgList" key="${enumId}" text="${description}"/>
+                        </drop-down>
+                    </default-field>
+                </field>
+                <field name="channelCode" >
+                    <default-field title="渠道编号">
+                        <drop-down>
+                            <list-options list="channelList" key="${channelNo}" text="${description}"/>
+                        </drop-down>
+                    </default-field>
+                </field>
+
+                <field name="submitButton">
+                    <default-field title="Add">
+                        <submit icon="glyphicon glyphicon-plus"/>
+                    </default-field>
+                </field>
+
+                <!--布局-->
+                <field-layout>
+                    <field-row>
+                        <field-ref name="firMerchantCode"/>
+                        <field-ref name="firMerchantName"/>
+                    </field-row>
+                    <field-row>
+                        <field-ref name="channelFlg"/>
+                        <field-ref name="channelCode"/>
+                    </field-row>
+                    <field-row>
+                        <field-ref name="submitButton"/>
+                    </field-row>
+                </field-layout>
+            </form-single>
+
+        </container-dialog>
+        <!--查找按钮的弹窗页面-->
+        <container-dialog id="FindNacsMrchntChannelDialog" button-text="查找" width="800" >
+            <form-single name="FindNacsMrchntChannel" transition="findNacsMrchntChannel" >
+                <auto-fields-entity entity-name="nacs.mrchnt.MrchntChannel"  field-type="edit">
+                </auto-fields-entity>
+                <field name="firMerchantCode">
+                    <default-field title="一级商户编号"/>
+                       <!-- <drop-down >
+                            <list-options list="mrchntChannelList" key="${firMerchantCode}" text="${firMerchantCode}"/>
+                        </drop-down>-->
+                </field>
+
+                <!--查找按钮-->
+                <field name="searchButton">
+                    <default-field title="Find"><submit icon="glyphicon glyphicon-search"/></default-field>
+                </field>
+                <!--布局-->
+                <field-layout>
+                    <field-row>
+                        <field-ref name="firMerchantCode"/>
+                        <field-ref name="searchButton"/>
+                    </field-row>
+                </field-layout>
+            </form-single>
+        </container-dialog>
+
+        <form-list name="ListNacsMrchntChannel" list="mrchntChannelList">
+            <field name="firMerchantCode">
+                <default-field title="一级商户编号">
+                    <link url="../MrchntChannelDetail" link-type="anchor" text="${firMerchantCode}"/>
+                </default-field>
+            </field>
+            <field name="firMerchantName">
+                <default-field title="一级商户名称">
+                    <display/>
+                </default-field>
+            </field>
+            <field name="channelFlg">
+                <default-field title="优先级等级">
+                    <display-entity entity-name="moqui.basic.Enumeration" key-field-name="enumId" text="${description}"/>
+                </default-field>
+            </field>
+            <field name="channelCode">
+                <default-field title="渠道编号">
+                    <display/>
+                </default-field>
+            </field>
+            <field name="channelName">
+                <default-field title="渠道名称">
+                    <display/>
+                </default-field>
+            </field>
+
+            <!--修改按钮-->
+            <!--<field name="submitButton">
+                <default-field title="">
+                    <container-dialog id="UpdateNacsMrchntChannelDialog" button-text="修改" width="900">
+                        <form-single name="UpdateNacsMrchntChannel" transition="updateNacsMrchntChannel">
+                            <auto-fields-entity entity-name="nacs.mrchnt.MrchntChannel"  field-type="edit">
+                                <exclude field-name="remarks1"/>
+                                <exclude field-name="remarks2"/>
+                                <exclude field-name="remarks3"/>
+                                <exclude field-name="lastUpdatedStamp"/>
+                            </auto-fields-entity>
+                            <field name="seqId">
+                                <default-field title="序号">
+                                    <hidden/>
+                                </default-field>
+                            </field>
+                            <field name="firMerchantCode">
+                                <default-field title="一级商户编号">
+                                    <display/>
+                                </default-field>
+                            </field>
+                            <field name="firMerchantName">
+                                <default-field title="一级商户名称">
+                                    <display/>
+                                </default-field>
+                            </field>
+                            <field name="butten">
+                                <default-field title="">
+                                    <submit text="更新" icon="glyphicon glyphicon-edit"/>
+                                </default-field>
+                            </field>
+
+                            &lt;!&ndash;布局&ndash;&gt;
+                            <field-layout>
+                                <field-row>
+                                    <field-ref name="firMerchantCode"/>
+                                    <field-ref name="firMerchantName"/>
+                                </field-row>
+                                <field-row>
+                                    <field-ref name="butten"/>
+                                </field-row>
+                            </field-layout>
+                        </form-single>
+                    </container-dialog>
+                </default-field>
+            </field>-->
+
+            <!--删除按钮-->
+           <field name="deleteButton">
+                <default-field title="">
+                    <link url="deleteNacsMrchntChannel" text="删除" link-type="anthor"/>
+                </default-field>
+            </field>
+
+        </form-list>
+    </widgets>
+</screen>
