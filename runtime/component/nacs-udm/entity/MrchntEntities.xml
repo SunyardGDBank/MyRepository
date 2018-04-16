@@ -35,7 +35,6 @@ along with this software (see the LICENSE.md file). If not, see
         <field name="firMerchantName" type="id-long" not-null="true">
             <description>一级商户名称</description>
         </field>
-
         <field name="firMerchantSt" type="id" enable-audit-log="true">
             <description>一级商户状态(INVOKE-启用 CLOSE-关闭 NOT_SUFFICIENT_FUNDS-余额不足)</description>
         </field>

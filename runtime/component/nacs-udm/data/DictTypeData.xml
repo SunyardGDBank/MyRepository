@@ -16,6 +16,20 @@ along with this software (see the LICENSE.md file). If not, see
 
     <!--枚举表数据-->
 
+    <moqui.basic.EnumerationType description="渠道优先级" enumTypeId="ChannelFlg"/>
+    <moqui.basic.Enumeration description="优先级1" enumId="01"  enumTypeId="ChannelFlg"/>
+    <moqui.basic.Enumeration description="优先级2" enumId="02" enumTypeId="ChannelFlg"/>
+    <moqui.basic.Enumeration description="优先级3" enumId="03"  enumTypeId="ChannelFlg"/>
+    <moqui.basic.Enumeration description="优先级4" enumId="04" enumTypeId="ChannelFlg"/>
+
+    <moqui.basic.EnumerationType description="代付扣款方式" enumTypeId="WithHoldMode"/>
+    <moqui.basic.Enumeration description="直接代发模式" enumId="A"  enumTypeId="WithHoldMode"/>
+    <moqui.basic.Enumeration description="授信模式" enumId="B" enumTypeId="WithHoldMode"/>
+
+    <moqui.basic.EnumerationType description="删除标志" enumTypeId="DeleteFlag"/>
+    <moqui.basic.Enumeration description="未删除" enumId="0"  enumTypeId="DeleteFlag"/>
+    <moqui.basic.Enumeration description="删除" enumId="1" enumTypeId="DeleteFlag"/>
+
     <moqui.basic.EnumerationType description="星期" enumTypeId="Week"/>
     <moqui.basic.Enumeration description="星期一" enumId="2"  enumTypeId="Week"/>
     <moqui.basic.Enumeration description="星期二" enumId="3"  enumTypeId="Week"/>
@@ -85,6 +99,7 @@ along with this software (see the LICENSE.md file). If not, see
     <moqui.basic.Enumeration description="统一代扣"     enumId="0004" enumTypeId="BizTp"/>
     <moqui.basic.Enumeration description="统一代发"     enumId="0005" enumTypeId="BizTp"/>
     <moqui.basic.Enumeration description="统一查询"     enumId="0006" enumTypeId="BizTp"/>
+
     <!--业务种类-->
     <moqui.basic.EnumerationType description="业务种类" enumTypeId="BizTp1"/>
     <moqui.basic.Enumeration description="代付业务"     enumId="11" enumTypeId="BizTp1"/>
@@ -113,7 +128,7 @@ along with this software (see the LICENSE.md file). If not, see
     <!--手续费收取方式-->
     <moqui.basic.EnumerationType description="手续费收取方式" enumTypeId="FeeChargeMode"/>
     <moqui.basic.Enumeration description="单笔收取金额"       enumId="FEE_CHARGE_MODE1" enumTypeId="FeeChargeMode"/>
-    <moqui.basic.Enumeration description="单月收取金额"       enumId="FEE_CHARGE_MODE2" enumTypeId="FeeChargeMode"/>
+    <!--<moqui.basic.Enumeration description="单月收取金额"       enumId="FEE_CHARGE_MODE2" enumTypeId="FeeChargeMode"/>-->
     <moqui.basic.Enumeration description="百分比"              enumId="FEE_CHARGE_MODE3" enumTypeId="FeeChargeMode"/>
     <!--收取方式-->
     <moqui.basic.EnumerationType description="收取方式" enumTypeId="FeeType"/>
