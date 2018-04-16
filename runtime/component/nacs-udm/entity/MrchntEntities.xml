@@ -522,7 +522,30 @@ along with this software (see the LICENSE.md file). If not, see
         </index>
     </entity>
 
-
+    <entity entity-name="InnerAcct" package="nacs.mrchnt" authorize-skip="true" cache="true">
+        <description>内部户表</description>
+        <field name="innerAcctKey" type="id" is-pk="true" not-null="true">
+            <description>内部户参数</description>
+        </field>
+        <field name="innerAcctNo" type="id" not-null="true">
+            <description>内部户账号</description>
+        </field>
+        <field name="innerAcctNm" type="id-long" not-null="true">
+            <description>内部户名称</description>
+        </field>
+        <field name="remarks1" type="id-long">
+            <description>备注1</description>
+        </field>
+        <field name="remarks2" type="id-long">
+            <description>备注2</description>
+        </field>
+        <field name="remarks3" type="id-long">
+            <description>备注3</description>
+        </field>
+        <index name="NACS_MRCHNT_INNER_ACCT_INDEX1" unique="true">
+            <index-field name="innerAcctKey"/>
+        </index>
+    </entity>
 
 
 
