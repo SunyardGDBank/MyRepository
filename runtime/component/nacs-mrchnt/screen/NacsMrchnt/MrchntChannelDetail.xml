@@ -1,0 +1,1420 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<screen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="http://moqui.org/xsd/xml-screen-2.1.xsd"
+        default-menu-title="商户明细" default-menu-include="false">
+    <parameter name="mrchntNo"/>
+    <parameter name="mrchntNm"/>
+    <parameter name="mrchntSeqId"/>
+    <parameter name="version"/>
+    <!--商户账务模式-->
+    <transition name="createMrchntFeeCoreAccounting">
+        <service-call name="nacs.mrchnt.admin.NacsMrchntFeeService.create#MrchntFeeCoreAccounting"/>
+        <default-response url="."/>
+    </transition>
+    <transition name="updateMrchntFeeCoreAccounting">
+        <service-call name="update#nacs.mrchnt.MrchntFeeCoreAccounting"/>
+        <default-response url="."/>
+    </transition>
+    <transition name="getAccountingMode">
+        <service-call name="nacs.mrchnt.admin.NacsMrchntFeeService.get#AccountingMode" web-send-json-response="resultList"/>
+        <default-response url="."/>
+    </transition>
+
+    <!--商户清算模式-->
+    <transition name="createMrchntFeeCoreClear">
+        <service-call name="nacs.mrchnt.admin.NacsMrchntFeeService.create#MrchntFeeCoreClear"/>
+        <default-response url="."/>
+    </transition>
+    <transition name="updateMrchntFeeCoreClear">
+        <service-call name="nacs.mrchnt.admin.NacsMrchntFeeService.update#MrchntFeeCoreClear" />
+        <default-response url="."/>
+    </transition>
+
+    <!--二级级商户管理-->
+    <transition name="createNacsSubMrchntFee">
+        <service-call name="nacs.mrchnt.admin.NacsMrchntFeeService.create#SubMrchntFee"/>
+        <default-response url="."/>
+    </transition>
+
+    <transition name="updateNacsSubMrchntFee">
+        <service-call name="update#nacs.mrchnt.MrchntFeeCoreAccounting"/>
+        <default-response url="."/>
+    </transition>
+
+    <!--商户可用通道管理-->
+    <transition name="createMrchntFeeChannel">
+        <service-call name="nacs.mrchnt.admin.NacsMrchntFeeService.create#MrchntFeeChannel" in-map="context"/>
+        <default-response url="."/>
+    </transition>
+    <transition name="updateMrchntFeeChannel">
+        <service-call name="update#nacs.mrchnt.MrchntFeeChannel"/>
+        <default-response url="."/>
+    </transition>
+    <!--<transition name="deleteMrchntFeeChannel">-->
+    <!--<service-call name="nacs.mrchnt.admin.NacsMrchntFeeService.delete#MrchntFeeChannel"/>-->
+    <!--<default-response url="."/>-->
+    <!--</transition>-->
+
+    <!--&lt;!&ndash;商户业务品种管理&ndash;&gt;-->
+    <!--<transition name="updateMerchantType">-->
+    <!--<service-call name="update#nacs.merchant.MerchantType"/>-->
+    <!--<default-response url="."/>-->
+    <!--</transition>-->
+    <!--<transition name="createMerchantType">-->
+    <!--<service-call name="nacs.mrchnt.admin.NacsMrchntFeeService.create#MerchantType"/>-->
+    <!--<default-response url="."/>-->
+    <!--</transition>-->
+    <!--&lt;!&ndash;<transition name="deleteMerchantType">&ndash;&gt;-->
+    <!--&lt;!&ndash;<service-call name="delete#nacs.merchant.MerchantType"/>&ndash;&gt;-->
+    <!--&lt;!&ndash;<default-response url="."/>&ndash;&gt;-->
+    <!--&lt;!&ndash;</transition>&ndash;&gt;-->
+
+    <!--&lt;!&ndash;商户手续费管理&ndash;&gt;-->
+    <!--<transition name="createMerchantFee">-->
+    <!--<service-call name="nacs.mrchnt.admin.NacsMrchntFeeService.create#MerchantFee" in-map="context"/>-->
+    <!--<default-response url="."/>-->
+    <!--</transition>-->
+    <!--<transition name="updateMerchantFee">-->
+    <!--<service-call name="update#nacs.merchant.MerchantFee"/>-->
+    <!--<default-response url="."/>-->
+    <!--</transition>-->
+
+    <!--商户动态额度管理-->
+    <transition name="updateTemporaryEd">
+        <service-call name="nacs.mrchnt.admin.NacsMrchntFeeService.update#TemporaryEd"/>
+        <default-response url="."/>
+    </transition>
+
+    <!--商户限额管理-->
+    <transition name="createMrchntFeeQuota">
+        <service-call name="nacs.mrchnt.admin.NacsMrchntFeeService.create#MrchntFeeQuota"/>
+        <default-response url="."/>
+    </transition>
+    <transition name="updateMrchntFeeQuota">
+        <service-call name="nacs.mrchnt.admin.NacsMrchntFeeService.update#MrchntFeeQuota"/>
+        <default-response url="."/>
+    </transition>
+    <!--<transition name="deleteMrchntFeeQuota">
+        <service-call name="delete#nacs.merchant.MrchntFeeQuota"/>
+        <default-response url="."/>
+    </transition>
+    <transition name="findMrchntFeeQuota">
+        <default-response url="."/>
+    </transition>-->
+
+
+    <transition name="createMrchntType">
+        <service-call name="nacs.mrchnt.admin.NacsMrchntFeeService.create#MrchntType"/>
+        <default-response url="."/>
+    </transition>
+    <transition name="updateMrchntType">
+        <service-call name="nacs.mrchnt.admin.NacsMrchntFeeService.update#MrchntType"/>
+        <default-response url="."/>
+    </transition>
+    <transition name="createMrchntFee">
+        <service-call name="nacs.mrchnt.admin.NacsMrchntFeeService.create#MrchntFee"/>
+        <default-response url="."/>
+    </transition>
+    <transition name="updateMrchntFee">
+        <service-call name="nacs.mrchnt.admin.NacsMrchntFeeService.update#MrchntFee"/>
+        <default-response url="."/>
+    </transition>
+    <actions>
+        <!--子商户表查询-->
+        <set field="pageSize" value="15"/>
+        <entity-find entity-name="moqui.basic.Enumeration" list="signFlagList">
+            <econdition field-name="enumTypeId" value="SignFlag"/>
+        </entity-find>
+        <entity-find entity-name="moqui.basic.Enumeration" list="subMrchntFeeStList">
+            <econdition field-name="enumTypeId" value="OpnFlg"/>
+        </entity-find>
+        <entity-find entity-name="moqui.basic.Enumeration" list="subMrchntFeeValisignList">
+            <econdition field-name="enumTypeId" value="MerchantVerIfysts"/>
+        </entity-find>
+        <!--<entity-find entity-name="nacs.merchant.FirstMerchantView" list="firstMerchantList"/>-->
+        <entity-find entity-name="nacs.mrchnt.SubMrchntFee" list="SubMrchntFeeList">
+            <search-form-inputs/>
+            <econdition field-name="mrchntSeqId" from="mrchntSeqId"/>
+            <!--<econdition field-name="submrchntNo" from="submrchntNo"/>-->
+        </entity-find>
+        <entity-find entity-name="moqui.basic.Enumeration" list="subMrchntFeeLevelList">
+            <econdition field-name="enumTypeId" value="SubMrchntFeeLevel"/>
+        </entity-find>
+
+        <!--商户账务模式-->
+        <entity-find entity-name="moqui.basic.Enumeration" list="accountingModeList">
+            <econdition field-name="enumTypeId" value="AccountingMode2"/>
+        </entity-find>
+        <entity-find entity-name="nacs.mrchnt.MrchntFeeCoreAccounting" list="mrchntCoreAccountingList">
+            <econdition field-name="mrchntSeqId" from="mrchntSeqId"/>
+            <order-by field-name="trxCtgy"/>
+        </entity-find>
+
+        <!--商户清算方式-->
+        <entity-find entity-name="moqui.basic.Enumeration" list="clearModeList">
+            <econdition field-name="enumTypeId" value="ClearMode"/>
+        </entity-find>
+        <entity-find entity-name="nacs.mrchnt.MrchntFeeCoreClear" list="mrchntCoreClearList">
+            <econdition field-name="mrchntSeqId" from="mrchntSeqId"/>
+            <order-by field-name="trxCtgy"/>
+        </entity-find>
+        <set field="clearDay" value="0"/>
+        <set field="mm" value="+  "/>
+        <!--商户可用通道管理-->
+        <entity-find entity-name="nacs.mrchnt.MrchntFeeChannel" list="mrchntChannelList">
+            <econdition field-name="mrchntSeqId" from="mrchntSeqId"/>
+        </entity-find>
+        <!--<entity-find entity-name="nacs.merchant.FirstMerchantView" list="firstMerchantViewList"/>-->
+        <entity-find entity-name="nacs.channel.ChannelView" list="channelSeqViewList"/>
+        <!--商户业务品种管理-->
+        <!--<entity-find entity-name="nacs.merchant.FirstMerchantView" list="firstMerchantViewList"/>-->
+        <entity-find entity-name="nacs.mrchnt.MrchntType" list="mrchntTypeList">
+            <econdition field-name="mrchntSeqId" from="mrchntSeqId"/>
+        </entity-find>
+        <entity-find entity-name="moqui.basic.Enumeration" list="bussType2List" cache="true">
+            <econdition field-name="enumTypeId" value="BizTp"/>
+        </entity-find>
+        <entity-find entity-name="moqui.basic.Enumeration" list="upnFlgList">
+            <econdition field-name="enumTypeId" value="OpnFlg"/>
+        </entity-find>
+
+        <!--商户手续费管理-->
+        <entity-find entity-name="nacs.mrchnt.MrchntFee" list="MerchantFeeList">
+            <econdition field-name="mrchntSeqId" from="mrchntSeqId"/>
+        </entity-find>
+        <entity-find entity-name="moqui.basic.Enumeration" list="feeChargeModeParameterList">
+            <econdition field-name="enumTypeId" value="FeeChargeMode"/>
+        </entity-find>
+        <!--<entity-find entity-name="nacs.merchant.FirstMerchantView" list="firstMerchantViewList"/>-->
+
+        <!--商户动态额度管理-->
+        <entity-find entity-name="nacs.para.TemporaryEd" list="temporaryEdList">
+            <econdition field-name="mrchntSeqId" from="mrchntSeqId"/>
+        </entity-find>
+        <!--<entity-find entity-name="FirstMerchantView" list="firstMerchantViewList"/>-->
+
+        <!--商户限额管理-->
+        <entity-find entity-name="nacs.mrchnt.MrchntFeeQuota" list="mrchntQuotaList">
+            <econdition field-name="mrchntSeqId" from="mrchntSeqId"/>
+        </entity-find>
+        <entity-find entity-name="moqui.basic.Enumeration" list="trxCtgyList" cache="true">
+            <econdition field-name="enumTypeId" value="TrxCtgy"/>
+        </entity-find>
+        <!--<entity-find entity-name="FirstMerchantView" list="firstMerchantViewList"/>-->
+    </actions>
+
+
+    <widgets>
+        <!--页面顶部显示的信息-->
+        <form-single name="UserGroupForm" map="napPayOrgList">
+            <field name="mrchntNo"><default-field title="商户编号"><display/></default-field></field>
+            <field name="mrchntNm"><default-field title="商户名称"><display/></default-field></field>
+            <field name="version"><default-field title="协议版本"><display/></default-field></field>
+            <field-layout>
+                <field-row-sm col-sm="4">
+                    <field-ref name="mrchntNo"/>
+                    <field-ref name="mrchntNm"/>
+                    <field-ref name="version"/>
+                </field-row-sm>
+            </field-layout>
+        </form-single>
+
+        <container-row>
+            <row-col lg="6">
+                <container-box>
+                    <box-header>
+                        <label text="商户可用通道" type="h5"/>
+                    </box-header>
+                    <box-toolbar>
+                        <!--添加按钮的弹窗页面-->
+                        <container-dialog id="CreateMrchntFeeChannelDialog" button-text="添加">
+                            <form-single name="CreateMrchntFeeChannel" transition="createMrchntFeeChannel">
+                                <!--序号-->
+                                <field name="seqId" hide="true"/>
+                                <!--关联商户seqId-->
+                                <field name="mrchntSeqId" from="mrchntSeqId">
+                                    <default-field title="关联商户seqId">
+                                        <hidden/>
+                                    </default-field>
+                                </field>
+                                <!--商户编号-->
+                                <field name="mrchntNo" from="mrchntNo">
+                                    <default-field>
+                                        <hidden/>
+                                    </default-field>
+                                </field>
+                                <!--商户名称-->
+                                <field name="mrchntNm" from="mrchntNm">
+                                    <default-field>
+                                        <hidden/>
+                                    </default-field>
+                                </field>
+                                <!--协议版本号-->
+                                <field name="version" from="version">
+                                    <default-field>
+                                        <hidden/>
+                                    </default-field>
+                                </field>
+                                <!--关联支付通道-->
+                                <field name="channelSeqId">
+                                    <default-field title="支付通道">
+                                        <drop-down allow-empty="true">
+                                            <list-options list="channelSeqViewList" key="${channelNo}" text="${channelNm}"/>
+                                        </drop-down>
+                                    </default-field>
+                                </field>
+                                <!--&lt;!&ndash;接入版本&ndash;&gt;-->
+                                <!--<field name="version">-->
+                                <!--<default-field title="版本">-->
+                                <!--<drop-down>-->
+                                <!--<entity-options key="${enumId}" text="${description}">-->
+                                <!--<entity-find entity-name="moqui.basic.Enumeration">-->
+                                <!--<econdition field-name="enumTypeId" value="Version"/>-->
+                                <!--<order-by field-name="enumId"/>-->
+                                <!--</entity-find>-->
+                                <!--</entity-options>-->
+                                <!--</drop-down>-->
+                                <!--</default-field>-->
+                                <!--</field>-->
+                                <!--通道状态-->
+                                <field name="channelSt">
+                                    <default-field title="通道状态">
+                                        <drop-down allow-empty="true">
+                                            <entity-options key="${enumId}" text="${description}">
+                                                <entity-find entity-name="moqui.basic.Enumeration">
+                                                    <econdition field-name="enumTypeId" value="OpnFlg"/>
+                                                    <order-by field-name="enumId"/>
+                                                </entity-find>
+                                            </entity-options>
+                                        </drop-down>
+                                    </default-field>
+                                </field>
+                                <!--添加按钮-->
+                                <field name="submitButton">
+                                    <default-field title="Add"><submit icon="glyphicon glyphicon-plus"/></default-field>
+                                </field>
+                            </form-single>
+                        </container-dialog>
+                    </box-toolbar>
+                    <box-body>
+                        <form-list name="ListNacsMrchntFeeChannel" list="mrchntChannelList" transition="updateMrchntFeeChannel">
+                            <auto-fields-entity entity-name="nacs.mrchnt.MrchntFeeChannel"  field-type="edit">
+                                <exclude field-name="remarks1"/>
+                                <exclude field-name="remarks2"/>
+                                <exclude field-name="remarks3"/>
+                            </auto-fields-entity>
+                            <!--主页面中所查询出来的数据-->
+                            <!--序号-->
+                            <field name="seqId">
+                                <default-field>
+                                    <hidden/>
+                                </default-field>
+                            </field>
+                            <!--商户编号-->
+                            <field name="mrchntNo" from="mrchntNo">
+                                <default-field>
+                                    <hidden/>
+                                </default-field>
+                            </field>
+                            <!--商户名称-->
+                            <field name="mrchntNm" from="mrchntNm">
+                                <default-field>
+                                    <hidden/>
+                                </default-field>
+                            </field>
+                            <!--协议版本号-->
+                            <field name="version" from="version">
+                                <default-field>
+                                    <hidden/>
+                                </default-field>
+                            </field>
+                            <!--关联商户seqId-->
+                            <field name="mrchntSeqId" from="mrchntSeqId">
+                                <default-field title="关联商户seqId">
+                                    <hidden/>
+                                </default-field>
+                            </field>
+                            <!--通道编号-->
+                            <field name="channelSeqId">
+                                <default-field title="支付通道">
+                                    <display-entity entity-name="nacs.channel.Channel" key-field-name="seqId" text="${channelNm}"/>
+                                </default-field>
+                            </field>
+                            <!--&lt;!&ndash;接入版本&ndash;&gt;-->
+                            <!--<field name="version">-->
+                            <!--<default-field title="版本">-->
+                            <!--<display/>-->
+                            <!--</default-field>-->
+                            <!--</field>-->
+                            <field name="version">
+                                <default-field title="协议版本">
+                                    <hidden/>
+                                </default-field>
+                            </field>
+                            <!--通道状态-->
+                            <field name="channelSt">
+                                <default-field title="通道状态">
+                                    <drop-down size="1">
+                                        <entity-options key="${enumId}" text="${description}">
+                                            <entity-find entity-name="moqui.basic.Enumeration">
+                                                <econdition field-name="enumTypeId" value="OpnFlg"/>
+                                                <order-by field-name="enumId"/>
+                                            </entity-find>
+                                        </entity-options>
+                                    </drop-down>
+                                    <!--&lt;!&ndash;<display-entity entity-name="moqui.basic.Enumeration" key-field-name="enumId"&ndash;&gt;-->
+                                    <!--&lt;!&ndash;text="${description}"/>&ndash;&gt;-->
+                                </default-field>
+                            </field>
+                            <!--更新按钮-->
+                            <field name="submitButton">
+                                <default-field title="Update">
+                                    <submit icon="glyphicon glyphicon-edit"/>
+                                </default-field>
+                            </field>
+                        </form-list>
+                    </box-body>
+                </container-box>
+            </row-col>
+            <row-col lg="6">
+                <container-box>
+                    <box-header>
+                        <label text="商户账务模式" type="h5"/>
+                    </box-header>
+                    <box-toolbar>
+                        <!--添加按钮的弹窗页面-->
+                        <container-dialog id="CreateMrchntFeeCoreAccountingDialog" button-text="添加">
+                            <form-single name="CreateMrchntFeeCoreAccounting" transition="createMrchntFeeCoreAccounting">
+                                <!--序号-->
+                                <field name="seqId" hide="true"/>
+                                <!--关联商户seqId-->
+                                <field name="mrchntSeqId" from="mrchntSeqId">
+                                    <default-field title="关联商户seqId">
+                                        <hidden/>
+                                    </default-field>
+                                </field>
+                                <!--商户编号-->
+                                <field name="mrchntNo" from="mrchntNo">
+                                    <default-field>
+                                        <hidden/>
+                                    </default-field>
+                                </field>
+                                <!--商户名称-->
+                                <field name="mrchntNm" from="mrchntNm">
+                                    <default-field>
+                                        <hidden/>
+                                    </default-field>
+                                </field>
+                                <!--协议版本号-->
+                                <field name="version" from="version">
+                                    <default-field title="协议版本号">
+                                        <hidden/>
+                                    </default-field>
+                                </field>
+                                <!--交易类型-->
+                                <field name="trxCtgy">
+                                    <default-field title="交易类型">
+                                        <drop-down allow-empty="true">
+                                            <list-options list="trxCtgyList" key="${enumId}" text="${description}"/>
+                                        </drop-down>
+                                    </default-field>
+                                </field>
+                                <!--账务方式-->
+                                <field name="accountingMode">
+                                    <default-field title="账务方式">
+                                       <drop-down allow-empty="true">
+                                           <dynamic-options transition="getAccountingMode" value-field="enumId" label-field="label">
+                                               <depends-on field="trxCtgy"/>
+                                           </dynamic-options>
+                                       </drop-down>
+                                    </default-field>
+                                </field>
+                                <!--添加按钮-->
+                                <field name="submitButton">
+                                    <default-field title="Add"><submit icon="glyphicon glyphicon-plus"/></default-field>
+                                </field>
+                            </form-single>
+                        </container-dialog>
+                    </box-toolbar>
+                    <box-body>
+                        <form-list name="ListNacsMrchntFeeCoreAccounting" list="mrchntCoreAccountingList" transition="updateMrchntFeeCoreAccounting">
+                            <auto-fields-entity entity-name="nacs.mrchnt.MrchntFeeCoreAccounting"  field-type="edit">
+                                <exclude field-name="remarks1"/>
+                                <exclude field-name="remarks2"/>
+                                <exclude field-name="remarks3"/>
+                            </auto-fields-entity>
+                            <!--主页面中所查询出来的数据-->
+                            <!--序号-->
+                            <field name="seqId">
+                                <default-field>
+                                    <hidden/>
+                                </default-field>
+                            </field>
+                            <!--关联商户seqId-->
+                            <field name="mrchntSeqId" from="mrchntSeqId">
+                                <default-field title="关联商户seqId">
+                                    <hidden/>
+                                </default-field>
+                            </field>
+                            <!--商户编号-->
+                            <field name="mrchntNo" from="mrchntNo">
+                                <default-field>
+                                    <hidden/>
+                                </default-field>
+                            </field>
+                            <!--商户名称-->
+                            <field name="mrchntNm" from="mrchntNm">
+                                <default-field>
+                                    <hidden/>
+                                </default-field>
+                            </field>
+                            <!--协议版本号-->
+                            <field name="version" from="version">
+                                <default-field>
+                                    <hidden/>
+                                </default-field>
+                            </field>
+                            <field name="trxCtgy">
+                                <default-field title="交易类型">
+                                    <display-entity entity-name="moqui.basic.Enumeration" key-field-name="enumId"
+                                                    text="${description}"/>
+                                </default-field>
+                            </field>
+                            <field name="accountingMode">
+                                <default-field title="账务方式">
+                                    <drop-down>
+                                        <dynamic-options transition="getAccountingMode" value-field="enumId" label-field="label">
+                                            <depends-on field="trxCtgy"/>
+                                        </dynamic-options>
+                                    </drop-down>
+                                </default-field>
+                            </field>
+                            <!--更新按钮-->
+                            <field name="submitButton">
+                                <default-field title="Update">
+                                    <submit icon="glyphicon glyphicon-edit"/>
+                                </default-field>
+                            </field>
+                        </form-list>
+                    </box-body>
+                </container-box>
+            </row-col>
+        </container-row>
+        <container-row>
+            <row-col lg="6">
+                <container-box>
+                    <box-header>
+                        <label text="商户清算模式" type="h5"/>
+                    </box-header>
+                    <box-toolbar>
+                        <!--添加按钮的弹窗页面-->
+                        <container-dialog id="CreateMrchntFeeCoreClearDialog" button-text="添加">
+                            <form-single name="CreateMrchntFeeCoreClear" transition="createMrchntFeeCoreClear">
+                                <!--序号-->
+                                <field name="seqId" hide="true"/>
+                                <!--关联商户seqId-->
+                                <field name="mrchntSeqId" from="mrchntSeqId">
+                                    <default-field title="关联商户seqId">
+                                        <hidden/>
+                                    </default-field>
+                                </field>
+                                <!--商户编号-->
+                                <field name="mrchntNo" from="mrchntNo">
+                                    <default-field>
+                                        <hidden/>
+                                    </default-field>
+                                </field>
+                                <!--商户名称-->
+                                <field name="mrchntNm" from="mrchntNm">
+                                    <default-field>
+                                        <hidden/>
+                                    </default-field>
+                                </field>
+                                <!--协议版本号-->
+                                <field name="version" from="version">
+                                    <default-field>
+                                        <hidden/>
+                                    </default-field>
+                                </field>
+                                <!--交易类型-->
+                                <field name="trxCtgy">
+                                    <default-field title="交易类型">
+                                        <drop-down allow-empty="true">
+                                            <list-options list="trxCtgyList" key="${enumId}" text="${description}"/>
+                                        </drop-down>
+                                    </default-field>
+                                </field>
+                                <!--清算方式-->
+                                <field name="clearMode">
+                                    <default-field title="清算方式">
+                                        <drop-down allow-empty="true">
+                                            <list-options list="clearModeList" key="${enumId}" text="${description}"/>
+                                        </drop-down>
+                                    </default-field>
+                                </field>
+                                <field name="clearDay">
+                                    <default-field title="清算日期">
+                                        <text-line size="2"/>
+                                    </default-field>
+                                </field>
+                                <!--添加按钮-->
+                                <field name="submitButton">
+                                    <default-field title="Add"><submit icon="glyphicon glyphicon-plus"/></default-field>
+                                </field>
+                            </form-single>
+                        </container-dialog>
+                    </box-toolbar>
+                    <box-body>
+                        <form-list name="ListNacsMrchntFeeCoreClear" list="mrchntCoreClearList" transition="updateMrchntFeeCoreClear">
+                           <!-- <auto-fields-entity entity-name="nacs.mrchnt.MrchntFeeCoreClear"  field-type="edit">
+                                <exclude field-name="remarks1"/>
+                                <exclude field-name="remarks2"/>
+                                <exclude field-name="remarks3"/>
+                            </auto-fields-entity>-->
+                            <!--主页面中所查询出来的数据-->
+                            <!--序号-->
+                            <field name="seqId">
+                                <default-field>
+                                    <hidden/>
+                                </default-field>
+                            </field>
+                            <!--关联商户seqId-->
+                            <field name="mrchntSeqId" from="mrchntSeqId">
+                                <default-field title="关联商户seqId">
+                                    <hidden/>
+                                </default-field>
+                            </field>
+                            <!--商户编号-->
+                            <field name="mrchntNo" from="mrchntNo">
+                                <default-field>
+                                    <hidden/>
+                                </default-field>
+                            </field>
+                            <!--商户名称-->
+                            <field name="mrchntNm" from="mrchntNm">
+                                <default-field>
+                                    <hidden/>
+                                </default-field>
+                            </field>
+                            <!--协议版本号-->
+                            <field name="version" from="version">
+                                <default-field>
+                                    <hidden/>
+                                </default-field>
+                            </field>
+                            <field name="trxCtgy">
+                                <default-field title="交易类型">
+                                    <display-entity entity-name="moqui.basic.Enumeration" key-field-name="enumId"
+                                                    text="${description}"/>
+                                </default-field>
+                            </field>
+                            <!--清算方式-->
+                            <field name="clearMode">
+                                <default-field title="清算方式">
+                                    <drop-down>
+                                        <list-options list="clearModeList" key="${enumId}" text="${description}"/>
+                                    </drop-down>
+                                </default-field>
+                            </field>
+                            <field name="mm" from="mm" align="center">
+                                <default-field title=" ">
+                                    <display/>
+                                </default-field>
+                            </field>
+                            <field name="clearDay" align="center">
+                                <!--<conditional-field condition="clearMode == 'CURRENT_CLEAR'" title="清算日期">-->
+                                    <!--<display/>-->
+                                <!--</conditional-field>-->
+                                <!--<conditional-field condition="clearMode == 'WORKDAY_CLEAR'|| clearMode == 'DAY_CLEAR'">-->
+                                    <!--<text-line size="2"/>-->
+                                <!--</conditional-field>-->
+                                <default-field title="清算日期">
+                                    <text-line size="2"/>
+                                </default-field>
+                            </field>
+                            <!--更新按钮-->
+                            <field name="submitButton">
+                                <default-field title="Update">
+                                    <submit icon="glyphicon glyphicon-edit"/>
+                                </default-field>
+                            </field>
+                        </form-list>
+                    </box-body>
+                </container-box>
+            </row-col>
+            <row-col lg="6">
+                <container-box>
+                    <box-header>
+                        <label text="商户手续费" type="h5"/>
+                    </box-header>
+                    <box-toolbar>
+                        <!--添加按钮的弹窗页面-->
+                        <container-dialog id="CreateMrchntFeeDialog" button-text="添加">
+                            <form-single name="CreateMrchntFee" transition="createMrchntFee">
+                                <auto-fields-entity entity-name="nacs.mrchnt.MrchntFee"  field-type="edit">
+                                    <exclude field-name="remarks1"/>
+                                    <exclude field-name="remarks2"/>
+                                    <exclude field-name="remarks3"/>
+                                </auto-fields-entity>
+                                <!--序号-->
+                                <field name="seqId" hide="true"/>
+                                <!--一级商户编号-->
+                                <field name="mrchntSeqId" from="mrchntSeqId">
+                                    <default-field title="关联商户">
+                                        <hidden/>
+                                    </default-field>
+                                </field>
+                                <!--商户编号-->
+                                <field name="mrchntNo" from="mrchntNo">
+                                    <default-field>
+                                        <hidden/>
+                                    </default-field>
+                                </field>
+                                <!--商户名称-->
+                                <field name="mrchntNm" from="mrchntNm">
+                                    <default-field>
+                                        <hidden/>
+                                    </default-field>
+                                </field>
+                                <!--协议版本号-->
+                                <field name="version" from="version">
+                                    <default-field>
+                                        <hidden/>
+                                    </default-field>
+                                </field>
+                                <!--&lt;!&ndash;版本&ndash;&gt;-->
+                                <!--<field name="version">-->
+                                <!--<default-field title="版本">-->
+                                <!--<drop-down>-->
+                                <!--<entity-options key="${enumId}" text="${description}">-->
+                                <!--<entity-find entity-name="moqui.basic.Enumeration">-->
+                                <!--<econdition field-name="enumTypeId" value="Version"/>-->
+                                <!--<order-by field-name="enumId"/>-->
+                                <!--</entity-find>-->
+                                <!--</entity-options>-->
+                                <!--</drop-down>-->
+                                <!--</default-field>-->
+                                <!--</field>-->
+                                <!--业务类型-->
+                                <field name="trxCtgy">
+                                    <default-field title="交易类型">
+                                        <drop-down allow-empty="true">
+                                            <entity-options key="${enumId}" text="${description}">
+                                                <entity-find entity-name="moqui.basic.Enumeration">
+                                                    <econdition field-name="enumTypeId" value="TrxCtgy"/>
+                                                    <order-by field-name="enumId"/>
+                                                </entity-find>
+                                            </entity-options>
+                                        </drop-down>
+                                    </default-field>
+                                </field>
+                                <!--手续费收取方式-->
+                                <field name="feeChargeMode">
+                                    <default-field title="收取方式">
+                                            <drop-down allow-empty="true">
+                                                <list-options list="feeChargeModeParameterList" text="${description}" key="${enumId}"/>
+                                            </drop-down>
+                                    </default-field>
+                                </field>
+                                <!--当月收取金额-->
+                                <field name="amtMonth">
+                                    <default-field title="当月金额">
+                                        <text-line size="10"/>
+                                    </default-field>
+                                </field>
+                                <!--单笔收取金额-->
+                                <field name="amt">
+                                    <default-field title="单笔金额">
+                                        <text-line size="10"/>
+                                    </default-field>
+                                </field>
+                                <!--手续费费率-->
+                                <field name="feeChargeRate">
+                                    <default-field title="费率">
+                                        <text-line size="10"/>
+                                    </default-field>
+                                </field>
+                                <!--确定按钮-->
+                                <field name="submitButton">
+                                    <default-field title="Add">
+                                        <submit icon="glyphicon glyphicon-plus"/>
+                                    </default-field>
+                                </field>
+                            </form-single>
+                        </container-dialog>
+                    </box-toolbar>
+                    <box-body>
+                        <form-list name="ListMrchntFee" list="MerchantFeeList" transition="updateMrchntFee">
+                            <auto-fields-entity entity-name="nacs.mrchnt.MrchntFee"  field-type="edit">
+                                <exclude field-name="remarks1"/>
+                                <exclude field-name="remarks2"/>
+                                <exclude field-name="remarks3"/>
+                            </auto-fields-entity>
+                            <!--主页面中所查询出来的数据-->
+                            <!--序号-->
+                            <field name="seqId">
+                                <default-field>
+                                    <hidden/>
+                                </default-field>
+                            </field>
+                            <!--商户编号-->
+                            <field name="mrchntNo" from="mrchntNo">
+                                <default-field>
+                                    <hidden/>
+                                </default-field>
+                            </field>
+                            <!--商户名称-->
+                            <field name="mrchntNm" from="mrchntNm">
+                                <default-field>
+                                    <hidden/>
+                                </default-field>
+                            </field>
+                            <!--协议版本号-->
+                            <field name="version" from="version">
+                                <default-field>
+                                    <hidden/>
+                                </default-field>
+                            </field>
+                            <!--一级商户编号-->
+                            <field name="mrchntSeqId">
+                                <default-field title="关联商户">
+                                    <hidden/>
+                                </default-field>
+                            </field>
+                            <!--&lt;!&ndash;版本&ndash;&gt;-->
+                            <!--<field name="version">-->
+                            <!--<default-field title="版本">-->
+                            <!--<display/>-->
+                            <!--</default-field>-->
+                            <!--</field>-->
+                            <!--业务类型-->
+                            <field name="trxCtgy">
+                                <default-field title="交易类型">
+                                    <display-entity entity-name="moqui.basic.Enumeration" key-field-name="enumId"
+                                                    text="${description}"/>
+                                </default-field>
+                            </field>
+                            <field name="version">
+                                <default-field title="协议版本">
+                                    <hidden/>
+                                </default-field>
+                            </field>
+                            <!--手续费收取方式-->
+                            <field name="feeChargeMode">
+                                <default-field title="收取方式">
+                                    <drop-down>
+                                        <list-options list="feeChargeModeParameterList" text="${description}" key="${enumId}"/>
+                                    </drop-down>
+                                </default-field>
+                            </field>
+                            <!--当月收取金额-->
+                            <field name="amtMonth" align="right">
+                                <default-field title="当月金额">
+                                    <text-line size="5"/>
+                                </default-field>
+                            </field>
+                            <!--单笔收取金额-->
+                            <field name="amt" align="right">
+                                <default-field title="单笔金额">
+                                    <text-line size="5"/>
+                                </default-field>
+                            </field>
+                            <!--手续费费率-->
+                            <field name="feeChargeRate" align="right">
+                                <default-field title="费率">
+                                    <text-line size="5"/>
+                                </default-field>
+                            </field>
+                            <!--确定按钮-->
+                            <field name="submitButton">
+                                <default-field title="更新">
+                                    <submit icon="glyphicon glyphicon-edit"/>
+                                </default-field>
+                            </field>
+                        </form-list>
+                    </box-body>
+                </container-box>
+            </row-col>
+        </container-row>
+        <container-row>
+            <row-col lg="6">
+                <container-box>
+                    <box-header>
+                        <label text="商户业务品种" type="h5"/>
+                    </box-header>
+                    <box-toolbar>
+                        <!--添加按钮的弹窗页面-->
+                        <container-dialog id="CreateMrchntTypeDialog" button-text="添加">
+                            <form-single name="CreateMrchntType" transition="createMrchntType">
+                                <auto-fields-entity entity-name="nacs.mrchnt.MrchntType"  field-type="edit">
+                                    <exclude field-name="remarks1"/>
+                                    <exclude field-name="remarks2"/>
+                                </auto-fields-entity>
+                                <field name="seqId" hide="true"/>
+                                <field name="mrchntSeqId">
+                                    <default-field title="关联商户">
+                                        <hidden/>
+                                    </default-field>
+                                </field>
+                                <!--商户编号-->
+                                <field name="mrchntNo" from="mrchntNo">
+                                    <default-field>
+                                        <hidden/>
+                                    </default-field>
+                                </field>
+                                <!--商户名称-->
+                                <field name="mrchntNm" from="mrchntNm">
+                                    <default-field>
+                                        <hidden/>
+                                    </default-field>
+                                </field>
+                                <!--协议版本号-->
+                                <field name="version" from="version">
+                                    <default-field>
+                                        <hidden/>
+                                    </default-field>
+                                </field>
+                                <field name="bizTp">
+                                    <default-field title="业务种类">
+                                        <drop-down allow-empty="true">
+                                            <list-options list="bussType2List" key="${enumId}" text="${description}"/>
+                                        </drop-down>
+                                    </default-field>
+                                </field>
+                                <field name="bizTpSt">
+                                    <default-field title="支持状态">
+                                        <drop-down allow-empty="true">
+                                            <list-options list="upnFlgList" key="${enumId}" text="${description}"/>
+                                        </drop-down>
+                                    </default-field>
+                                </field>
+                                <field name="submitButton">
+                                    <default-field title="Add">
+                                        <submit icon="glyphicon glyphicon-plus"/>
+                                    </default-field>
+                                </field>
+                            </form-single>
+                        </container-dialog>
+                    </box-toolbar>
+                    <box-body>
+                        <form-list name="ListMrchntType" list="mrchntTypeList"
+                                   transition="updateMrchntType">
+                            <auto-fields-entity entity-name="nacs.mrchnt.MrchntType"  field-type="edit">
+                                <exclude field-name="remarks1"/>
+                                <exclude field-name="remarks2"/>
+                            </auto-fields-entity>
+                            <field name="seqId">
+                                <default-field>
+                                    <hidden/>
+                                </default-field>
+                            </field>
+                            <field name="mrchntSeqId">
+                                <default-field title="关联商户">
+                                    <hidden/>
+                                </default-field>
+                            </field>
+                            <!--商户编号-->
+                            <field name="mrchntNo" from="mrchntNo">
+                                <default-field>
+                                    <hidden/>
+                                </default-field>
+                            </field>
+                            <!--商户名称-->
+                            <field name="mrchntNm" from="mrchntNm">
+                                <default-field>
+                                    <hidden/>
+                                </default-field>
+                            </field>
+                            <!--协议版本号-->
+                            <field name="version" from="version">
+                                <default-field>
+                                    <hidden/>
+                                </default-field>
+                            </field>
+                            <field name="bizTp">
+                                <default-field title="业务种类">
+                                    <display-entity entity-name="moqui.basic.Enumeration" key-field-name="enumId"
+                                                    text="${description}"/>
+                                </default-field>
+                            </field>
+                            <field name="version">
+                                <default-field title="协议版本">
+                                    <hidden/>
+                                </default-field>
+                            </field>
+                            <field name="bizTpSt">
+                                <default-field title="支持状态">
+                                    <drop-down>
+                                        <list-options list="upnFlgList" key="${enumId}" text="${description}"/>
+                                    </drop-down>
+                                </default-field>
+                            </field>
+                            <field name="submitButton">
+                                <default-field title="更新">
+                                    <submit icon="glyphicon glyphicon-edit"/>
+                                </default-field>
+                            </field>
+                        </form-list>
+                    </box-body>
+                </container-box>
+            </row-col>
+            <row-col lg="6">
+                <container-box>
+                    <box-header>
+                        <label text="商户限额" type="h5"/>
+                    </box-header>
+                    <box-toolbar>
+                        <!--添加按钮的弹窗页面-->
+                        <container-dialog id="CreateMerchantQuotaDialog" button-text="添加">
+                            <form-single name="CreateMrchntFeeQuota" transition="createMrchntFeeQuota">
+                                <!--序号-->
+                                <field name="seqId" hide="true"/>
+                                <!--一级商户编号-->
+                                <field name="mrchntSeqId">
+                                    <default-field title="关联商户">
+                                        <hidden/>
+                                    </default-field>
+                                </field>
+                                <!--商户编号-->
+                                <field name="mrchntNo" from="mrchntNo">
+                                    <default-field>
+                                        <hidden/>
+                                    </default-field>
+                                </field>
+                                <!--商户名称-->
+                                <field name="mrchntNm" from="mrchntNm">
+                                    <default-field>
+                                        <hidden/>
+                                    </default-field>
+                                </field>
+                                <!--协议版本号-->
+                                <field name="version" from="version">
+                                    <default-field>
+                                        <hidden/>
+                                    </default-field>
+                                </field>
+                                <!--业务类型-->
+                                <field name="trxCtgy">
+                                    <default-field title="交易类型">
+                                        <drop-down allow-empty="true">
+                                            <list-options list="trxCtgyList" key="${enumId}" text="${description}"/>
+                                        </drop-down>
+                                    </default-field>
+                                </field>
+                                <!--单笔交易限额-->
+                                <field name="singletranLimit">
+                                    <default-field title="单笔交易限额">
+                                        <text-line size="16"/>
+                                    </default-field>
+                                </field>
+                                <!--当日累计最大限额-->
+                                <field name="singlTodayLimit">
+                                    <default-field title="当日累计最大限额" >
+                                        <text-line size="16"/>
+                                    </default-field>
+                                </field>
+                                <!--当日累计最大笔数-->
+                                <field name="singlTodaySum">
+                                    <default-field title="当日累计最大笔数" >
+                                        <text-line size="8"/>
+                                    </default-field>
+                                </field>
+                                <!--添加按钮-->
+                                <field name="submitButton">
+                                    <default-field title="Add"><submit icon="glyphicon glyphicon-plus"/></default-field>
+                                </field>
+                            </form-single>
+                        </container-dialog>
+                    </box-toolbar>
+                    <box-body>
+                        <form-list name="ListNacsMrchntFeeQuota" list="mrchntQuotaList" transition="updateMrchntFeeQuota">
+                            <auto-fields-entity entity-name="nacs.mrchnt.MrchntFeeQuota"  field-type="edit">
+                                <exclude field-name="remarks1"/>
+                                <exclude field-name="remarks3"/>
+                                <exclude field-name="remarks4"/>
+                                <exclude field-name="remarks5"/>
+                                <exclude field-name="remarks2"/>
+                            </auto-fields-entity>
+                            <!--主页面中所查询出来的数据-->
+                            <!--序号-->
+                            <field name="seqId" align="left">
+                                <default-field>
+                                    <hidden/>
+                                </default-field>
+                            </field>
+                            <!--关联商户-->
+                            <field name="mrchntSeqId" align="center">
+                                <default-field title="关联商户">
+                                    <hidden/>
+                                </default-field>
+                            </field>
+                            <!--商户编号-->
+                            <field name="mrchntNo" from="mrchntNo">
+                                <default-field>
+                                    <hidden/>
+                                </default-field>
+                            </field>
+                            <!--商户名称-->
+                            <field name="mrchntNm" from="mrchntNm">
+                                <default-field>
+                                    <hidden/>
+                                </default-field>
+                            </field>
+                            <!--协议版本号-->
+                            <field name="version" from="version">
+                                <default-field>
+                                    <hidden/>
+                                </default-field>
+                            </field>
+                            <!--交易类型-->
+                            <field name="trxCtgy">
+                                <default-field title="交易类型">
+                                    <display-entity entity-name="moqui.basic.Enumeration" key-field-name="enumId"
+                                                    text="${description}"/>
+                                </default-field>
+                            </field>
+                            <field name="version">
+                                <default-field title="协议版本">
+                                    <hidden/>
+                                </default-field>
+                            </field>
+                            <!--单笔交易限额-->
+                            <field name="singletranLimit" align="right">
+                                <default-field title="单笔交易限额">
+                                    <text-line size="10"/>
+                                </default-field>
+                            </field>
+                            <!--当日累计最大限额-->
+                            <field name="singlTodayLimit" align="right">
+                                <default-field title="当日累计最大限额">
+                                    <text-line size="10"/>
+                                </default-field>
+                            </field>
+                            <!--当日累计最大笔数-->
+                            <field name="singlTodaySum" align="center">
+                                <default-field title="当日累计最大笔数">
+                                    <text-line size="5"/>
+                                </default-field>
+                            </field>
+                            <!--更新按钮-->
+                            <field name="submitButton">
+                                <default-field title="Update">
+                                    <submit icon="glyphicon glyphicon-edit"/>
+                                </default-field>
+                            </field>
+                        </form-list>
+                    </box-body>
+                </container-box>
+            </row-col>
+        </container-row>
+        <container-row>
+            <row-col>
+                <container-box>
+                    <box-header>
+                        <label text="商户动态额度" type="h5"/>
+                    </box-header>
+                    <box-body>
+                        <form-list name="ListNacsParaTemporaryEd" list="temporaryEdList" transition="updateTemporaryEd">
+                            <auto-fields-entity entity-name="nacs.para.TemporaryEd"  field-type="edit">
+                                <exclude field-name="remarks1"/>
+                                <exclude field-name="remarks2"/>
+                            </auto-fields-entity>
+                            <!--主页面中所查询出来的数据-->
+                            <!--序号-->
+                            <field name="seqId">
+                                <default-field>
+                                    <hidden/>
+                                </default-field>
+                            </field>
+                            <!--关联商户Id-->
+                            <field name="mrchntSeqId">
+                                <default-field>
+                                    <hidden/>
+                                </default-field>
+                            </field>
+                            <!--商户编号-->
+                            <field name="mrchntNo" from="mrchntNo">
+                                <default-field>
+                                    <hidden/>
+                                </default-field>
+                            </field>
+                            <!--商户名称-->
+                            <field name="mrchntNm" from="mrchntNm">
+                                <default-field>
+                                    <hidden/>
+                                </default-field>
+                            </field>
+                            <!--协议版本号-->
+                            <field name="version" from="version">
+                                <default-field>
+                                    <hidden/>
+                                </default-field>
+                            </field>
+                            <!--备付金账户-->
+                            <field name="acctId" align="center">
+                                <default-field title="备付金账户">
+                                    <display/>
+                                </default-field>
+                            </field>
+                            <!--冻结金额-->
+                            <field name="freezeAmt" align="right">
+                                <default-field title="冻结金额">
+                                    <text-line size="16"/>
+                                </default-field>
+                            </field>
+                            <!--透支金额-->
+                            <field name="overAmt" align="right">
+                                <default-field title="透支金额">
+                                    <text-line size="16"/>
+                                </default-field>
+                            </field>
+                            <!--冻结日期-->
+                            <field name="freezeDate" align="center">
+                                <default-field title="冻结日期">
+                                    <date-time type="date" size="16"/>
+                                </default-field>
+                            </field>
+                            <!--冻结编号-->
+                            <field name="freezeNo" align="center">
+                                <default-field title="冻结编号">
+                                    <display/>
+                                </default-field>
+                            </field>
+                            <!--冻结与解冻标志(0-冻结，1-解冻)-->
+                            <field name="freezeFlag" align="center">
+                                <default-field title="冻结与解冻标志">
+                                    <drop-down>
+                                        <entity-options key="${enumId}" text="${description}">
+                                            <entity-find entity-name="moqui.basic.Enumeration">
+                                                <econdition field-name="enumTypeId" value="FreezeFlag"/>
+                                                <order-by field-name="enumId"/>
+                                            </entity-find>
+                                        </entity-options>
+                                    </drop-down>
+                                </default-field>
+                            </field>
+                            <!--更新按钮-->
+                            <field name="butten">
+                                <default-field title="更新">
+                                    <submit icon="glyphicon glyphicon-edit"/>
+                                </default-field>
+                            </field>
+                        </form-list>
+                    </box-body>
+                </container-box>
+            </row-col>
+        </container-row>
+        <container-row>
+            <row-col>
+                <container-box>
+                    <box-header>
+                        <label text="子商户信息" type="h5"/>
+                    </box-header>
+                    <box-toolbar>
+                        <!--添加按钮的弹窗页面-->
+                        <container-dialog id="CreateNacsSubMrchntFeeDialog" button-text="添加">
+                            <form-single name="CreateNacsSubMrchntFee" transition="createNacsSubMrchntFee">
+                                <auto-fields-entity entity-name="nacs.mrchnt.SubMrchntFee"  field-type="edit">
+                                    <exclude field-name="remarks1"/>
+                                    <exclude field-name="remarks2"/>
+                                    <exclude field-name="remarks3"/>
+                                    <exclude field-name="seqId"/>
+                                </auto-fields-entity>
+                                <field name="mrchntSeqId">
+                                    <default-field title="关联商户">
+                                        <!--<drop-down>-->
+                                        <!--<list-options list="firstMerchantList" key="${mrchntNo}" text="${mrchntNo}-${mrchntNm}"/>-->
+                                        <!--</drop-down>-->
+                                        <hidden/>
+                                    </default-field>
+                                </field>
+                                <!--商户编号-->
+                                <field name="mrchntNo" from="mrchntNo">
+                                    <default-field>
+                                        <hidden/>
+                                    </default-field>
+                                </field>
+                                <!--商户名称-->
+                                <field name="mrchntNm" from="mrchntNm">
+                                    <default-field>
+                                        <hidden/>
+                                    </default-field>
+                                </field>
+                                <!--协议版本-->
+                                <field name="version" from="version">
+                                    <default-field>
+                                        <hidden/>
+                                    </default-field>
+                                </field>
+                                <field name="subMrchntFeeNo">
+                                    <default-field title="编号"/>
+                                </field>
+                                <field name="subMrchntFeeNm">
+                                    <default-field title="名称"/>
+                                </field>
+                                <field name="subMrchntFeeLevel">
+                                    <default-field title="级别">
+                                        <drop-down allow-empty="true">
+                                            <list-options list="subMrchntFeeLevelList" text="${description}"/>
+                                        </drop-down>
+                                    </default-field>
+                                </field>
+                                <field name="subMrchntFeeSt">
+                                    <default-field title="启用标志">
+                                        <drop-down allow-empty="true">
+                                            <list-options list="subMrchntFeeStList" text="${description}"/>
+                                        </drop-down>
+                                    </default-field>
+                                </field>
+                                <field name="signFlag">
+                                    <default-field title="签约标志">
+                                        <drop-down allow-empty="true">
+                                            <list-options list="signFlagList" text="${description}"/>
+                                        </drop-down>
+                                    </default-field>
+                                </field>
+                                <field name="subMrchntFeeValisign">
+                                    <default-field title="签约验证需求">
+                                        <drop-down allow-empty="true">
+                                            <list-options list="subMrchntFeeValisignList" text="${description}"/>
+                                        </drop-down>
+                                    </default-field>
+                                </field>
+                                <field name="submitButton">
+                                    <default-field title="Add">
+                                        <submit icon="glyphicon glyphicon-plus"/>
+                                    </default-field>
+                                </field>
+                            </form-single>
+                        </container-dialog>
+                    </box-toolbar>
+                    <box-body>
+                        <form-list name="ListNacsSubMrchntFee" list="SubMrchntFeeList" transition="updateNacsSubMrchntFee">
+                            <auto-fields-entity entity-name="nacs.mrchnt.SubMrchntFee" field-type="edit">
+                                <exclude field-name="remarks1"/>
+                                <exclude field-name="remarks2"/>
+                                <exclude field-name="remarks3"/>
+                            </auto-fields-entity>
+                            <field name="seqId">
+                                <default-field title="序号">
+                                    <hidden/>
+                                </default-field>
+                            </field>
+                            <field name="mrchntSeqId">
+                                <default-field title="关联商户seqId">
+                                    <hidden/>
+                                </default-field>
+                            </field>
+                            <field name="subMrchntFeeNo">
+                                <default-field title="编号">
+                                    <display/>
+                                </default-field>
+                            </field>
+                            <field name="subMrchntFeeNm">
+                                <default-field title="名称">
+                                    <display/>
+                                </default-field>
+                            </field>
+                            <field name="subMrchntFeeLevel">
+                                <default-field title="级别">
+                                    <drop-down>
+                                        <list-options list="subMrchntFeeLevelList" text="${description}"/>
+                                    </drop-down>
+                                </default-field>
+                            </field>
+                            <!--&lt;!&ndash;<field name="mrchntNo">&ndash;&gt;-->
+                            <!--&lt;!&ndash;<default-field title="一级商户编号">&ndash;&gt;-->
+                            <!--&lt;!&ndash;<display/>&ndash;&gt;-->
+                            <!--&lt;!&ndash;</default-field>&ndash;&gt;-->
+                            <!--&lt;!&ndash;</field>&ndash;&gt;-->
+                            <!--&lt;!&ndash;<field name="mrchntNm">&ndash;&gt;-->
+                            <!--&lt;!&ndash;<default-field title="一级商户名称">&ndash;&gt;-->
+                            <!--&lt;!&ndash;<display/>&ndash;&gt;-->
+                            <!--&lt;!&ndash;</default-field>&ndash;&gt;-->
+                            <!--&lt;!&ndash;</field>&ndash;&gt;-->
+                            <field name="subMrchntFeeSt">
+                                <default-field title="启用标志">
+                                    <!--&lt;!&ndash;<display-entity entity-name="moqui.basic.Enumeration" key-field-name="enumId"&ndash;&gt;-->
+                                    <!--&lt;!&ndash;text="${description}"/>&ndash;&gt;-->
+                                    <drop-down>
+                                        <list-options list="subMrchntFeeStList" text="${description}"/>
+                                    </drop-down>
+                                </default-field>
+                            </field>
+                            <field name="signFlag">
+                                <default-field title="签约标志">
+                                    <drop-down>
+                                        <list-options list="signFlagList" text="${description}"/>
+                                    </drop-down>
+                                </default-field>
+                            </field>
+                            <field name="subMrchntFeeValisign">
+                                <default-field title="签约验证需求">
+                                    <drop-down>
+                                        <list-options list="subMrchntFeeValisignList" text="${description}"/>
+                                    </drop-down>
+                                </default-field>
+                            </field>
+                            <!--更新按钮-->
+                            <field name="butten">
+                                <default-field title="">
+                                    <submit text="更新"/>
+                                </default-field>
+                            </field>
+                            <!--&lt;!&ndash;&lt;!&ndash;注销按钮&ndash;&gt;&ndash;&gt;-->
+                            <!--&lt;!&ndash;<field name="deleteLink">&ndash;&gt;-->
+                            <!--&lt;!&ndash;<conditional-field condition="subMrchntFeeSt == 'ENABLED'" title=" ">&ndash;&gt;-->
+                            <!--&lt;!&ndash;<link url="deleteNacsSecondMerchant" text="注销"/>&ndash;&gt;-->
+                            <!--&lt;!&ndash;</conditional-field>&ndash;&gt;-->
+                            <!--&lt;!&ndash;</field>&ndash;&gt;-->
+                        </form-list>
+                    </box-body>
+                </container-box>
+            </row-col>
+        </container-row>
+
+        <render-mode>
+            <text><![CDATA[
+<script>
+  $(function () {
+    function onlyShow( a,b,c) {
+        a.each(function (i, v) {
+            var that = $(this);
+            $(b).each(function (j, k) {
+                if (i == k){
+                    that.hide().find('input').removeAttr("required");
+                }
+            });
+            $(c).each(function (l, m) {
+                if(i == m){
+                    that.show().find('input').attr("required", "required");
+                }
+            })
+        })
+    }
+    var a = $("#CreateMrchntFee_feeChargeMode").parent().parent().siblings(".form-group");
+    onlyShow(a,[1,3],[2]);;//初始化
+    $("#CreateMrchntFee_feeChargeMode").on("change", function (){
+
+        a.each(function (i, v) {
+            if(i >=3 && i <= 7 ){
+                $(this).find('input').val("");
+            }
+        })
+        if($(this).val() === "FEE_CHARGE_MODE1"){
+            onlyShow(a,[1,3],[2]);
+        }
+        if($(this).val() === "FEE_CHARGE_MODE2"){
+            onlyShow(a,[2,3],[1]);
+        }
+        if($(this).val() === "FEE_CHARGE_MODE3"){
+            onlyShow(a,[1,2],[3]);
+        }
+    })
+})
+</script>
+]]>
+            </text>
+        </render-mode>
+    </widgets>
+</screen>

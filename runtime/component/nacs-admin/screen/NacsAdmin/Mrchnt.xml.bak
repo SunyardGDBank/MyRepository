@@ -22,21 +22,6 @@ along with this software (see the LICENSE.md file). If not, see
                          menu-index="1"/>
         <subscreens-item name="MrchntDetail" location="component://nacs-mrchnt/screen/NacsMrchnt/MrchntDetail.xml"
                           menu-include="false"/>
-
-        <subscreens-item name="MrchntFeeList" location="component://nacs-mrchnt/screen/NacsMrchnt/MrchntFeeList.xml"
-                         menu-index="2"/>
-        <subscreens-item name="MrchntFeeDetail" location="component://nacs-mrchnt/screen/NacsMrchnt/MrchntFeeDetail.xml"
-                         menu-include="false"/>
-
-        <subscreens-item name="MrchntChannelList" location="component://nacs-mrchnt/screen/NacsMrchnt/MrchntChannelList.xml"
-                         menu-index="3"/>
-        <subscreens-item name="MrchntChannelDetail" location="component://nacs-mrchnt/screen/NacsMrchnt/MrchntChannelDetail.xml"
-                         menu-include="false"/>
-
-        <subscreens-item name="MrchntTypeList" location="component://nacs-mrchnt/screen/NacsMrchnt/MrchntTypeList.xml"
-                         menu-index="4"/>
-        <subscreens-item name="MrchntTypeDetail" location="component://nacs-mrchnt/screen/NacsMrchnt/MrchntTypeDetail.xml"
-                         menu-include="false"/>
     </subscreens>
     <widgets>
         <subscreens-panel id="MrchntPanel" type="popup"/>

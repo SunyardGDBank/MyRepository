@@ -18,6 +18,7 @@ along with this software (see the LICENSE.md file). If not, see
     <nacs.channel.Channel lastUpdatedStamp="1513044720668" channelNm="中金支付" channelNo="10004" channelStatus="ENABLED" channelBegin="00:00" signCheckFlag="NON-VERIFIED" channelEnd="00:00" />
     <nacs.channel.Channel lastUpdatedStamp="1513044743398" channelNm="通联支付" channelNo="10005" channelStatus="ENABLED" channelBegin="00:00" signCheckFlag="NON-VERIFIED" channelEnd="00:00" />
     <nacs.channel.Channel lastUpdatedStamp="1513150842792" channelNm="中国银联" channelNo="10001" channelStatus="ENABLED" channelBegin="07:00" signCheckFlag="NON-VERIFIED" channelEnd="23:40" />
+
     <nacs.channel.ChannelBusiness lastUpdatedStamp="1513045133856" bizTp="0005" supportFlg="SUPPORT" trxCtgy="000401" channelSeqId="100000" seqId="100110"/>
     <nacs.channel.ChannelBusiness lastUpdatedStamp="1513045141115" bizTp="0006" supportFlg="SUPPORT" trxCtgy="000401" channelSeqId="100000" seqId="100111"/>
     <nacs.channel.ChannelBusiness lastUpdatedStamp="1513045148917" bizTp="0002" supportFlg="SUPPORT" trxCtgy="000501" channelSeqId="100000" seqId="100112"/>
@@ -63,43 +64,52 @@ along with this software (see the LICENSE.md file). If not, see
     <nacs.channel.ChannelQuota lastUpdatedStamp="1513045097761" trxCtgy="000401" singlTodayLimit="2000000" channelSeqId="100003" singlTodaySum="5000" singletranLimit="500000" seqId="100058"/>
     <nacs.channel.ChannelQuota lastUpdatedStamp="1513045078504" trxCtgy="000501" singlTodayLimit="10000000" channelSeqId="100004" singlTodaySum="3000" singletranLimit="100000" seqId="100059"/>
     <nacs.channel.ChannelQuota lastUpdatedStamp="1513045097761" trxCtgy="000401" singlTodayLimit="2000000" channelSeqId="100004" singlTodaySum="5000" singletranLimit="500000" seqId="100060"/>
-    <nacs.mrchnt.Mrchnt subMrchntFlag="ENABLED" viDate="2020-12-31" marginAmt="100000" mrchntFlag="ENABLED" managerInstiName="浦发银行杭州分行" clearAccountName="总行手机银行待清算户" behalfAccount="265458982299" mrchntEndTime="57600000" mrchntVerIfysts="N_VERIFIED_Y_SIGN" seqId="100051" lastUpdatedStamp="1513153577323" managerInstiCode="10001" mrchntNm="总行手机银行" version="1.0" mrchntNo="A10001" clearAccountMsg="265458982200" marginFormation="265458982288" mrchntBeginTime="57600000" whitoutAccount="265458982211"/>
+    <!--<nacs.mrchnt.Mrchnt subMrchntFlag="ENABLED" viDate="2020-12-31" marginAmt="100000" mrchntFlag="ENABLED" managerInstiName="浦发银行杭州分行" clearAccountName="总行手机银行待清算户" behalfAccount="265458982299" mrchntEndTime="57600000" mrchntVerIfysts="N_VERIFIED_Y_SIGN" seqId="100051" lastUpdatedStamp="1513153577323" managerInstiCode="10001" mrchntNm="总行手机银行" version="1.0" mrchntNo="A10001" clearAccountMsg="265458982200" marginFormation="265458982288" mrchntBeginTime="57600000" whitoutAccount="265458982211"/>
     <nacs.mrchnt.Mrchnt subMrchntFlag="ENABLED" viDate="2020-12-31" marginAmt="100000" mrchntFlag="ENABLED" managerInstiName="浦发银行杭州分行" clearAccountName="总行网上银行待清算户" behalfAccount="265458982299" mrchntEndTime="57600000" mrchntVerIfysts="N_VERIFIED_Y_SIGN" seqId="100052" lastUpdatedStamp="1513153577323" managerInstiCode="10002" mrchntNm="总行网上银行" version="1.0" mrchntNo="A10002" clearAccountMsg="265458982200" marginFormation="265458982288" mrchntBeginTime="57600000" whitoutAccount="265458982211"/>
     <nacs.mrchnt.Mrchnt subMrchntFlag="ENABLED" viDate="2020-12-31" marginAmt="100000" mrchntFlag="ENABLED" managerInstiName="签约商户" clearAccountName="连连支付待清算户" behalfAccount="265458982299" mrchntEndTime="57600000" mrchntVerIfysts="N_VERIFIED_Y_SIGN" seqId="100053" lastUpdatedStamp="1513153577323" managerInstiCode="10003" mrchntNm="连连支付" version="1.0" mrchntNo="B20001" clearAccountMsg="265458982200" marginFormation="265458982288" mrchntBeginTime="57600000" whitoutAccount="265458982211"/>
     <nacs.mrchnt.Mrchnt subMrchntFlag="ENABLED" viDate="2020-12-31" marginAmt="100000" mrchntFlag="ENABLED" managerInstiName="签约商户" clearAccountName="商盟支付待清算户" behalfAccount="265458982299" mrchntEndTime="57600000" mrchntVerIfysts="N_VERIFIED_Y_SIGN" seqId="100054" lastUpdatedStamp="1513153577323" managerInstiCode="10004" mrchntNm="商盟支付" version="1.0" mrchntNo="B20002" clearAccountMsg="265458982200" marginFormation="265458982288" mrchntBeginTime="57600000" whitoutAccount="265458982211"/>
     <nacs.mrchnt.Mrchnt subMrchntFlag="ENABLED" viDate="2020-12-31" marginAmt="100000" mrchntFlag="ENABLED" managerInstiName="签约商户" clearAccountName="银盛支付待清算户" behalfAccount="265458982299" mrchntEndTime="57600000" mrchntVerIfysts="N_VERIFIED_Y_SIGN" seqId="100055" lastUpdatedStamp="1513153577323" managerInstiCode="10005" mrchntNm="银盛支付" version="2.0" mrchntNo="B20003" clearAccountMsg="265458982200" marginFormation="265458982288" mrchntBeginTime="57600000" whitoutAccount="265458982211"/>
-    <nacs.mrchnt.Mrchnt subMrchntFlag="ENABLED" viDate="2020-12-31" marginAmt="100000" mrchntFlag="ENABLED" managerInstiName="签约商户" clearAccountName="网商银行待清算户" behalfAccount="265458982299" mrchntEndTime="57600000" mrchntVerIfysts="N_VERIFIED_Y_SIGN" seqId="100056" lastUpdatedStamp="1513153577323" managerInstiCode="10006" mrchntNm="网商银行" version="2.0" mrchntNo="B20004" clearAccountMsg="265458982200" marginFormation="265458982288" mrchntBeginTime="57600000" whitoutAccount="265458982211"/>
-    <nacs.mrchnt.MrchntChannel lastUpdatedStamp="1513155482060" channelSt="ENABLED" mrchntSeqId="100052" version="1.0" channelSeqId="100001" seqId="100051"/>
-    <nacs.mrchnt.MrchntChannel lastUpdatedStamp="1513155485711" channelSt="ENABLED" mrchntSeqId="100052" version="1.0" channelSeqId="100002" seqId="100052"/>
-    <nacs.mrchnt.MrchntChannel lastUpdatedStamp="1513155490796" channelSt="ENABLED" mrchntSeqId="100052" version="1.0" channelSeqId="100003" seqId="100053"/>
-    <nacs.mrchnt.MrchntChannel lastUpdatedStamp="1513155516583" channelSt="ENABLED" mrchntSeqId="100051" version="1.0" channelSeqId="100003" seqId="100054"/>
-    <nacs.mrchnt.MrchntChannel lastUpdatedStamp="1513155520577" channelSt="ENABLED" mrchntSeqId="100051" version="1.0" channelSeqId="100004" seqId="100055"/>
-    <nacs.mrchnt.MrchntChannel lastUpdatedStamp="1513155527347" channelSt="ENABLED" mrchntSeqId="100053" version="1.0" channelSeqId="100001" seqId="100056"/>
-    <nacs.mrchnt.MrchntChannel lastUpdatedStamp="1513155530826" channelSt="ENABLED" mrchntSeqId="100053" version="1.0" channelSeqId="100000" seqId="100057"/>
-    <nacs.mrchnt.MrchntChannel lastUpdatedStamp="1513155538361" channelSt="ENABLED" mrchntSeqId="100054" version="1.0" channelSeqId="100002" seqId="100058"/>
-    <nacs.mrchnt.MrchntChannel lastUpdatedStamp="1513155540529" channelSt="ENABLED" mrchntSeqId="100054" version="1.0" channelSeqId="100001" seqId="100059"/>
-    <nacs.mrchnt.MrchntChannel lastUpdatedStamp="1513155543836" channelSt="ENABLED" mrchntSeqId="100054" version="1.0" channelSeqId="100004" seqId="100060"/>
-    <nacs.mrchnt.MrchntChannel lastUpdatedStamp="1513755426323" channelSt="ENABLED" mrchntSeqId="100055" version="2.0" channelSeqId="100000" seqId="100000"/>
-    <nacs.mrchnt.MrchntChannel lastUpdatedStamp="1513755433012" channelSt="ENABLED" mrchntSeqId="100055" version="2.0" channelSeqId="100001" seqId="100001"/>
-    <nacs.mrchnt.MrchntChannel lastUpdatedStamp="1513755436192" channelSt="ENABLED" mrchntSeqId="100055" version="2.0" channelSeqId="100002" seqId="100002"/>
-    <nacs.mrchnt.MrchntChannel lastUpdatedStamp="1513755474220" channelSt="ENABLED" mrchntSeqId="100056" version="2.0" channelSeqId="100000" seqId="100003"/>
-    <nacs.mrchnt.MrchntChannel lastUpdatedStamp="1513755476660" channelSt="ENABLED" mrchntSeqId="100056" version="2.0" channelSeqId="100001" seqId="100004"/>
-    <nacs.mrchnt.MrchntChannel lastUpdatedStamp="1513755479013" channelSt="ENABLED" mrchntSeqId="100056" version="2.0" channelSeqId="100002" seqId="100005"/>
-    <nacs.mrchnt.MrchntChannel lastUpdatedStamp="1513755481437" channelSt="ENABLED" mrchntSeqId="100056" version="2.0" channelSeqId="100003" seqId="100006"/>
-    <nacs.mrchnt.MrchntFee lastUpdatedStamp="1513156084754" feeChargeMode="FEE_CHARGE_MODE1" amt="2" trxCtgy="000501" mrchntSeqId="100051" version="1.0" seqId="100153"/>
-    <nacs.mrchnt.MrchntFee lastUpdatedStamp="1513156084754" feeChargeRate="3%" feeChargeMode="FEE_CHARGE_MODE3" trxCtgy="000401" mrchntSeqId="100051" version="1.0" seqId="100154"/>
-    <nacs.mrchnt.MrchntFee lastUpdatedStamp="1513156084754" amtMonth="5000" feeChargeMode="FEE_CHARGE_MODE2" trxCtgy="000501" mrchntSeqId="100052" version="1.0" seqId="100155"/>
-    <nacs.mrchnt.MrchntFee lastUpdatedStamp="1513156084754" feeChargeRate="4%" feeChargeMode="FEE_CHARGE_MODE3" trxCtgy="000401" mrchntSeqId="100052" version="1.0" seqId="100156"/>
-    <nacs.mrchnt.MrchntFee lastUpdatedStamp="1513156084754" feeChargeMode="FEE_CHARGE_MODE1" amt="6" trxCtgy="000501" mrchntSeqId="100053" version="1.0" seqId="100157"/>
-    <nacs.mrchnt.MrchntFee lastUpdatedStamp="1513156084754" feeChargeRate="5%" feeChargeMode="FEE_CHARGE_MODE3" trxCtgy="000401" mrchntSeqId="100053" version="1.0" seqId="100158"/>
-    <nacs.mrchnt.MrchntFee lastUpdatedStamp="1513156084754" feeChargeMode="FEE_CHARGE_MODE1" amt="5" trxCtgy="000501" mrchntSeqId="100054" version="1.0" seqId="100159"/>
-    <nacs.mrchnt.MrchntFee lastUpdatedStamp="1513156084754" amtMonth="3000" feeChargeMode="FEE_CHARGE_MODE2" trxCtgy="000401" mrchntSeqId="100054" version="1.0" seqId="100160"/>
-    <nacs.mrchnt.MrchntFee lastUpdatedStamp="1513755734261" feeChargeMode="FEE_CHARGE_MODE1" amt="10000" trxCtgy="000501" mrchntSeqId="100055" seqId="100000"/>
-    <nacs.mrchnt.MrchntFee lastUpdatedStamp="1513755741755" amtMonth="100000" feeChargeMode="FEE_CHARGE_MODE2" trxCtgy="000401" mrchntSeqId="100055" seqId="100001"/>
-    <nacs.mrchnt.MrchntFee lastUpdatedStamp="1513755764065" feeChargeMode="FEE_CHARGE_MODE1" amt="5000" trxCtgy="000501" mrchntSeqId="100056" seqId="100002"/>
-    <nacs.mrchnt.MrchntFee lastUpdatedStamp="1513755774779" amtMonth="50000" feeChargeMode="FEE_CHARGE_MODE2" amt="50000" trxCtgy="000401" mrchntSeqId="100056" seqId="100003"/>
-    <nacs.mrchnt.MrchntQuota lastUpdatedStamp="1513044526580" trxCtgy="000501" singlTodayLimit="10000000" mrchntSeqId="100051" version="1.0" singlTodaySum="1000" singletranLimit="100000" seqId="100204"/>
-    <nacs.mrchnt.MrchntQuota lastUpdatedStamp="1513044551909" trxCtgy="000401" singlTodayLimit="999999999" mrchntSeqId="100051" version="1.0" singlTodaySum="10000" singletranLimit="1000000" seqId="100205"/>
+    <nacs.mrchnt.Mrchnt subMrchntFlag="ENABLED" viDate="2020-12-31" marginAmt="100000" mrchntFlag="ENABLED" managerInstiName="签约商户" clearAccountName="网商银行待清算户" behalfAccount="265458982299" mrchntEndTime="57600000" mrchntVerIfysts="N_VERIFIED_Y_SIGN" seqId="100056" lastUpdatedStamp="1513153577323" managerInstiCode="10006" mrchntNm="网商银行" version="2.0" mrchntNo="B20004" clearAccountMsg="265458982200" marginFormation="265458982288" mrchntBeginTime="57600000" whitoutAccount="265458982211"/>-->
+
+    <nacs.mrchnt.Mrchnt secMerchantFlag="ENABLED"   firMerchantSt="ENABLED"  merchantEndTime="57600000" merchantVerifySts="N_VERIFIED_Y_SIGN" seqId="100051" lastUpdatedStamp="1513153577323"  firMerchantCode="A10001" firMerchantName="浦发银行杭州分行" clearAccountMsg="265458982200"  merchantBeginTime="57600000" />
+    <nacs.mrchnt.Mrchnt secMerchantFlag="ENABLED"   firMerchantSt="ENABLED"  merchantEndTime="57600000" merchantVerifySts="N_VERIFIED_Y_SIGN" seqId="100052" lastUpdatedStamp="1513153577323"  firMerchantCode="A10002" firMerchantName="浦发银行杭州分行" clearAccountMsg="265458982200"  merchantBeginTime="57600000" />
+    <nacs.mrchnt.Mrchnt secMerchantFlag="ENABLED"   firMerchantSt="ENABLED"  merchantEndTime="57600000" merchantVerifySts="N_VERIFIED_Y_SIGN" seqId="100053" lastUpdatedStamp="1513153577323"  firMerchantCode="B20001" firMerchantName="签约商户" clearAccountMsg="265458982200"  merchantBeginTime="57600000" />
+    <nacs.mrchnt.Mrchnt secMerchantFlag="ENABLED"   firMerchantSt="ENABLED"  merchantEndTime="57600000" merchantVerifySts="N_VERIFIED_Y_SIGN" seqId="100054" lastUpdatedStamp="1513153577323"  firMerchantCode="B20002" firMerchantName="签约商户" clearAccountMsg="265458982200"  merchantBeginTime="57600000" />
+    <nacs.mrchnt.Mrchnt secMerchantFlag="ENABLED"   firMerchantSt="ENABLED"  merchantEndTime="57600000" merchantVerifySts="N_VERIFIED_Y_SIGN" seqId="100055" lastUpdatedStamp="1513153577323"  firMerchantCode="B20003" firMerchantName="签约商户" clearAccountMsg="265458982200"  merchantBeginTime="57600000" />
+    <nacs.mrchnt.Mrchnt secMerchantFlag="ENABLED"   firMerchantSt="ENABLED"  merchantEndTime="57600000" merchantVerifySts="N_VERIFIED_Y_SIGN" seqId="100056" lastUpdatedStamp="1513153577323"  firMerchantCode="B20004" firMerchantName="签约商户" clearAccountMsg="265458982200"  merchantBeginTime="57600000" />
+
+    <!-- 南京光大测试数据 -->
+    <nacs.mrchnt.Mrchnt secMerchantFlag="ENABLED"   firMerchantSt="ENABLED" channelFlg="优先级1"  merchantEndTime="57600000" merchantVerifySts="N_VERIFIED_Y_SIGN" seqId="100057" lastUpdatedStamp="1513153577323"  firMerchantCode="A00001" firMerchantName="签约商户1" clearAccountMsg="265458982200"  merchantBeginTime="57600000" />
+    <nacs.mrchnt.MrchntChannel firMerchantCode="A00001" firMerchantName="签约商户1" channelFlg="优先级1" channelCode="10001" channelName="中国银联" lastUpdatedStamp="1513155482060"  mrchntSeqId="100057"  channelSeqId="100004" seqId="100051"/>
+
+    <!-- <nacs.mrchnt.MrchntChannel firMerchantCode="A00004" lastUpdatedStamp="1513155516583"  mrchntSeqId="100051"  channelSeqId="100003" seqId="100054"/>
+    <nacs.mrchnt.MrchntChannel firMerchantCode="A00005" lastUpdatedStamp="1513155520577"  mrchntSeqId="100051"  channelSeqId="100004" seqId="100055"/>
+    <nacs.mrchnt.MrchntChannel firMerchantCode="A00006" lastUpdatedStamp="1513155527347"  mrchntSeqId="100053"  channelSeqId="100001" seqId="100056"/>
+    <nacs.mrchnt.MrchntChannel firMerchantCode="A00007" lastUpdatedStamp="1513155530826"  mrchntSeqId="100053"  channelSeqId="100000" seqId="100057"/>
+    <nacs.mrchnt.MrchntChannel firMerchantCode="A00008" lastUpdatedStamp="1513155538361"  mrchntSeqId="100054"  channelSeqId="100002" seqId="100058"/>
+    <nacs.mrchnt.MrchntChannel firMerchantCode="A00009" lastUpdatedStamp="1513155540529"  mrchntSeqId="100054"  channelSeqId="100001" seqId="100059"/>
+    <nacs.mrchnt.MrchntChannel firMerchantCode="A00010" lastUpdatedStamp="1513155543836"  mrchntSeqId="100054"  channelSeqId="100004" seqId="100060"/>
+    <nacs.mrchnt.MrchntChannel firMerchantCode="A00011" lastUpdatedStamp="1513755426323"  mrchntSeqId="100055"  channelSeqId="100000" seqId="100000"/>
+    <nacs.mrchnt.MrchntChannel firMerchantCode="A00012" lastUpdatedStamp="1513755433012"  mrchntSeqId="100055"  channelSeqId="100001" seqId="100001"/>
+    <nacs.mrchnt.MrchntChannel firMerchantCode="A00013" lastUpdatedStamp="1513755436192"  mrchntSeqId="100055"  channelSeqId="100002" seqId="100002"/>
+    <nacs.mrchnt.MrchntChannel firMerchantCode="A00014" lastUpdatedStamp="1513755474220"  mrchntSeqId="100056"  channelSeqId="100000" seqId="100003"/>
+    <nacs.mrchnt.MrchntChannel firMerchantCode="A00015" lastUpdatedStamp="1513755476660"  mrchntSeqId="100056"  channelSeqId="100001" seqId="100004"/>
+    <nacs.mrchnt.MrchntChannel firMerchantCode="A00016" lastUpdatedStamp="1513755479013"  mrchntSeqId="100056"  channelSeqId="100002" seqId="100005"/>
+    <nacs.mrchnt.MrchntChannel firMerchantCode="A00017" lastUpdatedStamp="1513755481437"  mrchntSeqId="100056"  channelSeqId="100003" seqId="100006"/>-->
+    <nacs.mrchnt.MrchntFee firMerchantCode="A00001" firMerchantName="测试1" lastUpdatedStamp="1513156084754" feeChargeMode="FEE_CHARGE_MODE1" amt="2" trxCtgy="000501" seqId="100153"/>
+    <nacs.mrchnt.MrchntFee firMerchantCode="A00002" firMerchantName="测试2" lastUpdatedStamp="1513156084754" feeChargeRate="3%" feeChargeMode="FEE_CHARGE_MODE3" trxCtgy="000401"  seqId="100154"/>
+    <nacs.mrchnt.MrchntFee firMerchantCode="A00003" firMerchantName="测试3" lastUpdatedStamp="1513156084754" feeChargeMode="FEE_CHARGE_MODE1" trxCtgy="000501" seqId="100155"/>
+    <nacs.mrchnt.MrchntFee firMerchantCode="A00004" firMerchantName="测试4" lastUpdatedStamp="1513156084754" feeChargeRate="4%" feeChargeMode="FEE_CHARGE_MODE3" trxCtgy="000401" seqId="100156"/>
+    <nacs.mrchnt.MrchntFee firMerchantCode="A00005" firMerchantName="测试5" lastUpdatedStamp="1513156084754" feeChargeMode="FEE_CHARGE_MODE1" amt="6" trxCtgy="000501" seqId="100157"/>
+    <nacs.mrchnt.MrchntFee firMerchantCode="A00006" firMerchantName="测试6" lastUpdatedStamp="1513156084754" feeChargeRate="5%" feeChargeMode="FEE_CHARGE_MODE3" trxCtgy="000401" seqId="100158"/>
+    <nacs.mrchnt.MrchntFee firMerchantCode="A00007" firMerchantName="测试7" lastUpdatedStamp="1513156084754" feeChargeMode="FEE_CHARGE_MODE1" amt="5" trxCtgy="000501" seqId="100159"/>
+    <nacs.mrchnt.MrchntFee firMerchantCode="A00008" firMerchantName="测试8" lastUpdatedStamp="1513156084754" feeChargeMode="FEE_CHARGE_MODE1" trxCtgy="000401"  seqId="100160"/>
+    <nacs.mrchnt.MrchntFee firMerchantCode="A00009" firMerchantName="测试9" lastUpdatedStamp="1513755734261" feeChargeMode="FEE_CHARGE_MODE1" amt="10000" trxCtgy="000501"  seqId="100000"/>
+    <nacs.mrchnt.MrchntFee firMerchantCode="A00010" firMerchantName="测试10" lastUpdatedStamp="1513755741755" feeChargeMode="FEE_CHARGE_MODE1" trxCtgy="000401"  seqId="100001"/>
+    <nacs.mrchnt.MrchntFee firMerchantCode="A00011" firMerchantName="测试11" lastUpdatedStamp="1513755764065" feeChargeMode="FEE_CHARGE_MODE1" amt="5000" trxCtgy="000501"  seqId="100002"/>
+    <nacs.mrchnt.MrchntFee firMerchantCode="A00012" firMerchantName="测试12" lastUpdatedStamp="1513755774779"  feeChargeMode="FEE_CHARGE_MODE1" amt="50000" trxCtgy="000401"  seqId="100003"/>
+    <nacs.mrchnt.MrchntQuota lastUpdatedStamp="1513044526580" trxCtgy="000501" singlTodayLimit="10000000" mrchntSeqId="100051"  singlTodaySum="1000" singletranLimit="100000" seqId="100204"/>
+    <nacs.mrchnt.MrchntQuota lastUpdatedStamp="1513044551909" trxCtgy="000401" singlTodayLimit="999999999" mrchntSeqId="100051"  singlTodaySum="10000" singletranLimit="1000000" seqId="100205"/>
     <nacs.mrchnt.MrchntQuota lastUpdatedStamp="1513044526580" trxCtgy="000501" singlTodayLimit="200000" mrchntSeqId="100052" version="1.0" singlTodaySum="1000" singletranLimit="100000" seqId="100206"/>
     <nacs.mrchnt.MrchntQuota lastUpdatedStamp="1513044551909" trxCtgy="000401" singlTodayLimit="999999999" mrchntSeqId="100052" version="1.0" singlTodaySum="10000" singletranLimit="1000000" seqId="100207"/>
     <nacs.mrchnt.MrchntQuota lastUpdatedStamp="1513044526580" trxCtgy="000501" singlTodayLimit="500000" mrchntSeqId="100053" version="1.0" singlTodaySum="1000" singletranLimit="100000" seqId="100208"/>
@@ -110,8 +120,9 @@ along with this software (see the LICENSE.md file). If not, see
     <nacs.mrchnt.MrchntQuota lastUpdatedStamp="1513756002549" trxCtgy="000401" singlTodayLimit="999999999" mrchntSeqId="100055" version="2.0" singlTodaySum="1000" singletranLimit="10000" seqId="100001"/>
     <nacs.mrchnt.MrchntQuota lastUpdatedStamp="1513756027223" trxCtgy="000501" singlTodayLimit="999999999" mrchntSeqId="100056" version="2.0" singlTodaySum="10000" singletranLimit="1000000" seqId="100002"/>
     <nacs.mrchnt.MrchntQuota lastUpdatedStamp="1513756038225" trxCtgy="000401" singlTodayLimit="999999999" mrchntSeqId="100056" version="2.0" singlTodaySum="1000" singletranLimit="10000" seqId="100003"/>
-    <nacs.mrchnt.MrchntType lastUpdatedStamp="1513044798040" bizTp="0005" mrchntSeqId="100051" version="1.0" seqId="100204" bizTpSt="ENABLED"/>
-    <nacs.mrchnt.MrchntType lastUpdatedStamp="1513044803321" bizTp="0004" mrchntSeqId="100051" version="1.0" seqId="100205" bizTpSt="ENABLED"/>
+
+    <nacs.mrchnt.MrchntType lastUpdatedStamp="1513044803321" firMerchantCode="A00001" firMerchantName="签约商户1" channelCode="10001"  channelName="中国银联" bizType="0004" bizName="统一代扣" mrchntSeqId="100051"  seqId="100205" />
+    <!--<nacs.mrchnt.MrchntType lastUpdatedStamp="1513044803321" bizTp="0004" mrchntSeqId="100051" version="1.0" seqId="100205" bizTpSt="ENABLED"/>
     <nacs.mrchnt.MrchntType lastUpdatedStamp="1513044808243" bizTp="0006" mrchntSeqId="100051" version="1.0" seqId="100206" bizTpSt="ENABLED"/>
     <nacs.mrchnt.MrchntType lastUpdatedStamp="1513044808243" bizTp="0002" mrchntSeqId="100051" version="1.0" seqId="100208" bizTpSt="ENABLED"/>
     <nacs.mrchnt.MrchntType lastUpdatedStamp="1513044798040" bizTp="0005" mrchntSeqId="100052" version="1.0" seqId="100209" bizTpSt="ENABLED"/>
@@ -123,7 +134,8 @@ along with this software (see the LICENSE.md file). If not, see
     <nacs.mrchnt.MrchntType lastUpdatedStamp="1513755857193" bizTp="0002" mrchntSeqId="100055" version="2.0" seqId="100000" bizTpSt="ENABLED"/>
     <nacs.mrchnt.MrchntType lastUpdatedStamp="1513755860124" bizTp="0004" mrchntSeqId="100055" version="2.0" seqId="100001" bizTpSt="ENABLED"/>
     <nacs.mrchnt.MrchntType lastUpdatedStamp="1513755878676" bizTp="0004" mrchntSeqId="100056" version="2.0" seqId="100002" bizTpSt="ENABLED"/>
-    <nacs.mrchnt.MrchntType lastUpdatedStamp="1513755881642" bizTp="0005" mrchntSeqId="100056" version="2.0" seqId="100003" bizTpSt="ENABLED"/>
+    <nacs.mrchnt.MrchntType lastUpdatedStamp="1513755881642" bizTp="0005" mrchntSeqId="100056" version="2.0" seqId="100003" bizTpSt="ENABLED"/>-->
+
     <nacs.mrchnt.SubMrchnt signFlag="SIGNING" lastUpdatedStamp="1513154284244" subMrchntLevel="&#20108;&#32423;" subMrchntValisign="N_VERIFIED_Y_SIGN" mrchntSeqId="100051" subMrchntSt="ENABLED" subMrchntNo="A10001001" subMrchntNm="&#24635;&#34892;&#25163;&#26426;&#38134;&#34892;&#23376;&#21830;&#25143;A"/>
     <nacs.mrchnt.SubMrchnt signFlag="SIGNING" lastUpdatedStamp="1513154284244" subMrchntLevel="&#20108;&#32423;" subMrchntValisign="N_VERIFIED_Y_SIGN" mrchntSeqId="100051" subMrchntSt="ENABLED" subMrchntNo="A10001003" subMrchntNm="&#24635;&#34892;&#25163;&#26426;&#38134;&#34892;&#23376;&#21830;&#25143;C"/>
     <nacs.mrchnt.SubMrchnt signFlag="SIGNING" lastUpdatedStamp="1513154284244" subMrchntLevel="&#20108;&#32423;" subMrchntValisign="N_VERIFIED_Y_SIGN" mrchntSeqId="100051" subMrchntSt="ENABLED" subMrchntNo="A10001004" subMrchntNm="&#24635;&#34892;&#25163;&#26426;&#38134;&#34892;&#23376;&#21830;&#25143;D"/>
