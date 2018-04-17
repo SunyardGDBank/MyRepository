@@ -495,7 +495,37 @@
         </actions>
     </service>
 
+    <!--添加内部户信息-->
+    <service verb="create" noun="InnerAcct" authenticate="false">
+        <in-parameters>
+            <auto-parameters include="all"/>
+            <parameter name="innerAcctKey" required="true"/>
+            <parameter name="innerAcctNo" required="true"/>
+            <parameter name="innerAcctNm" required="true"/>
+        </in-parameters>
+        <actions>
+            <entity-find entity-name="nacs.mrchnt.InnerAcct" list="InnerAcctList">
+                <econdition field-name="innerAcctKey" from="InnerAcctKey"/>
+            </entity-find>
+            <if condition="InnerAcctList">
+                <return error="true" message="内部户户信息已存在，不能增加！"/>
+            </if>
+            <service-call name="create#nacs.mrchnt.InnerAcct" in-map="context"/>
+        </actions>
+    </service>
 
+    <!--更新内部户信息-->
+    <service verb="update" noun="InnerAcct" authenticate="false">
+        <in-parameters>
+            <auto-parameters include="pk"/>
+            <parameter name="innerAcctKey" required="true"/>
+            <parameter name="innerAcctNo" required="true"/>
+            <parameter name="innerAcctNm" required="true"/>
+        </in-parameters>
+        <actions>
+            <service-call name="update#nacs.mrchnt.InnerAcct" in-map="context"/>
+        </actions>
+    </service>
 
 
 </services>
