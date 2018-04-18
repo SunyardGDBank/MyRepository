@@ -19,10 +19,9 @@
                     <return error="true" message="该账户是黑灰名单，不能进行交易"/>
                 </if>
             </if>
-            <else>
+            <if condition="${TPU_RETCODE!='AAAAAAA'}">
                 <return error="true" message="核心处理失败"/>
-            </else>
-
+            </if>
         </actions>
     </service>
 
