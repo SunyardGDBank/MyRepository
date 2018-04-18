@@ -13,11 +13,11 @@ along with this software (see the LICENSE.md file). If not, see
 <http://creativecommons.org/publicdomain/zero/1.0/>.
 -->
 <entity-facade-xml type="demo">
-    <nacs.channel.Channel lastUpdatedStamp="1513044672883" channelNm="银联商务" channelNo="10002" channelStatus="ENABLED" channelBegin="00:00" signCheckFlag="VERIFIED" channelEnd="00:00" />
-    <nacs.channel.Channel lastUpdatedStamp="1513044696741" channelNm="翼支付" channelNo="10003" channelStatus="ENABLED" channelBegin="00:00" signCheckFlag="NON-VERIFIED" channelEnd="00:00" />
-    <nacs.channel.Channel lastUpdatedStamp="1513044720668" channelNm="中金支付" channelNo="10004" channelStatus="ENABLED" channelBegin="00:00" signCheckFlag="NON-VERIFIED" channelEnd="00:00" />
-    <nacs.channel.Channel lastUpdatedStamp="1513044743398" channelNm="通联支付" channelNo="10005" channelStatus="ENABLED" channelBegin="00:00" signCheckFlag="NON-VERIFIED" channelEnd="00:00" />
-    <nacs.channel.Channel lastUpdatedStamp="1513150842792" channelNm="中国银联" channelNo="10001" channelStatus="ENABLED" channelBegin="07:00" signCheckFlag="NON-VERIFIED" channelEnd="23:40" />
+    <nacs.channel.Channel lastUpdatedStamp="1513044672883" channelNm="银联商务" feeType="FEE_CHARGE_MODE1" channelNo="10002" channelStatus="ENABLED" channelBegin="00:00" signCheckFlag="VERIFIED" channelEnd="00:00" />
+    <nacs.channel.Channel lastUpdatedStamp="1513044696741" channelNm="翼支付"   feeType="FEE_CHARGE_MODE1" channelNo="10003" channelStatus="ENABLED" channelBegin="00:00" signCheckFlag="NON-VERIFIED" channelEnd="00:00" />
+    <nacs.channel.Channel lastUpdatedStamp="1513044720668" channelNm="中金支付" feeType="FEE_CHARGE_MODE1" channelNo="10004" channelStatus="ENABLED" channelBegin="00:00" signCheckFlag="NON-VERIFIED" channelEnd="00:00" />
+    <nacs.channel.Channel lastUpdatedStamp="1513044743398" channelNm="通联支付" feeType="FEE_CHARGE_MODE1" channelNo="10005" channelStatus="ENABLED" channelBegin="00:00" signCheckFlag="NON-VERIFIED" channelEnd="00:00" />
+    <nacs.channel.Channel lastUpdatedStamp="1513150842792" channelNm="中国银联" feeType="FEE_CHARGE_MODE1" channelNo="10001" channelStatus="ENABLED" channelBegin="07:00" signCheckFlag="NON-VERIFIED" channelEnd="23:40" />
 
     <nacs.channel.ChannelBusiness lastUpdatedStamp="1513045133856" bizTp="0005" supportFlg="SUPPORT" trxCtgy="000401" channelSeqId="100000" seqId="100110"/>
     <nacs.channel.ChannelBusiness lastUpdatedStamp="1513045141115" bizTp="0006" supportFlg="SUPPORT" trxCtgy="000401" channelSeqId="100000" seqId="100111"/>
@@ -71,15 +71,15 @@ along with this software (see the LICENSE.md file). If not, see
     <nacs.mrchnt.Mrchnt subMrchntFlag="ENABLED" viDate="2020-12-31" marginAmt="100000" mrchntFlag="ENABLED" managerInstiName="签约商户" clearAccountName="银盛支付待清算户" behalfAccount="265458982299" mrchntEndTime="57600000" mrchntVerIfysts="N_VERIFIED_Y_SIGN" seqId="100055" lastUpdatedStamp="1513153577323" managerInstiCode="10005" mrchntNm="银盛支付" version="2.0" mrchntNo="B20003" clearAccountMsg="265458982200" marginFormation="265458982288" mrchntBeginTime="57600000" whitoutAccount="265458982211"/>
     <nacs.mrchnt.Mrchnt subMrchntFlag="ENABLED" viDate="2020-12-31" marginAmt="100000" mrchntFlag="ENABLED" managerInstiName="签约商户" clearAccountName="网商银行待清算户" behalfAccount="265458982299" mrchntEndTime="57600000" mrchntVerIfysts="N_VERIFIED_Y_SIGN" seqId="100056" lastUpdatedStamp="1513153577323" managerInstiCode="10006" mrchntNm="网商银行" version="2.0" mrchntNo="B20004" clearAccountMsg="265458982200" marginFormation="265458982288" mrchntBeginTime="57600000" whitoutAccount="265458982211"/>-->
 
-    <nacs.mrchnt.Mrchnt secMerchantFlag="ENABLED"   firMerchantSt="ENABLED"  merchantEndTime="57600000" merchantVerifySts="N_VERIFIED_Y_SIGN" seqId="100051" lastUpdatedStamp="1513153577323"  firMerchantCode="A10001" firMerchantName="浦发银行杭州分行" clearAccountMsg="265458982200"  merchantBeginTime="57600000" />
-    <nacs.mrchnt.Mrchnt secMerchantFlag="ENABLED"   firMerchantSt="ENABLED"  merchantEndTime="57600000" merchantVerifySts="N_VERIFIED_Y_SIGN" seqId="100052" lastUpdatedStamp="1513153577323"  firMerchantCode="A10002" firMerchantName="浦发银行杭州分行" clearAccountMsg="265458982200"  merchantBeginTime="57600000" />
-    <nacs.mrchnt.Mrchnt secMerchantFlag="ENABLED"   firMerchantSt="ENABLED"  merchantEndTime="57600000" merchantVerifySts="N_VERIFIED_Y_SIGN" seqId="100053" lastUpdatedStamp="1513153577323"  firMerchantCode="B20001" firMerchantName="签约商户" clearAccountMsg="265458982200"  merchantBeginTime="57600000" />
-    <nacs.mrchnt.Mrchnt secMerchantFlag="ENABLED"   firMerchantSt="ENABLED"  merchantEndTime="57600000" merchantVerifySts="N_VERIFIED_Y_SIGN" seqId="100054" lastUpdatedStamp="1513153577323"  firMerchantCode="B20002" firMerchantName="签约商户" clearAccountMsg="265458982200"  merchantBeginTime="57600000" />
-    <nacs.mrchnt.Mrchnt secMerchantFlag="ENABLED"   firMerchantSt="ENABLED"  merchantEndTime="57600000" merchantVerifySts="N_VERIFIED_Y_SIGN" seqId="100055" lastUpdatedStamp="1513153577323"  firMerchantCode="B20003" firMerchantName="签约商户" clearAccountMsg="265458982200"  merchantBeginTime="57600000" />
-    <nacs.mrchnt.Mrchnt secMerchantFlag="ENABLED"   firMerchantSt="ENABLED"  merchantEndTime="57600000" merchantVerifySts="N_VERIFIED_Y_SIGN" seqId="100056" lastUpdatedStamp="1513153577323"  firMerchantCode="B20004" firMerchantName="签约商户" clearAccountMsg="265458982200"  merchantBeginTime="57600000" />
-
+    <nacs.mrchnt.Mrchnt    firMerchantSt="ENABLED"  merchantEndTime="57600000" merchantVerifySts="N_VERIFIED_Y_SIGN" seqId="100051" lastUpdatedStamp="1513153577323"  firMerchantCode="A10001" firMerchantName="浦发银行杭州分行"   merchantBeginTime="57600000" />
+    <nacs.mrchnt.Mrchnt    firMerchantSt="ENABLED"  merchantEndTime="57600000" merchantVerifySts="N_VERIFIED_Y_SIGN" seqId="100052" lastUpdatedStamp="1513153577323"  firMerchantCode="A10002" firMerchantName="浦发银行杭州分行"   merchantBeginTime="57600000" />
+    <nacs.mrchnt.Mrchnt    firMerchantSt="ENABLED"  merchantEndTime="57600000" merchantVerifySts="N_VERIFIED_Y_SIGN" seqId="100053" lastUpdatedStamp="1513153577323"  firMerchantCode="B20001" firMerchantName="签约商户"   merchantBeginTime="57600000" />
+    <nacs.mrchnt.Mrchnt    firMerchantSt="ENABLED"  merchantEndTime="57600000" merchantVerifySts="N_VERIFIED_Y_SIGN" seqId="100054" lastUpdatedStamp="1513153577323"  firMerchantCode="B20002" firMerchantName="签约商户"   merchantBeginTime="57600000" />
+    <nacs.mrchnt.Mrchnt    firMerchantSt="ENABLED"  merchantEndTime="57600000" merchantVerifySts="N_VERIFIED_Y_SIGN" seqId="100055" lastUpdatedStamp="1513153577323"  firMerchantCode="B20003" firMerchantName="签约商户"   merchantBeginTime="57600000" />
+    <nacs.mrchnt.Mrchnt    firMerchantSt="ENABLED"  merchantEndTime="57600000" merchantVerifySts="N_VERIFIED_Y_SIGN" seqId="100056" lastUpdatedStamp="1513153577323"  firMerchantCode="B20004" firMerchantName="签约商户"   merchantBeginTime="57600000" />
+    <!--<nacs.mrchnt.Mrchnt    firMerchantSt="ENABLED" channelFlg="优先级1"  merchantEndTime="57600000" merchantVerifySts="N_VERIFIED_Y_SIGN" seqId="100057" lastUpdatedStamp="1513153577323"  firMerchantCode="A00001" firMerchantName="签约商户1"   merchantBeginTime="57600000" />-->
     <!-- 南京光大测试数据 -->
-    <nacs.mrchnt.Mrchnt secMerchantFlag="ENABLED"   firMerchantSt="ENABLED" channelFlg="优先级1"  merchantEndTime="57600000" merchantVerifySts="N_VERIFIED_Y_SIGN" seqId="100057" lastUpdatedStamp="1513153577323"  firMerchantCode="A00001" firMerchantName="签约商户1" clearAccountMsg="265458982200"  merchantBeginTime="57600000" />
+
     <nacs.mrchnt.MrchntChannel firMerchantCode="A00001" firMerchantName="签约商户1" channelFlg="优先级1" channelCode="10001" channelName="中国银联" lastUpdatedStamp="1513155482060"  mrchntSeqId="100057"  channelSeqId="100004" seqId="100051"/>
 
     <!-- <nacs.mrchnt.MrchntChannel firMerchantCode="A00004" lastUpdatedStamp="1513155516583"  mrchntSeqId="100051"  channelSeqId="100003" seqId="100054"/>
