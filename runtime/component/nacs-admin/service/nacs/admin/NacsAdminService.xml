@@ -139,4 +139,12 @@
         </actions>
 
     </service>
+    <!--渠道手续费统计-->
+    <service verb="count" noun="Fee" type="java" authenticate="false" method="getChannelFee" location="com.sunyard.check.GDTools">
+        <in-parameters>
+            <parameter name="feeDate_thru"/>
+            <parameter name="feeDate_from"/>
+            <parameter name="channelSeqId"/>
+        </in-parameters>
+    </service>
 </services>
