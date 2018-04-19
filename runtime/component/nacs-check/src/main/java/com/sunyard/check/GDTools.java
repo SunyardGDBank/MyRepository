@@ -24,6 +24,17 @@ public class GDTools {
         //EntityFind channelFee = ec.getEntity().find("TxItemChannel");
         EntityValue channelFee = ec.getEntity().makeValue("TxItemChannel");
         channelFee.set("channelSeqId",channelSeqId);
+        EntityListIterator el = null;
+
+        //ec.getEntity().sqlFind()
+
+        List<Object>list = new ArrayList<Object>();
+        list.add(channelSeqId);
+        list.add(endFeeDate);
+        list.add(startFeeDate);
+        logger.info("222");
+        List<String>slist = new ArrayList<String>();
+        el = ec.getEntity().sqlFind("SELECT AMT FROM TxItemChannel t WHERE t.channelSeqId='100010' AND t.workdate between startFeeDate and endFeeDate;",list,"TxItemChannel",slist);
 
 
         return result;
