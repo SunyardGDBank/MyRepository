@@ -7,21 +7,22 @@
     <service verb="check" noun="Bh01Be" type="inline">
         <implements service="nacs.be.CheckToBh01BeService.check#Bh01Be"/>
         <in-parameters>
-            <parameter name="CARDNO"/>
+            <parameter name="cardNo"/>
         </in-parameters>
         <out-parameters>
-            <parameter name="ACCTKING"/>
-            <parameter name="TPU_RETCODE"/>
+            <parameter name="acctKing"/>
+            <parameter name="tpu_RetCode"/>
         </out-parameters>
         <actions>
+            <if condition="${TPU_RETCODE!='AAAAAAA'}">
+                <return error="true" message="核心处理失败"/>
+            </if>
             <if condition="${TPU_RETCODE=='AAAAAAA'}">
                 <if condition="${ACCTKING=='1'}">
                     <return error="true" message="该账户是黑灰名单，不能进行交易"/>
                 </if>
             </if>
-            <if condition="${TPU_RETCODE!='AAAAAAA'}">
-                <return error="true" message="核心处理失败"/>
-            </if>
+
         </actions>
     </service>
 
