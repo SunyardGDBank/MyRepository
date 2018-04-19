@@ -1,0 +1,144 @@
+<screen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="http://moqui.org/xsd/xml-screen-2.1.xsd"
+        default-menu-title="渠道手续费统计" default-menu-index="5" >
+
+    <parameter name="feeDate_from"/>
+    <transition name="findChannelFee">
+        <default-response url="."/>
+    </transition>
+    <actions>
+        <if condition="!feeDate_from">
+            <set field="feeDate_from" value="${new Date().format('yyyy-MM-dd')}"/>
+        </if>
+
+        <entity-find entity-name="nacs.channel.ChannelFee" list="channelFeeList">
+            <search-form-inputs/>
+        </entity-find>
+        <service-call name="nacs.admin.NacsAdminService.count#Fee" in-map="[feeDate_thru:feeDate_thru,feeDate_from:feeDate_from,channelSeqId:channelSeqId]" />
+
+
+        <!--<entity-find entity-name="moqui.basic.Enumeration" list="TxFlgList">-->
+            <!--<econdition field-name="enumTypeId" value="TxFlg"/>-->
+        <!--</entity-find>-->
+        <!--&lt;!&ndash;交易类别&ndash;&gt;-->
+        <!--<entity-find entity-name="moqui.basic.Enumeration" cache="true" list="trxCtgyList">-->
+            <!--<econdition field-name="enumTypeId" value="TrxCtgy"/>-->
+        <!--</entity-find>-->
+        <!--<entity-find entity-name="moqui.basic.StatusItem" list="tranStasList">-->
+            <!--<econdition field-name="statusTypeId" value="TranStas"/>-->
+        <!--</entity-find>-->
+        <!--<entity-find entity-name="nacs.channel.ChannelView" list="channelViewList"/>-->
+        <!--<entity-find entity-name="nacs.mrchnt.MrchntView" list="mrchntViewList"/>-->
+        <!--<entity-find entity-name="moqui.basic.Enumeration" list="certcodeList">-->
+            <!--<econdition field-name="enumTypeId" value="Certcode"/>-->
+        <!--</entity-find>-->
+        <!--<entity-find entity-name="moqui.basic.Enumeration" list="MerchantVerIfystsList">-->
+            <!--<econdition field-name="enumTypeId" value="MerchantVerIfysts"/>-->
+        <!--</entity-find>-->
+
+        <!--子商户-->
+        <!--<entity-find entity-name="nacs.mrchnt.SubMrchnt" list="subMrchntList"/>-->
+    </actions>
+
+
+    <widgets>
+
+        <!-- 渠道手续费统计-->
+        <container-dialog id="findChannelFee" button-text="查询" width="1350">
+            <form-single name="FindChannelFee" transition="findChannelFee">
+
+                <field name="feeDate">
+                    <default-field title="日期">
+                        <date-find type="date"/>
+                    </default-field>
+                </field>
+
+                <field name="channelSeqId">
+                    <default-field title="支付通道编号">
+                        <drop-down allow-empty="true">
+                            <entity-options key="${seqId}" text="${channelNo} - ${channelNm}">
+                                <entity-find entity-name="nacs.channel.Channel"/>
+                            </entity-options>
+                        </drop-down>
+                    </default-field>
+                </field>
+
+
+                <!--查找按钮-->
+                <field name="searchButton">
+                    <default-field title="Find"><submit icon="glyphicon glyphicon-search"/></default-field>
+                </field>
+
+                <!--布局-->
+                <field-layout>
+                    <field-row>
+                        <field-ref name="feeDate"/>
+                        <field-ref name="channelSeqId"/>
+                    </field-row>
+                    <field-row>
+                        <field-ref name="searchButton"/>
+                    </field-row>
+                </field-layout>
+            </form-single>
+        </container-dialog>
+
+        <field name="return">
+            <default-field>
+                <link url="." text="返回"/>
+            </default-field>
+        </field>
+
+
+        <!-- 渠道手续费列表-->
+        <form-list name="ChannelFeeList" list="channelFeeList"  show-csv-button="true" 	show-text-button="true" show-pdf-button="true" header-dialog="true" saved-finds="true">
+
+            <field name="seqId" align="center" show-total="count">
+                <header-field show-order-by="true">
+                    <text-find size="6" hide-options="true"/>
+                </header-field>
+                <default-field title="序号">
+                    <display/>
+                </default-field>
+            </field>
+
+
+            <field name="amt" align="center">
+                <header-field show-order-by="true">
+                    <text-find size="6" hide-options="true"/>
+                </header-field>
+                <default-field title="渠道手续费">
+                    <display/>
+                </default-field>
+            </field>
+
+            <field name="channelSeqId" align="center">
+                <header-field show-order-by="true">
+                    <text-find size="6" hide-options="true"/>
+                </header-field>
+                <default-field title="渠道编号">
+                    <display/>
+                </default-field>
+            </field>
+
+
+            <field name="find">
+                <header-field title="Find">
+                    <submit icon="glyphicon glyphicon-search"/>
+                </header-field>
+                <default-field>
+                    <display text=" "/>
+                </default-field>
+            </field>
+
+            <form-list-column>
+            <field-ref name="channelSeqId"/>
+            </form-list-column>
+            <form-list-column>
+                <field-ref name="amt"/>
+            </form-list-column>
+            <form-list-column>
+                <field-ref name="find"/>
+            </form-list-column>
+        </form-list>
+    </widgets>
+</screen>
