@@ -28,14 +28,6 @@ public class GDTools {
 
         //ec.getEntity().sqlFind()
 
-        List<Object>list = new ArrayList<Object>();
-        list.add(channelSeqId);
-        list.add(endFeeDate);
-        list.add(startFeeDate);
-        logger.info("222");
-        List<String>slist = new ArrayList<String>();
-        el = ec.getEntity().sqlFind("SELECT AMT FROM TxItemChannel t WHERE t.channelSeqId='100010' AND t.workdate between startFeeDate and endFeeDate;",list,"TxItemChannel",slist);
-
 
         return result;
     }
