@@ -140,6 +140,8 @@ along with this software (see the LICENSE.md file). If not, see
             </service-call>
 
             <!--调用黑灰名单验证接口-->
+            <service-call name="nacs.be.CheckToBh01BeService.check#Bh01Be"
+                          in-map="[cardNo:cardNo]" out-map="[acctKing:acctKing,tpu_RetCode:tpu_RetCode]"/>
 
             <!--调用获取前置流水接口-->
             <service-call name="nacs.main.Services.send#kh01"
