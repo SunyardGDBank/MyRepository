@@ -7,27 +7,27 @@
     <service verb="create" noun="Mrchnt" authenticate="false">
         <in-parameters>
             <auto-parameters include="nonpk"/>
-            <parameter name="firMerchantCode" required="true"/>
-            <parameter name="firMerchantName" required="true"/>
-            <parameter name="firMerchantSt"   required="true"/>
-
-            <parameter name="deleteFlag" />
-            <parameter name="secMerchantFlag" required="true"/>
-            <parameter name="merchantBeginTime" required="true"/>
-            <parameter name="merchantEndTime" required="true"/>
-            <parameter name="withHoldMode" required="true"/>
-            <parameter name="overDraftLimit" />
-            <parameter name="tranLimt" required="true"/>
-            <parameter name="merchantVerifySts"/>
-            <parameter name="remarks1" />
-            <parameter name="remarks2" />
-            <parameter name="remarks3" />
+            <parameter name="mrchntNo" required="true"/>
+            <parameter name="mrchntNm" required="true"/>
+            <parameter name="mrchntFlag"/>
+            <parameter name="managerInstiCode" required="true"/>
+            <parameter name="managerInstiName" required="true"/>
+            <parameter name="marginFormation" required="true"/>
+            <parameter name="subMrchntFlag" required="true"/>
+            <parameter name="clearAccountMsg" required="true"/>
+            <parameter name="clearAccountName" required="true"/>
+            <parameter name="behalfAccount" required="true"/>
+            <parameter name="whitoutAccount" required="true"/>
+            <parameter name="viDate" required="true"/>
+            <parameter name="marginAmt" required="true"/>
+            <parameter name="mrchntVerIfysts" required="true"/>
+            <parameter name="version" required="true"/>
         </in-parameters>
         <actions>
             <entity-find entity-name="nacs.mrchnt.Mrchnt" list="firstMrchntList">
-                <econdition field-name="firMerchantCode" from="firMerchantCode"/>
+                <econdition field-name="mrchntNo" from="mrchntNo"/>
             </entity-find>
-            <set field="firMerchantSt" value="ENABLED"/>
+            <set field="mrchntFlag" value="ENABLED"/>
             <if condition="firstMrchntList">
                 <return error="true" message="该商户信息已存在，不能增加！"/>
             </if>
@@ -40,37 +40,27 @@
         <in-parameters>
             <auto-parameters include="nonpk"/>
             <parameter name="seqId"/>
-            <parameter name="firMerchantCode" required="true"/>
-            <parameter name="firMerchantName" required="true"/>
-            <parameter name="firMerchantSt"/>
-            <parameter name="secMerchantFlag"/>
-            <parameter name="merchantBeginTime" />
-            <parameter name="merchantEndTime" />
-            <parameter name="overDraftLimit"/>
-            <parameter name="tranLimt"/>
-            <parameter name="merchantVerifySts" />
-            <parameter name="deleteFlag" />
+            <parameter name="mrchntNo"/>
+            <parameter name="mrchntNm"/>
+            <parameter name="mrchntFlag"/>
+            <parameter name="managerInstiCode" required="true"/>
+            <parameter name="managerInstiName" required="true"/>
+            <parameter name="marginFormation" required="true"/>
+            <parameter name="subMrchntFlag" required="true"/>
+            <parameter name="clearAccountMsg" required="true"/>
+            <parameter name="clearAccountName" required="true"/>
+            <parameter name="behalfAccount" required="true"/>
+            <parameter name="whitoutAccount" required="true"/>
+            <parameter name="viDate" required="true"/>
+            <parameter name="marginAmt" required="true"/>
+            <parameter name="mrchntVerIfysts" required="true"/>
         </in-parameters>
         <actions>
             <entity-find entity-name="nacs.mrchnt.Mrchnt" list="firstMerchantList">
-                <econdition field-name="firMerchantCode" from="firMerchantCode"/>
+                <econdition field-name="mrchntNo" from="mrchntNo"/>
             </entity-find>
             <service-call name="update#nacs.mrchnt.Mrchnt" in-map="context"/>
        </actions>
-    </service>
-
-    <!--删除商户信息-->
-    <service verb="delete" noun="Mrchnt" authenticate="false">
-        <in-parameters>
-            <auto-parameters include="nonpk"/>
-            <parameter name="firMerchantCode" required="true"/>
-        </in-parameters>
-        <actions>
-            <entity-find entity-name="nacs.mrchnt.Mrchnt" list="firstMerchantList">
-                <econdition field-name="firMerchantCode" from="firMerchantCode"/>
-            </entity-find>
-            <service-call name="delete#nacs.mrchnt.Mrchnt" in-map="context"/>
-        </actions>
     </service>
 
     <!--添加子商户信息-->
@@ -185,85 +175,48 @@
     <!-- 商户可用通道增加服务 -->
     <service verb="create" noun="MrchntChannel" authenticate="false">
         <in-parameters>
-            <auto-parameters include="pk"/>
             <auto-parameters include="nonpk"/>
-            <parameter name="firMerchantCode" required="true"/>
+            <parameter name="mrchntSeqId" required="true"/>
+            <parameter name="channelSeqId" required="true"/>
+            <parameter name="channelSt" required="true"/>
         </in-parameters>
         <actions>
-            <entity-find entity-name="nacs.mrchnt.Mrchnt" list="mrchntList1">
-                <econdition field-name="firMerchantCode" from="firMerchantCode"/>
-            </entity-find>
-            <if condition="!mrchntList1">
-                <return error="true" message="该商户编号不存在"/>
-            </if>
-            <set field="mrchntSeqId" value="${mrchntList1[0].seqId}"/>
             <entity-find entity-name="nacs.channel.Channel" list="ChannelList">
-                <econdition field-name="channelNo" from="channelCode"/>
+                <econdition field-name="channelNo" from="channelSeqId"/>
             </entity-find>
-            <log level="info" message="ChannelList###${ChannelList}"/>
-            <if condition="ChannelList">
-                <set field="channelSeqId" value="${ChannelList[0].seqId}"/>
-                <!-- 条件查询：根据商户编号查实体 -->
-                <entity-find entity-name="nacs.mrchnt.MrchntChannel" list="mrchntChannelList">
-                    <econdition field-name="mrchntSeqId" from="mrchntSeqId"/>
-                    <econdition field-name="channelSeqId" from="channelSeqId"/>
-                </entity-find>
-                <log level="info" message="mrchntChannelList############${mrchntChannelList}"/>
-                <!-- 若商户可用渠道信息相同的数据已存在，则不能增加 -->
-                <if condition="mrchntChannelList">
-                    <return error="true" message="该商户可用渠道已存在，不能增加！"/>
-                </if>
-
-                <!-- 渠道与优先级是一一对应关系，校验优先级是否一存在对应的渠道 -->
-                <entity-find entity-name="nacs.mrchnt.MrchntChannel" list="mrchntChannelList1">
-                    <econdition field-name="channelFlg" from="channelFlg"/>
-                </entity-find>
-
-                <log level="info" message="mrchntChannelList1##${mrchntChannelList1}"/>
-                <if condition="mrchntChannelList1">
-                    <return error="true" message="该优先级已有对应渠道，请选择其他优先级"/>
-                </if>
-
-                <!-- 渠道与优先级是一一对应关系，校验渠道是否一存在对应的优先级 -->
-                <entity-find entity-name="nacs.mrchnt.MrchntChannel" list="mrchntChannelList2">
-                    <econdition field-name="channelCode" from="channelCode"/>
-                </entity-find>
-                <log level="info" message="mrchntChannelList2##${mrchntChannelList2}"/>
-                <if condition="mrchntChannelList2">
-                    <return error="true" message="该渠道已有对应优先级，请选择其他渠道"/>
-                </if>
+            <log level="info" message="channelSeqId############${ChannelList[0].seqId}"/>
+            <set field="channelSeqId" value="${ChannelList[0].seqId}"/>
+            <!-- 条件查询：根据商户编号查实体 -->
+            <entity-find entity-name="nacs.mrchnt.MrchntChannel" list="mrchntChannelList">
+                <econdition field-name="mrchntSeqId" from="mrchntSeqId"/>
+                <econdition field-name="channelSeqId" from="channelSeqId"/>
+            </entity-find>
+            <log level="info" message="mrchntChannelList############${mrchntChannelList}"/>
+            <!-- 若商户可用渠道信息相同的数据已存在，则不能增加 -->
+            <if condition="mrchntChannelList">
+                <return error="true" message="该商户可用渠道已存在，不能增加！"/>
             </if>
             <!-- 若商户可用渠道信息都相同的数据不存在，则增加一条记录 -->
             <service-call name="create#nacs.mrchnt.MrchntChannel" in-map="context"/>
         </actions>
     </service>
 
-    <!--删除商户可用渠道信息-->
-    <service verb="delete" noun="MrchntChannel" authenticate="false">
-        <in-parameters>
-            <auto-parameters include="nonpk"/>
-            <parameter name="seqId" required="true"/>
-        </in-parameters>
-        <actions>
-            <entity-find entity-name="nacs.mrchnt.MrchntChannel" list="mrchntChannelList">
-                <econdition field-name="seqId" from="seqId"/>
-            </entity-find>
-            <service-call name="delete#nacs.mrchnt.MrchntChannel" in-map="context"/>
-        </actions>
-    </service>
-
     <!--商户手续费添加服务-->
     <service verb="create" noun="MrchntFee" authenticate="false">
         <in-parameters>
+            <!--<auto-parameters include="nonpk"/>-->
             <auto-parameters include="pk"/>
-            <parameter name="firMerchantCode" required="true"/>
-            <parameter name="firMerchantName" required="true"/>
+            <parameter name="mrchntSeqId" required="true"/>
             <parameter name="trxCtgy" required="true"/>
-            <parameter name="feeChargeMode" />
+            <parameter name="feeChargeMode" required="true"/>
+            <!--<parameter name="mrchntNm" required="true"/>-->
+            <parameter name="amtMonth" type="BigDecimal"/>
+            <parameter name="amt" type="BigDecimal"/>
+            <parameter name="feeChargeRate" type="BigDecimal"/>
         </in-parameters>
         <actions>
             <entity-find entity-name="nacs.mrchnt.MrchntFee" list="mrchntFeeList">
-                <econdition field-name="firMerchantCode" from="firMerchantCode"/>
+                <econdition field-name="mrchntSeqId" from="mrchntSeqId"/>
                 <econdition field-name="trxCtgy" from="trxCtgy"/>
             </entity-find>
             <if condition="mrchntFeeList">
@@ -279,11 +232,9 @@
         <in-parameters>
             <auto-parameters include="nonpk"/>
             <auto-parameters include="pk" required="true"/>
-            <parameter name="firMerchantCode" required="true"/>
-            <parameter name="firMerchantName" required="true"/>
-            <parameter name="trxCtgy"/>
+            <parameter name="feeChargeMode" required="true"/>
+            <parameter name="amtMonth"/>
             <parameter name="amt"/>
-            <parameter name="feeChargeMode"/>
             <parameter name="feeChargeRate"/>
         </in-parameters>
         <actions>
@@ -291,16 +242,24 @@
                 <if condition="!amt">
                     <return error="true" message="单笔收取金额不能为空"/>
                 </if>
-                <if condition="feeChargeRate">
-                    <return error="true" message="费率应该为空"/>
+                <if condition="amtMonth || feeChargeRate">
+                    <return error="true" message="单月收取金额或费率应该为空"/>
+                </if>
+            </if>
+            <if condition="feeChargeMode == 'FEE_CHARGE_MODE2'">
+                <if condition="!amtMonth">
+                    <return error="true" message="单月收取金额不能为空"/>
+                </if>
+                <if condition="amt || feeChargeRate">
+                    <return error="true" message="单笔收取金额或费率应该为空"/>
                 </if>
             </if>
             <if condition="feeChargeMode == 'FEE_CHARGE_MODE3'">
                 <if condition="!feeChargeRate">
                     <return error="true" message="费率不能为空"/>
                 </if>
-                <if condition="amt">
-                    <return error="true" message="单笔收取金额应该为空"/>
+                <if condition="amtMonth || amt">
+                    <return error="true" message="单笔收取金额或单月收取金额应该为空"/>
                 </if>
             </if>
             <service-call name="update#nacs.mrchnt.MrchntFee" in-map="context"/>
@@ -308,76 +267,28 @@
 
     </service>
 
-    <!--删除商户手续费信息-->
-    <service verb="delete" noun="MrchntFee" authenticate="false">
-        <in-parameters>
-            <auto-parameters include="nonpk"/>
-            <parameter name="seqId" required="true"/>
-        </in-parameters>
-        <actions>
-            <entity-find entity-name="nacs.mrchnt.MrchntFee" list="mrchntFeeList">
-                <econdition field-name="seqId" from="seqId"/>
-            </entity-find>
-            <service-call name="delete#nacs.mrchnt.MrchntFee" in-map="context"/>
-        </actions>
-    </service>
-
     <!-- 商户业务品种添加服务 -->
     <service verb="create" noun="MrchntType" authenticate="false">
         <in-parameters>
             <auto-parameters include="nonpk"/>
-            <parameter name="bizType" required="true"/>
+            <parameter name="mrchntSeqId" required="true"/>
+            <parameter name="bizTp" required="true"/>
+            <parameter name="bizTpSt" required="true"/>
         </in-parameters>
         <actions>
-            <entity-find entity-name="nacs.mrchnt.Mrchnt" list="mrchntList1">
-                <econdition field-name="firMerchantCode" from="firMerchantCode"/>
-            </entity-find>
-            <if condition="!mrchntList1">
-                <return error="true" message="该商户编号不存在"/>
-            </if>
-            <set field="mrchntSeqId" value="${mrchntList1[0].seqId}"/>
-            <entity-find entity-name="moqui.basic.Enumeration" list="bizTypeList">
-                <econdition field-name="enumId" from="bizType"/>
-            </entity-find>
-            <set field="bizName" value="${bizTypeList[0].description}"/>
-            <log level="info" message="###bizName###${bizName}"/>
-
-            <entity-find entity-name="nacs.channel.Channel" list="channelList">
-                <econdition field-name="channelNo" from="channelCode"/>
-            </entity-find>
-            <set field="channelName" value="${channelList[0].channelNm}"/>
-            <log level="info" message="###channelName###${channelName}"/>
-
             <entity-find entity-name="nacs.mrchnt.MrchntType" list="mrchntTypeList">
                 <econdition field-name="mrchntSeqId" from="mrchntSeqId"/>
-                <econdition field-name="bizType" from="bizType"/>
+                <econdition field-name="bizTp" from="bizTp"/>
             </entity-find>
             <if condition="mrchntTypeList">
-                <return error="true" message="该商户业务品种已存在，不能增加"/>
+                <return error="true" message="该商户已存在，不能增加"/>
             </if>
             <service-call name="create#nacs.mrchnt.MrchntType" in-map="context"/>
         </actions>
     </service>
 
-    <service verb="get" noun="firMerchantName" authenticate="false">
-        <in-parameters>
-            <parameter name="firMerchantCode" required="true"/>
-        </in-parameters>
-        <out-parameters><parameter name="resultList" type="List"/></out-parameters>
-        <actions>
-            <entity-find entity-name="nacs.mrchnt.Mrchnt" list="mrchntList2">
-                <econdition field-name="firMerchantCode"/>
-            </entity-find>
-            <script>
-                resultList = []
-                for (def f in mrchntList2) resultList.add([firMerchantName:f.firMerchantName, label:f.firMerchantName])
-            </script>
-            <log level="info" message="####resultList###${resultList}"/>
-        </actions>
-    </service>
-
     <!--商户业务品种更新服务-->
-    <!--<service verb="update" noun="MrchntType"  authenticate="false">
+    <service verb="update" noun="MrchntType"  authenticate="false">
         <in-parameters>
             <auto-parameters include="pk" required="true"/>
             <auto-parameters include="nonpk"/>
@@ -385,20 +296,6 @@
         </in-parameters>
         <actions>
             <service-call name="update#nacs.mrchnt.MrchntType" in-map="context"/>
-        </actions>
-    </service>-->
-
-    <!--删除商户手续费信息-->
-    <service verb="delete" noun="MrchntType" authenticate="false">
-        <in-parameters>
-            <auto-parameters include="nonpk"/>
-            <parameter name="seqId" required="true"/>
-        </in-parameters>
-        <actions>
-            <entity-find entity-name="nacs.mrchnt.MrchntType" list="mrchntTypeList">
-                <econdition field-name="seqId" from="seqId"/>
-            </entity-find>
-            <service-call name="delete#nacs.mrchnt.MrchntType" in-map="context"/>
         </actions>
     </service>
 
@@ -495,37 +392,7 @@
         </actions>
     </service>
 
-    <!--添加内部户信息-->
-    <service verb="create" noun="InnerAcct" authenticate="false">
-        <in-parameters>
-            <auto-parameters include="all"/>
-            <parameter name="innerAcctKey" required="true"/>
-            <parameter name="innerAcctNo" required="true"/>
-            <parameter name="innerAcctNm" required="true"/>
-        </in-parameters>
-        <actions>
-            <entity-find entity-name="nacs.mrchnt.InnerAcct" list="InnerAcctList">
-                <econdition field-name="innerAcctKey" from="InnerAcctKey"/>
-            </entity-find>
-            <if condition="InnerAcctList">
-                <return error="true" message="内部户户信息已存在，不能增加！"/>
-            </if>
-            <service-call name="create#nacs.mrchnt.InnerAcct" in-map="context"/>
-        </actions>
-    </service>
 
-    <!--更新内部户信息-->
-    <service verb="update" noun="InnerAcct" authenticate="false">
-        <in-parameters>
-            <auto-parameters include="pk"/>
-            <parameter name="innerAcctKey" required="true"/>
-            <parameter name="innerAcctNo" required="true"/>
-            <parameter name="innerAcctNm" required="true"/>
-        </in-parameters>
-        <actions>
-            <service-call name="update#nacs.mrchnt.InnerAcct" in-map="context"/>
-        </actions>
-    </service>
 
 
 </services>

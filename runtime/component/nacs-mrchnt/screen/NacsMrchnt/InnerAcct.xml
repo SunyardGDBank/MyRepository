@@ -1,6 +1,6 @@
 <screen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:noNamespaceSchemaLocation="http://moqui.org/xsd/xml-screen-2.1.xsd"
-        default-menu-title="内部户管理" default-menu-index="4" >
+        default-menu-title="内部户管理" default-menu-index="2" >
     <!--内部户管理-->
     <transition name="updateInnerAcct">
         <service-call name="nacs.mrchnt.admin.NacsMrchntService.update#InnerAcct"/>
@@ -12,9 +12,9 @@
     </transition>
 
     <actions>
-        <entity-find entity-name="nacs.channel.Channel" list="channelList">
+        <entity-find entity-name="nacs.mrchnt.InnerAcct" list="innerAcctlList">
             <search-form-inputs/>
-            <order-by field-name="channelNo"/>
+            <order-by field-name="innerAcctKey"/>
         </entity-find>
 
     </actions>
@@ -22,7 +22,7 @@
     <widgets>
         <container-dialog id="createInnerAcctDialog" button-text="添加" width="860">
             <form-single name="CreateInnerAcct" transition="createInnerAcct">
-                <auto-fields-entity entity-name="nacs.channel.InnerAcct" field-type="edit">
+                <auto-fields-entity entity-name="nacs.mrchnt.InnerAcct" field-type="edit">
                     <exclude field-name="remarks1"/>
                     <exclude field-name="remarks2"/>
                     <exclude field-name="remarks3"/>
@@ -52,7 +52,7 @@
 
         <form-list name="InnerAcctList" list="innerAcctlList" transition="updateInnerAcct">
 
-            <auto-fields-entity entity-name="nacs.channel.InnerAcct" field-type="edit">
+            <auto-fields-entity entity-name="nacs.mrchnt.InnerAcct" field-type="edit">
                 <exclude field-name="remarks1"/>
                 <exclude field-name="remarks2"/>
                 <exclude field-name="remarks3"/>

@@ -1,0 +1,229 @@
+<screen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="http://moqui.org/xsd/xml-screen-2.1.xsd"
+        default-menu-title="商户手续费管理" default-menu-index="1" menu-image="glyphicon glyphicon-usd"  menu-image-type="icon">
+    <!--一级商户管理-->
+
+    <transition name="findNacsMrchntFee">
+        <default-response url="."/>
+    </transition>
+    <transition name="createNacsMrchntFee">
+        <service-call name="nacs.mrchnt.admin.NacsMrchntService.create#MrchntFee"/>
+        <default-response url="."/>
+    </transition>
+    <transition name="updateNacsMrchntFee">
+        <service-call name="nacs.mrchnt.admin.NacsMrchntService.update#MrchntFee" in-map="context"/>
+        <default-response url="."/>
+    </transition>
+    <transition name="deleteNacsMrchntFee">
+        <service-call name="nacs.mrchnt.admin.NacsMrchntService.delete#MrchntFee" in-map="context"/>
+        <default-response url="."/>
+    </transition>
+    <actions>
+        <entity-find entity-name="nacs.mrchnt.MrchntFee" list="mrchntFeeList">
+            <search-form-inputs/>
+        </entity-find>
+        <log level="info" message="####MrchntFeeList:${mrchntFeeList}######"/>
+        <entity-find entity-name="moqui.basic.Enumeration" list="feeChargeModeList">
+            <econdition field-name="enumTypeId" value="FeeChargeMode"/>
+        </entity-find>
+        <entity-find entity-name="moqui.basic.Enumeration" list="trxCtgyList">
+            <econdition field-name="enumTypeId" value="TrxCtgy"/>
+        </entity-find>
+    </actions>
+
+    <widgets>
+        <!--添加按钮的弹窗页面-->
+        <container-dialog id="CreateNacsMrchntFeeDialog" button-text="添加" width="800">
+            <form-single name="CreateNacsMrchntFee" transition="createNacsMrchntFee">
+                <auto-fields-entity entity-name="nacs.mrchnt.MrchntFee"  field-type="edit">
+                    <exclude field-name="remarks1"/>
+                    <exclude field-name="remarks2"/>
+                    <exclude field-name="remarks3"/>
+                </auto-fields-entity>
+                <field name="firMerchantCode">
+                    <default-field title="一级商户编号"/>
+                </field>
+                <field name="firMerchantName">
+                    <default-field title="一级商户名称"/>
+                </field>
+                <field name="trxCtgy" >
+                    <default-field title="交易类型">
+                        <drop-down>
+                            <list-options list="trxCtgyList" key="${enumId}" text="${description}"/>
+                        </drop-down>
+                    </default-field>
+                </field>
+                <field name="feeChargeMode">
+                    <default-field title="手续费收取方式">
+                        <drop-down >
+                            <list-options list="feeChargeModeList" key="${enumId}" text="${description}"/>
+                        </drop-down>
+                    </default-field>
+                </field>
+                <field name="submitButton">
+                    <default-field title="Add">
+                        <submit icon="glyphicon glyphicon-plus"/>
+                    </default-field>
+                </field>
+
+                <!--布局-->
+                <field-layout>
+                    <field-row>
+                        <field-ref name="firMerchantCode"/>
+                        <field-ref name="firMerchantName"/>
+                    </field-row>
+                    <field-row>
+                        <field-ref name="trxCtgy"/>
+                        <field-ref name="feeChargeMode"/>
+                    </field-row>
+                    <field-row>
+                        <field-ref name="submitButton"/>
+                    </field-row>
+                </field-layout>
+            </form-single>
+
+        </container-dialog>
+        <!--查找按钮的弹窗页面-->
+        <container-dialog id="FindNacsMrchntFeeDialog" button-text="查找" width="800" >
+            <form-single name="FindNacsMrchntFee" transition="findNacsMrchntFee" >
+                <auto-fields-entity entity-name="nacs.mrchnt.MrchntFee"  field-type="edit">
+                </auto-fields-entity>
+                <field name="firMerchantCode">
+                    <default-field title="一级商户编号"/>
+                       <!-- <drop-down >
+                            <list-options list="mrchntFeeList" key="${firMerchantCode}" text="${firMerchantCode}"/>
+                        </drop-down>-->
+                </field>
+
+                <!--查找按钮-->
+                <field name="searchButton">
+                    <default-field title="Find"><submit icon="glyphicon glyphicon-search"/></default-field>
+                </field>
+                <!--布局-->
+                <field-layout>
+                    <field-row>
+                        <field-ref name="firMerchantCode"/>
+                        <field-ref name="searchButton"/>
+                    </field-row>
+                </field-layout>
+            </form-single>
+        </container-dialog>
+
+        <form-list name="ListNacsMrchntFee" list="mrchntFeeList" >
+            <field name="firMerchantCode">
+                <default-field title="一级商户编号">
+                    <link url="../MrchntFeeDetail" link-type="anchor" text="${firMerchantCode}"/>
+                </default-field>
+            </field>
+            <field name="firMerchantName">
+                <default-field title="一级商户名称">
+                    <display/>
+                </default-field>
+            </field>
+            <field name="trxCtgy">
+                <default-field title="交易类型">
+                    <display-entity entity-name="moqui.basic.Enumeration" key-field-name="enumId" text="${description}"/>
+                </default-field>
+            </field>
+            <field name="feeChargeMode">
+                <default-field title="手续费收取方式">
+                    <display-entity entity-name="moqui.basic.Enumeration" key-field-name="enumId" text="${description}"/>
+                </default-field>
+            </field>
+
+            <field name="amt">
+                <default-field title="单笔收取金额">
+                    <display/>
+                </default-field>
+            </field>
+            <field name="feeChargeRate">
+                <default-field title="手续费费率">
+                    <display/>
+                </default-field>
+            </field>
+
+            <!--修改按钮-->
+            <field name="submitButton">
+                <default-field title="">
+                    <container-dialog id="UpdateNacsMrchntFeeDialog" button-text="修改" width="900">
+                        <form-single name="UpdateNacsMrchntFee" transition="updateNacsMrchntFee">
+                            <auto-fields-entity entity-name="nacs.mrchnt.MrchntFee"  field-type="edit">
+                                <exclude field-name="remarks1"/>
+                                <exclude field-name="remarks2"/>
+                                <exclude field-name="remarks3"/>
+                                <exclude field-name="lastUpdatedStamp"/>
+                            </auto-fields-entity>
+                            <field name="seqId">
+                                <default-field title="序号">
+                                    <hidden/>
+                                </default-field>
+                            </field>
+                            <field name="firMerchantCode">
+                                <default-field title="一级商户编号">
+                                    <display/>
+                                </default-field>
+                            </field>
+                            <field name="firMerchantName">
+                                <default-field title="一级商户名称">
+                                    <display/>
+                                </default-field>
+                            </field>
+                            <field name="trxCtgy">
+                                <default-field title="交易类型">
+                                    <drop-down>
+                                        <list-options list="trxCtgyList" text="${description}"/>
+                                    </drop-down>
+                                </default-field>
+                            </field>
+                            <field name="feeChargeMode">
+                                <default-field title="手续费收取方式">
+                                    <drop-down>
+                                        <list-options list="feeChargeModeList" text="${description}"/>
+                                    </drop-down>
+                                </default-field>
+                            </field>
+                            <field name="amt">
+                                <default-field title="单笔收取金额"/>
+                            </field>
+                            <field name="feeChargeRate">
+                                <default-field title="手续费费率"/>
+                            </field>
+                            <field name="butten">
+                                <default-field title="">
+                                    <submit text="更新" icon="glyphicon glyphicon-edit"/>
+                                </default-field>
+                            </field>
+
+                            <!--布局-->
+                            <field-layout>
+                                <field-row>
+                                    <field-ref name="firMerchantCode"/>
+                                    <field-ref name="firMerchantName"/>
+                                </field-row>
+                                <field-row>
+                                    <field-ref name="trxCtgy"/>
+                                    <field-ref name="feeChargeMode"/>
+                                </field-row>
+                                <field-row>
+                                    <field-ref name="amt"/>
+                                    <field-ref name="feeChargeRate"/>
+                                </field-row>
+                                <field-row>
+                                    <field-ref name="butten"/>
+                                </field-row>
+                            </field-layout>
+                        </form-single>
+                    </container-dialog>
+                </default-field>
+            </field>
+
+            <!--删除按钮-->
+           <field name="deleteButton">
+                <default-field title="">
+                    <link url="deleteNacsMrchntFee" text="删除" link-type="anthor"/>
+                </default-field>
+            </field>
+
+        </form-list>
+    </widgets>
+</screen>

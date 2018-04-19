@@ -82,10 +82,58 @@ along with this software (see the LICENSE.md file). If not, see
                 </transaction>
             </then><else>
                 <log level="trace" message="存在重复交易信息"/>
-                <set field="retCode" value="0100118"/>
-                <set field="retMsg" value="交易流水重复"/>
+                <set field="retCode" value="0200109"/>
+                <set field="retMsg" value="请求流水号重复"/>
                 <return error="false"/>
             </else></if>
+            <!--判断商户开通状态-->
+            <entity-find entity-name="nacs.trx.Mrchnt" list="nacsMrchnt">
+                <econdition field-name="firMerchantCode" from="companyNo"/>
+            </entity-find>
+            <if condition="nacsMrchnt[0].firmerchantSt!=INVOKE" >
+                <log level="trace" message="商户未启用"/>
+                <set field="retCode" value="0100102"/>
+                <set field="retMsg" value="商户未启用"/>
+                <return error="false"/>
+            </if>
+            <!--判断交易是否超过限额-->
+            <set field="doubleamount" value="${groovy:return trxAmt.doubleValue()}" />
+            <if condition="nacsMrchnt[0].tranLimt<doubleamount" >
+                <log level="trace" message="商户单笔交易超过限额"/>
+                <set field="retCode" value="0100112"/>
+                <set field="retMsg" value="商户单笔交易超过限额"/>
+                <return error="false"/>
+            </if>
+            <!--判断是否有可用渠道-->
+            <entity-find entity-name="nacs.trx.MrchntChannel" list="nacsMrchntChannel">
+                <econdition field-name="firMerchantCode" from="companyNo"/>
+            </entity-find>
+            <if condition="!nacsMrchntChannel"> <!--没有可用渠道-->
+                <log level="trace" message="该商户未配置可用支付渠道"/>
+                <set field="retCode" value="0100105"/>
+                <set field="retMsg" value="该商户未配置可用支付渠道"/>
+                <return error="false"/>
+            </if>
+            <!--判断渠道对应业务是否开通-->
+            <entity-find entity-name="nacs.trx.bizType" list="nacsbizType">
+                <econdition field-name="firMerchantCode" from="companyNo"/>
+                <econdition field-name="channelCode" from="nacsMrchntChannel[0].channelCode"/>
+                <econdition field-name="bizType" from="trxCtgy"/>
+            </entity-find>
+            <if condition="!nacsbizType"> <!--渠道对应业务未开通-->
+                <log level="trace" message="渠道对应业务未开通"/>
+                <set field="retCode" value="0100106"/>
+                <set field="retMsg" value="渠道对应业务未开通"/>
+                <return error="false"/>
+            </if>
+
+            <!--创建交易主流水存入txitem表-->
+
+            <!--调用获取前置流水接口-->
+
+            <!--调用黑灰名单验证接口-->
+
+            <!--调用核心记账接口-->
 
             <!--调用路由服务(暂不用)-->
             <!--<service-call name="nacs.route.admin.NacsRouteService.bound#Bound"
@@ -115,10 +163,10 @@ along with this software (see the LICENSE.md file). If not, see
                           in-map="context" out-map="context"/>-->
             <log level="trace" message="交易上下文：${context}"/>
             <log level="trace" message="主交易流水：${nacsTxId}"/>
-            <log level="trace" message="主交易流水：${workDate}"/>
-            <log level="trace" message="主交易流水：${workTime}"/>
+            <log level="trace" message="工作日期：${workDate}"/>
+            <log level="trace" message="工作时间：${workTime}"/>
             <service-call name="nacs.channel.unionpayimpl.NacsToChannelService.send#Channel"
-                          in-map="[workDate:workDate,buiTxId:'000401',trxCtgy:'000401',buiStatus:'buiStatus',payStatus:'payStatus',trxAmt:12,nacsTxId:'2018030510000051']" out-map="context"/>
+                          in-map="[workDate:workDate,buiTxId:buiTxId,trxCtgy:'000401',buiStatus:buiStatus,payStatus:payStatus,trxAmt:trxAmt,nacsTxId:'2018030510000051']" out-map="context"/>
 
             <!--<if condition="!nacsPayChannel"><then> &lt;!&ndash;支付渠道返回失败&ndash;&gt;
                 <log level="info" message="支付渠道返回失败"/>
