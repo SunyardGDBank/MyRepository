@@ -25,15 +25,13 @@ along with this software (see the LICENSE.md file). If not, see
             <parameter name="currencyCode"/>
             <parameter name="trxAmt"/>
             <parameter name="useRemark"/>
-            <parameter name="remark1"/>
-            <parameter name="remark2"/>
-            <parameter name="remark3"/>
             <parameter name="buiTxId"/>
             <parameter name="companyNo"/>
-            <parameter name="subMrchntNo"/>
             <parameter name="trxCtgy"/>
             <parameter name="reqDate"/>
             <parameter name="reqTime"/>
+            <parameter name="certCode" />
+            <parameter name="certNo" />
             <parameter name="version"/>
         </in-parameters>
         <out-parameters>
@@ -126,8 +124,21 @@ along with this software (see the LICENSE.md file). If not, see
                 <set field="retMsg" value="渠道对应业务未开通"/>
                 <return error="false"/>
             </if>
+            <!--创主交易流水号-->
+            <set field="seqName" value="${groovy:return date_to_string(sysdate(),'yyMMdd')}AcctHost" />
+            <service-call name="nacs.main.Services.send#CPSPTXID"
+                          in-map="context" out-map="context">
+                <econdition field-name="seqName" from="seqName"/>
+            </service-call>
 
             <!--创建交易主流水存入txitem表-->
+            <service-call name="nacs.main.Services.create#TxItem"
+                          in-map="context" out-map="context">
+                <econdition field-name="companyNoName" from="nacsMrchnt[0].companyNoName"/>
+                <econdition field-name="trsMemo" from="useRemark"/>
+                <econdition field-name="orderId" from="nacsTxId"/>
+            </service-call>
+
 
             <!--调用获取前置流水接口-->
 
