@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<services xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns=""
+          xsi:noNamespaceSchemaLocation="http://moqui.org/xsd/service-definition-2.1.xsd">
+
+    <!-- 黑灰名单校验 bh01-->
+    <service verb="check" noun="Bh01Be" type="inline">
+        <implements service="nacs.be.CheckToBh01BeService.check#Bh01Be"/>
+        <in-parameters>
+            <parameter name="cardNo"/>
+        </in-parameters>
+        <out-parameters>
+            <parameter name="acctKing"/>
+            <parameter name="tpu_RetCode"/>
+        </out-parameters>
+        <actions>
+            <if condition="${TPU_RETCODE!='AAAAAAA'}">
+                <return error="true" message="核心处理失败"/>
+            </if>
+            <if condition="${TPU_RETCODE=='AAAAAAA'}">
+                <if condition="${ACCTKING=='1'}">
+                    <return error="true" message="该账户是黑灰名单，不能进行交易"/>
+                </if>
+            </if>
+        </actions>
+    </service>
+
+</services>
