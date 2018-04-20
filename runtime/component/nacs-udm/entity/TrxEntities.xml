@@ -260,6 +260,9 @@ along with this software (see the LICENSE.md file). If not, see
         <field name="certNo" type="id" not-null="true">
             <description>证件号</description>
         </field>
+        <field name="channelFeeAmount" type="currency-amount">
+            <description>渠道手续费金额</description>
+        </field>
         <field name="remarks1" type="id-long">
             <description>备注1</description>
         </field>
@@ -357,8 +360,8 @@ along with this software (see the LICENSE.md file). If not, see
         <field name="trxAmt" type="currency-amount" >
             <description>交易金额</description>
         </field>
-        <field name="feeAmount" type="currency-amount">
-            <description>手续费金额</description>
+        <field name="mrchntFeeAmount" type="currency-amount">
+            <description>商户手续费金额</description>
         </field>
         <field name="payeeAcctno" type="id-long" >
             <description>收款人账号</description>
