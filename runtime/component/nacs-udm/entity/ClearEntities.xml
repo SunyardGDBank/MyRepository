@@ -129,4 +129,59 @@ along with this software (see the LICENSE.md file). If not, see
         </index>
     </entity>
 
+    <!--光大清算表-->
+    <entity entity-name="ClearAmount" package="nacs.clear" authorize-skip="true" cache="false" sequence-primary-prefix="${new Date().format('yyyyMMdd)" sequence-primary-name="ClearAmount${new Date().format('yyyyMMdd)">
+        <description>清算金额信息表</description>
+        <field name="channelCode" type="id" not-null="true" is-pk="true">
+            <description>支付渠道编号</description>
+        </field>
+        <field name="firMerchantCode" type="id" not-null="true" is-pk="true">
+            <description>一级商户编号</description>
+        </field>
+        <field name="firMerchantName" type="id" not-null="true">
+            <description>一级商户名称</description>
+        </field>
+        <field name="channelName" type="id" not-null="true">
+            <description>支付渠道名称</description>
+        </field>
+        <field name="settleAmt" type="currency-amount">
+            <description>清算金额</description>
+        </field>
+        <field name="settleDate" type="id" not-null="true" is-pk="true">
+            <description>清算日期</description>
+        </field>
+        <field name="refundAmt" type="currency-amount">
+            <description>退回金额</description>
+        </field>
+        <field name="netAmt" type="currency-amount">
+            <description>净清算金额</description>
+        </field>
+        <field name="settleSt" type="id">
+            <description>清算状态(SETTLE_ADD：补充清算；SETTLE_DONE：清算完成)</description>
+        </field>
+        <field name="coreStatus" type="id">
+            <description>记账状态(CHK_RESULT_NONE：未记账 CHK_RESULT_BEING：记账中 CHK_RESULT_BEEN：已记账)</description>
+        </field>
+        <field name="remarks1" type="id-long">
+            <description>备注1</description>
+        </field>
+        <field name="remarks2" type="id-long">
+            <description>备注2</description>
+        </field>
+        <!--<relationship type="one-nofk" title="TrxCtgy" related="moqui.basic.Enumeration">-->
+            <!--<key-map field-name="trxCtgy"/>-->
+        <!--</relationship>-->
+        <relationship type="one-nofk" title="SettleSt" related="moqui.basic.StatusItem">
+            <key-map field-name="settleSt"/>
+        </relationship>
+        <!--<relationship type="one-nofk" title="CheckSt" related="moqui.basic.StatusItem">-->
+            <!--<key-map field-name="checkSt"/>-->
+        <!--</relationship>-->
+        <index name="NACS_CLEAR_CLIENT_INDEX1" unique="true">
+            <index-field name="settleDate"/>
+            <index-field name="firMerchantCode"/>
+            <index-field name="channelCode"/>
+        </index>
+    </entity>
+
 </entities>
