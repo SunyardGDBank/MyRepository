@@ -11,10 +11,15 @@
     <entity-facade crypt-pass="MoquiDefaultPassword:CHANGEME" query-stats="true">
         <!-- add datasource elements here to configure databases -->
         <!--生产上在这里覆盖配置即可-->
-        <datasource group-name="transactional" database-conf-name="informix" schema-name="NACS" runtime-add-missing="true" startup-add-missing="true">
+        <!--<datasource group-name="transactional" database-conf-name="informix" schema-name="NACS" runtime-add-missing="true" startup-add-missing="true">
             <inline-jdbc jdbc-uri="jdbc:informix-sqli://10.37.0.4:9088/nacs:INFORMIXSERVER=nacs_dbs" jdbc-username="informix"
                          jdbc-password="nacs1234" />
-        </datasource>
+        </datasource>-->
+
+        <!--<datasource group-name="transactional" database-conf-name="oracle" schema-name="NACS" runtime-add-missing="true" startup-add-missing="true">
+            <inline-jdbc jdbc-uri="jdbc:oracle:thin:@10.200.225.4:1521:orcl" jdbc-username="ceb"
+                         jdbc-password="ceb1234" />
+        </datasource>-->
     </entity-facade>
 
 </moqui-conf>
