@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+This software is in the public domain under CC0 1.0 Universal plus a 
+Grant of Patent License.
+
+To the extent possible under law, the author(s) have dedicated all
+copyright and related and neighboring rights to this software to the
+public domain worldwide. This software is distributed without any
+warranty.
+
+You should have received a copy of the CC0 Public Domain Dedication
+along with this software (see the LICENSE.md file). If not, see
+<http://creativecommons.org/publicdomain/zero/1.0/>.
+-->
+<!--对账主服务-->
+<services xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns=""
+          xsi:noNamespaceSchemaLocation="http://moqui.org/xsd/service-definition-2.1.xsd">
+
+
+    <!--清算主服务-->
+    <!--银联每日11点清算-->
+    <service verb="clear" noun="ChkClear" type="inline" validate="false" authenticate="false">
+    <in-parameters>
+    </in-parameters>
+    <out-parameters>
+    </out-parameters>
+    <actions>
+
+        <!--查询成功的交易-->
+        <entity-find entity-name="nacs.trx.TxItem" list="TxItem">
+            <econdition field-name="settleDate" from="workDate"/>
+            <econdition field-name="txStatuId" value="11"/>
+        </entity-find>
+        <!--登记清算信息表-->
+        <entity-make-value entity-name="nacs.clear.ClearChannel" value-field="ClearChannel"/>
+        <entity-sequenced-id-primary-dynamic value-field="ClearChannel"/>
+        <set field="settleDate" from="settleDate"/>
+        <entity-set value-field="" map=""/>
+
+    </actions>
+    </service>
+
+    <!--每30分钟清算未清算的帐-->
+    <service verb="reClear" noun="ChkClear" authenticate="false" type="inline" validate="false">
+        <in-parameters>
+
+        </in-parameters>
+        <actions>
+            <log level="info" message="===========未清算交易重复清算开始==========="/>
+            <entity-find entity-name="nacs.clear.ClearAmount" list="clearAmountList">
+                <econdition field-name="settleSt" value="SETTLE_ADD"/><!--未清算-->
+            </entity-find>
+            <if condition="clearAmountList">
+                <log level="info" message="===========有未清算交易需要去清算=========="/>
+                <actions>
+
+                </actions>
+
+            </if>
+        </actions>
+    </service>
+</services>
